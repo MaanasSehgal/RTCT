@@ -1,0 +1,40 @@
+{
+  "name": "rtc",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start",
+    "lint": "next lint"
+  },
+  "dependencies": {
+    "@emotion/react": "^11.11.4",
+    "@emotion/styled": "^11.11.5",
+    "@nextui-org/accordion": "^2.0.35",
+    "@nextui-org/react": "^2.4.2",
+    "@nextui-org/switch": "^2.0.31",
+    "@nextui-org/system": "^2.2.2",
+    "@nextui-org/theme": "^2.2.6",
+    "class-variance-authority": "^0.7.0",
+    "clsx": "^2.1.1",
+    "framer-motion": "^11.2.11",
+    "lucide-react": "^0.395.0",
+    "mini-svg-data-uri": "^1.4.4",
+    "next": "14.2.4",
+    "react": "^18",
+    "react-dom": "^18",
+    "react-loading-skeleton": "^3.4.0",
+    "tailwind-merge": "^2.3.0",
+    "tailwind-scrollbar": "^3.1.0",
+    "tailwindcss-animate": "^1.0.7"
+  },
+  "devDependencies": {
+    "@types/node": "^20",
+    "@types/react": "^18",
+    "@types/react-dom": "^18",
+    "postcss": "^8",
+    "tailwindcss": "^3.4.1",
+    "typescript": "^5"
+  }
+}
