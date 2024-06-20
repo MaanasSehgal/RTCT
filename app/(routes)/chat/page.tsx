@@ -1,19 +1,28 @@
 "use client";
 import React, {useState} from "react";
-import SideBar from "./components/SideBar";
+import SideBar from "./components/ChatSidebar";
 import ChatSection from "./components/ChatSection";
 
 const ChatApp = () => {
     const [showChat, setShowChat] = useState(false);
+    const [selectedChat, setSelectedChat] = useState(null);
+
+    // Default chat to open when the app loads
+    const defaultChat = {id: 1, image: "/userlogo.png", name: "Maanas Sehgal", time: "2:12", notifications: "30"};
 
     return (
-        <div className="h-screen flex bg-gray-800">
-            {/* Conditionally render Sidebar or ChatSection based on screen size and state */}
+        <div className="h-screen flex ">
             <div className={`${showChat ? "hidden" : "block"} md:block w-full md:w-1/4`}>
-                <SideBar onChatClick={() => setShowChat(true)} />
+                <SideBar
+                    onChatClick={(chat: React.SetStateAction<null>) => {
+                        setShowChat(true);
+                        setSelectedChat(chat);
+                    }}
+                    selectedChat={selectedChat}
+                />
             </div>
             <div className={`${showChat ? "block" : "hidden"} md:block w-full md:w-3/4`}>
-                <ChatSection onBack={() => setShowChat(false)} />
+                {showChat ? <ChatSection onBack={() => setShowChat(false)} /> : <ChatSection onBack={() => {}} selectedChat={defaultChat} />}
             </div>
         </div>
     );

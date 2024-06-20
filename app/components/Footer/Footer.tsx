@@ -11,7 +11,7 @@ const Footer = () => {
                             <RTCTLogo />
                             <h1>RTCT</h1>
                         </Link>
-                        <p className="py-8 text-sm text-[--darkText2] lg:max-w-xs text-center lg:text-left">Trusted by top developers all over the world. Have any query ?</p>
+                        <p className="py-8 text-sm text-[--darkText2] lg:max-w-xs text-center lg:text-left">Trusted by top developers all over the world. Have any query?</p>
                         <Link
                             href="/"
                             className="py-2.5 px-5 h-9 block w-fit bg-[--darkBtn] rounded-full shadow-sm text-xs text-[darkText1] mx-auto transition-all  duration-500 hover:bg-indigo-700 lg:mx-0">
@@ -28,12 +28,7 @@ const Footer = () => {
                             </li>
                             <li className="mb-6">
                                 <Link href="#" className="text-[--darkText2] hover:text-[--darkText1]">
-                                    About
-                                </Link>
-                            </li>
-                            <li className="mb-6">
-                                <Link href="#" className="text-[--darkText2] hover:text-[--darkText1]">
-                                    Pricing
+                                    About Us
                                 </Link>
                             </li>
                             <li>
@@ -43,27 +38,22 @@ const Footer = () => {
                             </li>
                         </ul>
                     </div>
-                    <div className="lg:mx-auto text-left ">
+                    <div className="lg:mx-auto text-left">
                         <h4 className="text-lg text-[--darkText1] font-medium mb-7">Products</h4>
                         <ul className="text-sm  transition-all duration-500">
                             <li className="mb-6">
                                 <Link href="#" className="text-[--darkText2] hover:text-[--darkText1]">
-                                    Figma UI System
+                                    Collaborative coding
                                 </Link>
                             </li>
                             <li className="mb-6">
                                 <Link href="#" className="text-[--darkText2] hover:text-[--darkText1]">
-                                    Icons Assets
-                                </Link>
-                            </li>
-                            <li className="mb-6">
-                                <Link href="#" className="text-[--darkText2] hover:text-[--darkText1]">
-                                    Responsive Blocks
+                                    Task Management
                                 </Link>
                             </li>
                             <li>
                                 <Link href="#" className="text-[--darkText2] hover:text-[--darkText1]">
-                                    Components Library
+                                    Progress Tracking
                                 </Link>
                             </li>
                         </ul>
@@ -86,21 +76,11 @@ const Footer = () => {
                                     Documentation
                                 </Link>
                             </li>
-                            <li>
-                                <Link href="#" className=" text-[--darkText2] hover:text-[--darkText1]">
-                                    User Guide
-                                </Link>
-                            </li>
                         </ul>
                     </div>
                     <div className="lg:mx-auto text-left">
                         <h4 className="text-lg text-[--darkText1] font-medium mb-7">Blogs</h4>
                         <ul className="text-sm  transition-all duration-500">
-                            <li className="mb-6">
-                                <Link href="#" className="text-[--darkText2] hover:text-[--darkText1]">
-                                    News
-                                </Link>
-                            </li>
                             <li className="mb-6">
                                 <Link href="#" className=" text-[--darkText2] hover:text-[--darkText1]">
                                     Tips & Tricks
@@ -108,7 +88,7 @@ const Footer = () => {
                             </li>
                             <li className="mb-6">
                                 <Link href="#" className=" text-[--darkText2] hover:text-[--darkText1]">
-                                    New Updates
+                                    Latest Updates
                                 </Link>
                             </li>
                             <li>

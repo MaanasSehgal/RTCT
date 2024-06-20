@@ -12,6 +12,8 @@
         --darkText2: #c0c0c0;
         --darkText3: #808080;
         --fontIBM: 'IBM Plex Mono', monospace;
+        --tabsBg: #272A35;
+        --tabBg: #8964E8;
     }
 }
 
@@ -91,6 +93,7 @@
     header {
         max-width: 100% !important;
     }
+    
 }
 
 .floating-logo {
