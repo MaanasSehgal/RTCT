@@ -2,7 +2,7 @@
 @tailwind components;
 @tailwind utilities;
 
-@import url('https://fonts.googleapis.com/css2?family=IBM+Plex+Mono&display=swap');
+@import url("https://fonts.googleapis.com/css2?family=IBM+Plex+Mono&display=swap");
 
 @media (prefers-color-scheme: dark) {
     :root {
@@ -11,9 +11,10 @@
         --darkText1: #f0f0f0;
         --darkText2: #c0c0c0;
         --darkText3: #808080;
-        --fontIBM: 'IBM Plex Mono', monospace;
-        --tabsBg: #272A35;
-        --tabsColor: #8964E8;
+        --fontIBM: "IBM Plex Mono", monospace;
+        --tabsBg: #272a35;
+        --tabsColor: #8964e8;
+        --chatSectionBg: #131217;
     }
 }
 
@@ -84,7 +85,7 @@
 @layer base {
     * {
         @apply border-border;
-        font-family: 'IBM Plex Mono', monospace;
+        font-family: "IBM Plex Mono", monospace;
     }
     body {
         @apply bg-background text-foreground;
@@ -93,13 +94,8 @@
     header {
         max-width: 100% !important;
     }
-
-    .custom-tabs {
-        --nextui--tabs-bg: var(--tabsColor);
-      }
-      
-    
 }
+
 
 .floating-logo {
     animation: float 3s linear infinite;
@@ -113,4 +109,16 @@
     50% {
         transform: translateY(-15px);
     }
-} 
+}
+
+.hiddenScrollbar {
+    scrollbar-width: none; /* Firefox */
+    -ms-overflow-style: none; /* Internet Explorer 10+ */
+    scrollbar-color: transparent transparent; /* Firefox (thumb, track) */
+    overflow: auto; /* Trigger scrolling behavior */
+}
+
+/* Hide scrollbar for Webkit browsers */
+.hiddenScrollbar::-webkit-scrollbar {
+    display: none;
+}

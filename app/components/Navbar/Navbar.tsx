@@ -5,7 +5,7 @@ import { RTCTLogo, SearchIcon } from "@/components/Logos/Logos";
 
 export default function App() {
     return (
-        <Navbar className="h-20" isBordered>
+        <Navbar className="lg:h-[10vh] h-[7vh] border-b-1 border-white" isBordered>
             <NavbarContent justify="start">
                 <NavbarBrand className="mr-4">
                     <Link href="/" className="flex items-center gap-2">

@@ -4,8 +4,7 @@ import "./globals.css";
 import {NextUIProvider} from "@nextui-org/react";
 import Navbar from "./components/Navbar/Navbar";
 import Footer from "./components/Footer/Footer";
-import React, {useEffect} from "react";
-
+import {Toaster} from "@/components/UI/toaster";
 const inter = Inter({subsets: ["latin"]});
 
 export const metadata: Metadata = {
@@ -25,6 +24,7 @@ export default function RootLayout({
                 <NextUIProvider className={`flex flex-col w-full bg-black`}>
                     <Navbar />
                     {children}
+                    <Toaster />
                     <Footer />
                 </NextUIProvider>
             </body>
