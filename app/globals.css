@@ -13,7 +13,7 @@
         --darkText3: #808080;
         --fontIBM: 'IBM Plex Mono', monospace;
         --tabsBg: #272A35;
-        --tabBg: #8964E8;
+        --tabsColor: #8964E8;
     }
 }
 
@@ -93,6 +93,11 @@
     header {
         max-width: 100% !important;
     }
+
+    .custom-tabs {
+        --nextui--tabs-bg: var(--tabsColor);
+      }
+      
     
 }
 
