@@ -1,6 +1,6 @@
 import React from "react";
-import {HoverBorderGradient} from "../ui/hover-border-gradient";
 import {RTCTLogo} from "../Logos/Logos";
+import {HoverBorderGradient} from "../ui/hover-border-gradient";
 
 const Hero = () => {
     return (
