@@ -5,10 +5,8 @@ import {cn} from "@/app/utils/cn";
 import Link from "next/link";
 import {Label} from "./Label";
 import {Input} from "./Input";
-import { useToast } from "@/components/ui/use-toast";
 
 export function SignupForm() {
-    const {toast} = useToast();
     const [formData, setFormData] = useState({
         email: "",
         password: "",
@@ -18,10 +16,7 @@ export function SignupForm() {
     const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
         if (formData.password !== formData.confirmPassword) {
-            toast({
-                title: "ERROR!",
-                description: "Password's don't match!",
-            });
+            alert("Passwords don't match");
             return;
         }
         console.log("Form submitted");
