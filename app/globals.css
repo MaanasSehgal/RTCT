@@ -4,6 +4,10 @@
 
 @import url("https://fonts.googleapis.com/css2?family=IBM+Plex+Mono&display=swap");
 
+* {
+    scroll-behavior: smooth;
+}
+
 @media (prefers-color-scheme: dark) {
     :root {
         --darkBtn: #8964e8;
