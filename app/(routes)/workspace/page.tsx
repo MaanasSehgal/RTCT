@@ -1,11 +1,58 @@
-import React from 'react'
+"use client";
+import {ResizableHandle, ResizablePanel, ResizablePanelGroup} from "@/components/UI/resizable";
+import {api} from "@/convex/_generated/api";
+import {useConvex} from "convex/react";
+import {useEffect, useState} from "react";
+import Canvas from "./_components/Canvas";
+import Editor from "./_components/Editor";
+import WorkspaceHeader from "./_components/WorkspaceHeader";
+import { FILE } from "./_components/FILE";
 
-const page = () => {
-  return (
-    <div className='w-screen h-screen'>
-        <div className="w-screen h-16 bg-red-500" ></div>
-    </div>
-  )
-}
+const Workspace = ({params}: any) => {
+    const convex = useConvex();
+    const [triggerSave, setTriggerSave] = useState(false);
+    const [fileData, setFileData] = useState<FILE | any>();
+    const [isVertical, setIsVertical] = useState(window.innerWidth < 768);
 
-export default page
+    useEffect(() => {
+        console.log("File Id: ", params.fileId);
+        // params.fileId && getFileData();
+
+        const handleResize = () => {
+            if (window.innerWidth >= 768) {
+                setIsVertical(false); // Horizontal for large screens
+            } else {
+                setIsVertical(true); // Vertical for medium screens and smaller
+            }
+        };
+
+        window.addEventListener("resize", handleResize);
+        handleResize(); // Initial check
+
+        return () => window.removeEventListener("resize", handleResize);
+    }, [params]);
+
+    // const getFileData = async () => {
+    //     const result = await convex.query(api.files.getFileById, {_id: params.fileId});
+    //     console.log("FileName: ", result.fileName);
+    //     // console.log(result);
+    //     setFileData(result);
+    // };
+
+    return (
+        <div className={`w-screen h-[${isVertical ? "200" : "100"}vh] flex flex-col`}>
+            <WorkspaceHeader fileName={fileData && fileData?.fileName} onSave={() => setTriggerSave(!triggerSave)} />
+            <ResizablePanelGroup direction={isVertical ? "vertical" : "horizontal"} className=" ">
+                <ResizablePanel defaultSize={50}>
+                    <div className={` ${isVertical ? "h-screen" : "h-full"} bg-red-500`}><Editor onSaveTrigger={triggerSave} fileId={params.fileId} fileData={fileData} /></div>
+                </ResizablePanel>
+                <ResizableHandle withHandle className={`${isVertical ? "h-2" : "w-2"}`} />
+                <ResizablePanel defaultSize={50}>
+                    <div className={` ${isVertical ? "h-screen" : "h-full"} overflow-auto bg-blue-500`}><Canvas onSaveTrigger={triggerSave} fileId={params.fileId} fileData={fileData} /></div>
+                </ResizablePanel>
+            </ResizablePanelGroup>
+        </div>
+    );
+};
+
+export default Workspace;
