@@ -1,17 +1,19 @@
-import {Input} from "@nextui-org/react";
-import {Search, SearchIcon} from "lucide-react";
-import React, {useState} from "react";
+import { Input } from "@nextui-org/react";
+import { SearchIcon } from "lucide-react";
+import React, { useState } from "react";
 import Chat from "./Chat";
 
-const SideBar = ({chatData, onChatClick, selectedChat}: any) => {
+const SideBar = ({ chatData, onChatClick, selectedChat }: any) => {
     const [searchQuery, setSearchQuery] = useState("");
 
-    const filteredChats: Array<{chatName: string}> = chatData.filter((chat: {chatName: string}) => chat.chatName.toLowerCase().includes(searchQuery.toLowerCase()));
+    const filteredChats: Array<{ chatName: string }> = chatData.filter((chat: { chatName: string }) =>
+        chat.chatName.toLowerCase().includes(searchQuery.toLowerCase())
+    );
 
     return (
         <div className="w-full h-full bg-[#272A35] border-r-white">
             <div className="w-full h-16 flex justify-center items-center px-4">
-            <Input
+                <Input
                     classNames={{
                         base: "w-full h-10",
                         mainWrapper: "h-full",
@@ -26,7 +28,7 @@ const SideBar = ({chatData, onChatClick, selectedChat}: any) => {
                 />
             </div>
             <div className="flex flex-col w-full h-[85%] py-4 hiddenScrollbar">
-                {filteredChats &&filteredChats.map((chat: any) => (
+                {filteredChats && filteredChats.map((chat: any) => (
                     <Chat
                         key={chat.chatID}
                         image={chat.chats[0]?.senderID === "u001" ? "/userlogo.png" : ""}

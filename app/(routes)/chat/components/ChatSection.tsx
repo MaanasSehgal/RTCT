@@ -1,16 +1,16 @@
 "use client";
-import React, {useEffect, useRef, useState} from "react";
-import {CircleArrowLeft, Search, Send, ArrowUpRight, Link, SendHorizontal, Smile} from "lucide-react";
-import {Input} from "@nextui-org/react";
+import React, { useEffect, useRef, useState } from "react";
+import { CircleArrowLeft, Search, SendHorizontal, Smile, CirclePlus } from "lucide-react";
+import { Input } from "@nextui-org/react";
 import Image from "next/image";
 import Fuse from "fuse.js";
 import TabsComponent from "./Tabs";
 import data from "@emoji-mart/data";
 import Picker from "@emoji-mart/react";
 
-const ChatSection = ({onBack, chatData}: any) => {
+const ChatSection = ({ onBack, chatData, draft, onDraftChange }: any) => {
     const [showEmoji, setShowEmoji] = useState(false);
-    const [text, setText] = useState("");
+    const [text, setText] = useState(draft);
     const [isSearchVisible, setIsSearchVisible] = useState(false);
     const [filteredChats, setFilteredChats] = useState<any[]>([]);
     const fuse = useRef<Fuse<unknown> | null>(null);
@@ -34,22 +34,25 @@ const ChatSection = ({onBack, chatData}: any) => {
         }
     }, [chatData]);
 
+    useEffect(() => {
+        setText(draft);
+    }, [draft]);
+
     const handleClickOutside = (event: MouseEvent) => {
         if (searchRef.current && !searchRef.current.contains(event.target as Node)) {
             setIsSearchVisible(false);
         }
     };
 
-    const addEmoji = (e: {unified: string}) => {
+    const addEmoji = (e: { unified: string }) => {
         const sym = e.unified.split("_");
-        // console.log(sym);
         const codeArray: number[] = [];
         sym.forEach((el) => {
             codeArray.push(parseInt("0x" + el, 16));
         });
         let emoji = String.fromCodePoint(...codeArray);
-        console.log(emoji);
         setText(text + emoji);
+        onDraftChange(chatData.chatID, text + emoji);
     };
 
     const handleSearchInputChange = () => {
@@ -69,7 +72,7 @@ const ChatSection = ({onBack, chatData}: any) => {
 
     return (
         <div className="w-full h-full flex flex-col">
-            {/* Chat Nav*/}
+            {/* Chat Nav */}
             {chatData && (
                 <div className="w-full h-16 flex items-center justify-between px-4">
                     <div className="flex items-center">
@@ -107,13 +110,13 @@ const ChatSection = ({onBack, chatData}: any) => {
                     </div>
                 </div>
             )}
-            <div id="msg" className="w-full h-full bg-[--chatSectionBg] ">
+            <div id="msg" className="w-full h-full bg-[--chatSectionBg] overflow-y-auto pb-14 .hiddenScrollbar">
                 {isSearchVisible && filteredChats.length === 0 ? (
                     <div className="flex justify-center items-center">No results found</div>
                 ) : chatData ? (
                     isSearchVisible ? (
                         filteredChats.map((chat: any) => (
-                            <div className="p-4">
+                            <div key={chat.senderID} className="p-4">
                                 <div className="text-gray-200">{chat.senderName}</div>
                                 <div className="text-gray-400 text-sm">
                                     {chat.content.msgType == "text" ? (
@@ -130,7 +133,7 @@ const ChatSection = ({onBack, chatData}: any) => {
                         ))
                     ) : (
                         chatData.chats.map((chat: any) => (
-                            <div className="p-4">
+                            <div key={chat.senderID} className="p-4">
                                 <div className="text-gray-200">{chat.senderName}</div>
                                 <div className="text-gray-400 text-sm">
                                     {chat.content.msgType == "text" ? (
@@ -150,23 +153,28 @@ const ChatSection = ({onBack, chatData}: any) => {
                     <div className="w-full h-full flex justify-center items-center text-xl">Select a chat to start messaging!</div>
                 )}
                 {chatData && (
-                    <div className=" w-full h-14 absolute bottom-0 flex items-center gap-4 p-4">
-                        <Link />
+                    <div className="w-full h-14 absolute bottom-0 flex items-center gap-4 p-4 bg-[#131217]">
                         <Smile onClick={() => setShowEmoji(!showEmoji)} />
-                        {showEmoji && <Picker className="" data={data} emojiSize={20} emojiButtonSize={28} onEmojiSelect={addEmoji} maxFrequentRows={1} />}
+                        <div className="absolute bottom-12 left-0">
+                            {showEmoji && <Picker data={data} emojiSize={20} emojiButtonSize={28} onEmojiSelect={addEmoji} maxFrequentRows={1} />}
+                        </div>
+                        <CirclePlus className="file-link absolute left-16 z-20 w-6 h-6 p-0.5 bg-white text-black rounded-full bold-text" />
                         <Input
-                        value={text}
-                            onChange={(e) => setText(e.target.value)}
+                            value={text}
+                            onChange={(e) => {
+                                setText(e.target.value);
+                                onDraftChange(chatData.chatID, e.target.value);
+                            }}
                             classNames={{
-                                base: "w-[67%] h-10",
+                                base: "lg:w-[71%] md:w-[62%] sm:w-[60%] w-[70%] h-10",
                                 mainWrapper: "h-full",
-                                input: "text-small",
-                                inputWrapper: "rounded-full h-12 font-normal text-default-500 bg-[#373E4E] hover:bg-[--tabsBg] active:bg-red-500",
+                                input: "ps-6 text-small",
+                                inputWrapper: "rounded-full h-12 font-normal text-default-500 bg-[#373E4E] hover:bg-[--tabsBg] active:bg-red-500 ",
                             }}
                             type="text"
                             placeholder="Type a Message"
                         />
-                        <SendHorizontal className="bg-[--darkBtn] w-8 h-8 rounded-full p-1 " />
+                        <SendHorizontal className="bg-[--darkBtn] w-8 h-8 rounded-full p-1 lg:hidden" />
                     </div>
                 )}
             </div>
