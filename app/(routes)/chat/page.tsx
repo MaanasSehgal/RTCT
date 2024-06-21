@@ -13,7 +13,7 @@ const ChatApp = () => {
     }, []);
 
     const [showChat, setShowChat] = useState(false);
-    const [selectedChat, setSelectedChat] = useState("");
+    const [selectedChat, setSelectedChat] = useState<any>(null);
     const [drafts, setDrafts] = useState<{ [key: string]: string }>({});
 
     const defaultChat = { id: 1, image: "/userlogo.png", name: "Maanas Sehgal", time: "2:12", notifications: "30" };
