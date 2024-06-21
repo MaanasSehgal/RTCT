@@ -1,22 +1,22 @@
-"use client"
+"use client";
 import React from "react";
 import {Navbar, NavbarBrand, NavbarContent, NavbarItem, Link, Input, DropdownItem, DropdownTrigger, Dropdown, DropdownMenu, Avatar} from "@nextui-org/react";
-import { RTCTLogo, SearchIcon } from "@/components/Logos/Logos";
+import {RTCTLogo, SearchIcon} from "@/components/Logos/Logos";
 
-export default function App() {
+export default function NavbarComponent() {
     return (
         <Navbar className="lg:h-[10vh] h-[7vh] border-b-1 border-white" isBordered>
             <NavbarContent justify="start">
                 <NavbarBrand className="mr-4">
                     <Link href="/" className="flex items-center gap-2">
-                  <RTCTLogo/>
-                    <p className="hidden sm:block font-bold">RTCT</p>
+                        <RTCTLogo />
+                        <p className="hidden sm:block font-bold">RTCT</p>
                     </Link>
                 </NavbarBrand>
             </NavbarContent>
 
             <NavbarContent className="items-center">
-              <Input
+                <Input
                     classNames={{
                         base: "w-full h-10",
                         mainWrapper: "h-full",

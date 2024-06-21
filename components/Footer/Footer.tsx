@@ -1,7 +1,7 @@
 import {RTCTLogo} from "@/components/Logos/Logos";
 import Link from "next/link";
 
-const Footer = () => {
+export default function FooterComponent() {
     return (
         <footer className="w-full">
             <div className="px-[6%]">
@@ -141,6 +141,4 @@ const Footer = () => {
             </div>
         </footer>
     );
-};
-
-export default Footer;
+}
