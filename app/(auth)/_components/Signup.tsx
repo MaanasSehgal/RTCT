@@ -5,7 +5,7 @@ import {cn} from "@/app/utils/cn";
 import Link from "next/link";
 import {Label} from "./Label";
 import {Input} from "./Input";
-import {useToast} from "@/components/UI/use-toast";
+import {useToast} from "@/components/ui/use-toast";
 
 export function SignupForm() {
     const {toast} = useToast();

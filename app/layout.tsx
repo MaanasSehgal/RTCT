@@ -4,7 +4,7 @@ import "./globals.css";
 import {NextUIProvider} from "@nextui-org/react";
 import Navbar from "./components/Navbar/Navbar";
 import Footer from "./components/Footer/Footer";
-import {Toaster} from "@/components/UI/toaster";
+import {Toaster} from "@/components/ui/toaster";
 const inter = Inter({subsets: ["latin"]});
 
 export const metadata: Metadata = {
