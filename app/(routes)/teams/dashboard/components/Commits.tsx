@@ -202,11 +202,11 @@ const Commits: React.FC = () => {
       <ol className="relative border-s border-gray-200 dark:border-gray-700">
         {commits.map((commit, index) => (
           <li key={index} className="mb-10 ms-6">
-            <span className="absolute flex items-center justify-center w-6 h-6  rounded-full -start-3 ring-8 ring-white dark:ring-gray-900 ">
+            <span className="absolute flex items-center justify-center w-6 h-6 rounded-full -start-3 ring-8 ring-white dark:ring-gray-900 ">
               <img className="rounded-full shadow-lg" src={commit.author.avatar_url} alt={commit.author.login} />
             </span>
-            <div className="items-center justify-between p-4 bg-white border border-gray-200 rounded-lg shadow-sm sm:flex bg-[#0D1117] h-20 overflow-hidden">
-              <div className="text-sm font-normal text-gray-500 dark:text-gray-300">
+            <div className="items-center justify-between p-4 bg-white border border-gray-200 rounded-lg shadow-sm sm:flex h-20 overflow-hidden bg-[#0D1117]">
+              <div className="text-sm font-normal text-gray-500">
                 <p className='bg-gray-700 truncate text-wrap w-[80%] h-12 '>Desc: {commit.commit.message}</p>
                 <p>{commit.author.login} committed at {new Date(commit.commit.author.date).toLocaleString()}</p>
               </div>

@@ -1,4 +1,3 @@
-import Users from "./Users";
 import Image from "next/image";
 
 const TeamMembers = () => {
