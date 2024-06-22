@@ -1,24 +1,15 @@
-"use client"
-import { RTCTLogo } from "@/components/Logos/Logos";
-import { Activity, GitCommitHorizontal, Kanban, Settings2, Users } from "lucide-react";
+"use client";
 import React, { useState } from "react";
 import SideTab from "./sidetab";
 
-const Sidebar: React.FC = () => {
-  const tabData = [
-    { icon: <Settings2 />, title: "Configuration" },
-    { icon: <Users />, title: "Team Members" },
-    { icon: <GitCommitHorizontal />, title: "Commits" },
-    { icon: <Activity />, title: "Activities" },
-    { icon: <Kanban />, title: "Kanban" }
-  ];
+interface SidebarProps {
+  tabData: { icon: React.ReactNode; title: string }[];
+  handleTabClick: (tab: string) => void;
+  selectedTab: string;
+}
 
+const Sidebar: React.FC<SidebarProps> = ({ tabData, handleTabClick, selectedTab }) => {
   const [isExpanded, setIsExpanded] = useState<boolean>(false);
-  const [selectedTab, setSelectedTab] = useState<string>("Configuration");
-
-  const handleTabClick = (tab: string) => {
-    setSelectedTab(tab);
-  };
 
   const toggleSidebar = (): void => {
     setIsExpanded(!isExpanded);

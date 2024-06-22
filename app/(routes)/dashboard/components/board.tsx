@@ -1,7 +1,7 @@
-const Board = () => {
+const Board = ({boardData, selectedTab} : any) => {
     return (
-        <div className="w-full h-full bg-gray-700">
-            <h1>Dashboard</h1>
+        <div className="w-full h-full bg-[#131217]">
+            {(boardData)}
         </div>
     )
 }

@@ -1,7 +1,15 @@
 import React from "react";
 import { Tooltip } from "@nextui-org/react";
 
-const SideTab = ({ icon, title, onClick, selected, isExpanded }: any) => {
+interface SideTabProps {
+  icon: React.ReactNode;
+  title: string;
+  onClick: () => void;
+  selected: boolean;
+  isExpanded: boolean;
+}
+
+const SideTab: React.FC<SideTabProps> = ({ icon, title, onClick, selected, isExpanded }) => {
   return (
     <Tooltip content={!isExpanded ? title : ''} placement="right">
       <div
@@ -10,7 +18,7 @@ const SideTab = ({ icon, title, onClick, selected, isExpanded }: any) => {
       >
         <div>{icon}</div>
         {isExpanded && (
-          <div className="ml-4 text-lg font-medium text-white">
+          <div className="ml-4 text-md font-medium text-white">
             {title}
           </div>
         )}
