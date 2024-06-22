@@ -10,7 +10,7 @@ import { Activity, GitCommitHorizontal, Kanban as KanbanIcon, Settings2, Users }
 import { useConvex, useMutation } from "convex/react";
 import { api } from "@/convex/_generated/api";
 import { useKindeBrowserClient } from "@kinde-oss/kinde-auth-nextjs";
-// import Board from "./components/Board";
+import Board from "./components/Board";
 
 const Dashboard: React.FC = ({ mainData }: any) => {
   const data = [

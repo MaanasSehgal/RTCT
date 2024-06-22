@@ -1,6 +1,6 @@
 "use client";
 import React, { useState } from "react";
-// import SideTab from "./Sidetab";
+import SideTab from "./Sidetab";
 
 interface SidebarProps {
   tabData: { icon: React.ReactNode; title: string }[];
@@ -27,15 +27,14 @@ const Sidebar: React.FC<SidebarProps> = ({ tabData, handleTabClick, selectedTab 
         <div className="px-2">
           <div className="space-y-8 pt-2 flex flex-col items-start">
             {tabData.map((tab) => (
-              // <SideTab
-              //   key={tab.title}
-              //   icon={tab.icon}
-              //   title={tab.title}
-              //   onClick={() => handleTabClick(tab.title)}
-              //   selected={selectedTab === tab.title}
-              //   isExpanded={isExpanded}
-              // />
-              <div></div>
+              <SideTab
+                key={tab.title}
+                icon={tab.icon}
+                title={tab.title}
+                onClick={() => handleTabClick(tab.title)}
+                selected={selectedTab === tab.title}
+                isExpanded={isExpanded}
+              />
             ))}
           </div>
         </div>
