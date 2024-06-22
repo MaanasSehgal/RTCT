@@ -10,6 +10,7 @@ import {
   SelectValue,
 } from "@/components/UI/select";
 import { Code, Copy, GitBranch, UsersRound } from 'lucide-react';
+import Image from 'next/image';
 
 
 interface Commit {
@@ -172,6 +173,7 @@ const Commits: React.FC = () => {
               <SelectValue />
             </SelectTrigger>
             <SelectContent>
+            <SelectItem value="main">Main</SelectItem>
               {branches.map((branch) => (
                 <SelectItem key={branch.name} value={branch.name}>
                   {branch.name}
@@ -212,41 +214,6 @@ const Commits: React.FC = () => {
         )}
       </div>
 
-      {/* <ol className="relative border-s border-gray-200 dark:border-gray-700">
-        {commits.map((commit, index) => (
-          <li key={index} className="mb-10 ms-6">
-            <span className="absolute flex items-center justify-center w-6 h-6 rounded-full -start-3 ring-8 ring-white dark:ring-gray-900 ">
-              <img className="rounded-full shadow-lg" src={commit.author.avatar_url} alt={commit.author.login} />
-            </span>
-            <div className="items-center justify-between p-4 bg-white border border-gray-200 rounded-lg shadow-sm sm:flex h-20 overflow-hidden bg-[#0D1117]">
-              <div className="text-sm font-normal text-gray-500">
-                <p className='bg-gray-700 truncate text-wrap w-[80%] h-12 '>Desc: {commit.commit.message}</p>
-                <p>{commit.author.login} committed at {new Date(commit.commit.author.date).toLocaleString()}</p>
-              </div>
-              <div className="flex space-x-2 mt-2 sm:mt-0">
-                <button
-                  onClick={() => window.open(`https://github.com/facebook/react/commit/${commit.sha}`, '_blank')}
-                  className="bg-blue-500 text-white px-2 py-1 rounded hover:bg-blue-600"
-                >
-                  {commit.sha.substring(0, 7)}
-                </button>
-                <button
-                  onClick={() => copyToClipboard(commit.sha)}
-                  className="bg-gray-300 text-gray-700 px-2 py-1 rounded hover:bg-gray-400"
-                >
-                  <Copy />
-                </button>
-                <button
-                  onClick={() => window.open(`https://github.com/facebook/react/tree/${commit.sha}`, '_blank')}
-                  className="bg-gray-300 text-gray-700 px-2 py-1 rounded hover:bg-gray-400"
-                >
-                  <Code />
-                </button>
-              </div>
-            </div>
-          </li>
-        ))}
-      </ol> */}
       <div className="space-y-4">
         {Object.keys(groupedCommits).map((date) => (
           <div key={date}>
@@ -254,8 +221,8 @@ const Commits: React.FC = () => {
             <ol className="relative border-s border-gray-200 dark:border-gray-700">
               {groupedCommits[date].map((commit, index) => (
                 <li key={index} className="mb-10 ms-6">
-                  <span className="absolute flex items-center justify-center w-6 h-6 rounded-full -start-3 ring-8 ring-white dark:ring-gray-900 ">
-                    <img className="rounded-full shadow-lg" src={commit.author.avatar_url} alt={commit.author.login} />
+                  <span className="absolute flex items-center justify-center w-10 h-10 rounded-full -start-3 ring-8 ring-white dark:ring-gray-900 ">
+                    <Image className="rounded-full shadow-lg w-10 h-10" src={commit.author.avatar_url} alt={commit.author.login} width={20} height={20} />
                   </span>
                   <div className="items-center justify-between p-4 bg-white border border-gray-200 rounded-lg shadow-sm sm:flex h-20 overflow-hidden bg-[#0D1117]">
                     <div className="text-sm font-normal text-gray-500">
@@ -309,3 +276,41 @@ const Commits: React.FC = () => {
 };
 
 export default Commits;
+
+
+
+{/* <ol className="relative border-s border-gray-200 dark:border-gray-700">
+        {commits.map((commit, index) => (
+          <li key={index} className="mb-10 ms-6">
+            <span className="absolute flex items-center justify-center w-6 h-6 rounded-full -start-3 ring-8 ring-white dark:ring-gray-900 ">
+              <img className="rounded-full shadow-lg" src={commit.author.avatar_url} alt={commit.author.login} />
+            </span>
+            <div className="items-center justify-between p-4 bg-white border border-gray-200 rounded-lg shadow-sm sm:flex h-20 overflow-hidden bg-[#0D1117]">
+              <div className="text-sm font-normal text-gray-500">
+                <p className='bg-gray-700 truncate text-wrap w-[80%] h-12 '>Desc: {commit.commit.message}</p>
+                <p>{commit.author.login} committed at {new Date(commit.commit.author.date).toLocaleString()}</p>
+              </div>
+              <div className="flex space-x-2 mt-2 sm:mt-0">
+                <button
+                  onClick={() => window.open(`https://github.com/facebook/react/commit/${commit.sha}`, '_blank')}
+                  className="bg-blue-500 text-white px-2 py-1 rounded hover:bg-blue-600"
+                >
+                  {commit.sha.substring(0, 7)}
+                </button>
+                <button
+                  onClick={() => copyToClipboard(commit.sha)}
+                  className="bg-gray-300 text-gray-700 px-2 py-1 rounded hover:bg-gray-400"
+                >
+                  <Copy />
+                </button>
+                <button
+                  onClick={() => window.open(`https://github.com/facebook/react/tree/${commit.sha}`, '_blank')}
+                  className="bg-gray-300 text-gray-700 px-2 py-1 rounded hover:bg-gray-400"
+                >
+                  <Code />
+                </button>
+              </div>
+            </div>
+          </li>
+        ))}
+      </ol> */}
