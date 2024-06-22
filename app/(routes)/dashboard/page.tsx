@@ -64,7 +64,7 @@ const Dashboard: React.FC = ({ mainData }: any) => {
   return (
     <div className="w-full h-screen bg-[#131217] flex">
       <Sidebar tabData={data} handleTabClick={handleTabClick} selectedTab={selectedTab} />
-      {/* <Board boardData={componentMap[selectedTab]} /> */}
+      <Board boardData={componentMap[selectedTab]} />
     </div>
   );
 };

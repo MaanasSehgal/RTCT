@@ -1,6 +1,6 @@
-import React from "react";
+// pages/404.js
 
-const NotFound = () => {
+export default function Custom404() {
     return (
         <div className="grid h-screen place-content-center bg-black px-4">
             <div className="text-center">
@@ -16,6 +16,4 @@ const NotFound = () => {
             </div>
         </div>
     );
-};
-
-export default NotFound;
+}
