@@ -48,7 +48,8 @@
     "sonner": "^1.5.0",
     "tailwind-merge": "^2.3.0",
     "tailwind-scrollbar": "^3.1.0",
-    "tailwindcss-animate": "^1.0.7"
+    "tailwindcss-animate": "^1.0.7",
+    "vuesax": "^4.0.1-alpha.25"
   },
   "devDependencies": {
     "@types/node": "^20",

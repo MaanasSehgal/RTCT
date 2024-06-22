@@ -11,7 +11,7 @@ const SideBar = ({ chatData, onChatClick, selectedChat }: any) => {
     );
 
     return (
-        <div className="w-full h-full bg-[#272A35] border-r-white">
+        <div className="w-full h-full bg-[#191B22] border-r-white">
             <div className="w-full h-16 flex justify-center items-center px-4">
                 <Input
                     classNames={{
