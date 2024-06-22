@@ -68,75 +68,75 @@ const Commits: React.FC = () => {
       }
     };
 
-        const fetchUsers = async () => {
-            try {
-                const response = await octokit.request('GET /repos/{owner}/{repo}/contributors', {
-                    owner: 'facebook',
-                    repo: 'react',
-                    headers: {
-                        'X-GitHub-Api-Version': '2022-11-28'
-                    }
-                });
-                setUsers(response.data.map((user: any) => ({
-                    login: user.login,
-                    avatar_url: user.avatar_url
-                })));
-            } catch (err) {
-                console.error('Error fetching users', err);
-            }
-        };
+    const fetchUsers = async () => {
+      try {
+        const response = await octokit.request('GET /repos/{owner}/{repo}/contributors', {
+          owner: 'facebook',
+          repo: 'react',
+          headers: {
+            'X-GitHub-Api-Version': '2022-11-28'
+          }
+        });
+        setUsers(response.data.map((user: any) => ({
+          login: user.login,
+          avatar_url: user.avatar_url
+        })));
+      } catch (err) {
+        console.error('Error fetching users', err);
+      }
+    };
 
     fetchBranches();
     fetchUsers();
   }, []);
 
   useEffect(() => {
-        const fetchCommits = async () => {
-            setLoading(true);
-            setError(null);
-            try {
-                const params: {
-                    owner: string;
-                    repo: string;
-                    sha?: string;
-                    page?: number;
-                    per_page?: number;
-                    author?: string;
-                    since?: string;
-                    headers: {
-                        'X-GitHub-Api-Version': string;
-                    };
-                } = {
-                    owner: 'facebook',
-                    repo: 'react',
-                    sha: branch,
-                    page: currentPage,
-                    per_page: commitsPerPage,
-                    headers: {
-                        'X-GitHub-Api-Version': '2022-11-28'
-                    }
-                };
-                if (user !== 'all') params.author = user;
-                if (dateRange) params.since = new Date(dateRange.toString()).toISOString();
-
-                const response = await octokit.request('GET /repos/{owner}/{repo}/commits', params);
-                const commits = response.data.map((commit: any) => ({
-                    sha: commit.sha,
-                    message: commit.commit.message,
-                    author: {
-                        login: commit.author ? commit.author.login : 'Unknown',
-                        avatar_url: commit.author ? commit.author.avatar_url : 'https://via.placeholder.com/150'
-                    },
-                    url: commit.html_url,
-                    commit: commit.commit
-                }));
-                setCommits(commits);
-            } catch (err) {
-                setError('Error fetching commits');
-            } finally {
-                setLoading(false);
-            }
+    const fetchCommits = async () => {
+      setLoading(true);
+      setError(null);
+      try {
+        const params: {
+          owner: string;
+          repo: string;
+          sha?: string;
+          page?: number;
+          per_page?: number;
+          author?: string;
+          since?: string;
+          headers: {
+            'X-GitHub-Api-Version': string;
+          };
+        } = {
+          owner: 'facebook',
+          repo: 'react',
+          sha: branch,
+          page: currentPage,
+          per_page: commitsPerPage,
+          headers: {
+            'X-GitHub-Api-Version': '2022-11-28'
+          }
         };
+        if (user !== 'all') params.author = user;
+        if (dateRange) params.since = new Date(dateRange.toString()).toISOString();
+
+        const response = await octokit.request('GET /repos/{owner}/{repo}/commits', params);
+        const commits = response.data.map((commit: any) => ({
+          sha: commit.sha,
+          message: commit.commit.message,
+          author: {
+            login: commit.author ? commit.author.login : 'Unknown',
+            avatar_url: commit.author ? commit.author.avatar_url : 'https://via.placeholder.com/150'
+          },
+          url: commit.html_url,
+          commit: commit.commit
+        }));
+        setCommits(commits);
+      } catch (err) {
+        setError('Error fetching commits');
+      } finally {
+        setLoading(false);
+      }
+    };
 
     fetchCommits();
   }, [branch, user, dateRange, currentPage]);
@@ -148,6 +148,19 @@ const Commits: React.FC = () => {
     navigator.clipboard.writeText(text);
     alert('SHA copied to clipboard!');
   };
+
+  const groupCommitsByDate = (commits: Commit[]) => {
+    return commits.reduce((acc: { [key: string]: Commit[] }, commit: Commit) => {
+      const date = new Date(commit.commit.author.date).toLocaleDateString();
+      if (!acc[date]) {
+        acc[date] = [];
+      }
+      acc[date].push(commit);
+      return acc;
+    }, {});
+  };
+
+  const groupedCommits = groupCommitsByDate(commits);
 
   return (
     <div className="p-6 bg-[#0D1117]">
@@ -199,7 +212,7 @@ const Commits: React.FC = () => {
         )}
       </div>
 
-      <ol className="relative border-s border-gray-200 dark:border-gray-700">
+      {/* <ol className="relative border-s border-gray-200 dark:border-gray-700">
         {commits.map((commit, index) => (
           <li key={index} className="mb-10 ms-6">
             <span className="absolute flex items-center justify-center w-6 h-6 rounded-full -start-3 ring-8 ring-white dark:ring-gray-900 ">
@@ -221,19 +234,61 @@ const Commits: React.FC = () => {
                   onClick={() => copyToClipboard(commit.sha)}
                   className="bg-gray-300 text-gray-700 px-2 py-1 rounded hover:bg-gray-400"
                 >
-                  <Copy/>
+                  <Copy />
                 </button>
                 <button
                   onClick={() => window.open(`https://github.com/facebook/react/tree/${commit.sha}`, '_blank')}
                   className="bg-gray-300 text-gray-700 px-2 py-1 rounded hover:bg-gray-400"
                 >
-                  <Code/>
+                  <Code />
                 </button>
               </div>
             </div>
           </li>
         ))}
-      </ol>
+      </ol> */}
+      <div className="space-y-4">
+        {Object.keys(groupedCommits).map((date) => (
+          <div key={date}>
+            <h3 className="text-lg font-bold text-white">{date}</h3>
+            <ol className="relative border-s border-gray-200 dark:border-gray-700">
+              {groupedCommits[date].map((commit, index) => (
+                <li key={index} className="mb-10 ms-6">
+                  <span className="absolute flex items-center justify-center w-6 h-6 rounded-full -start-3 ring-8 ring-white dark:ring-gray-900 ">
+                    <img className="rounded-full shadow-lg" src={commit.author.avatar_url} alt={commit.author.login} />
+                  </span>
+                  <div className="items-center justify-between p-4 bg-white border border-gray-200 rounded-lg shadow-sm sm:flex h-20 overflow-hidden bg-[#0D1117]">
+                    <div className="text-sm font-normal text-gray-500">
+                      <p className='bg-gray-700 truncate text-wrap w-[80%] h-12 '>Desc: {commit.commit.message}</p>
+                      <p>{commit.author.login} committed at {new Date(commit.commit.author.date).toLocaleString()}</p>
+                    </div>
+                    <div className="flex space-x-2 mt-2 sm:mt-0">
+                      <button
+                        onClick={() => window.open(`https://github.com/facebook/react/commit/${commit.sha}`, '_blank')}
+                        className="bg-blue-500 text-white px-2 py-1 rounded hover:bg-blue-600"
+                      >
+                        {commit.sha.substring(0, 7)}
+                      </button>
+                      <button
+                        onClick={() => copyToClipboard(commit.sha)}
+                        className="bg-gray-300 text-gray-700 px-2 py-1 rounded hover:bg-gray-400"
+                      >
+                        <Copy />
+                      </button>
+                      <button
+                        onClick={() => window.open(`https://github.com/facebook/react/tree/${commit.sha}`, '_blank')}
+                        className="bg-gray-300 text-gray-700 px-2 py-1 rounded hover:bg-gray-400"
+                      >
+                        <Code />
+                      </button>
+                    </div>
+                  </div>
+                </li>
+              ))}
+            </ol>
+          </div>
+        ))}
+      </div>
       <div className="flex justify-between mt-4">
         <button
           disabled={currentPage === 1}
