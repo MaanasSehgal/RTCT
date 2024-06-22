@@ -1,6 +1,6 @@
 "use client";
 import React, { useState } from "react";
-import SideTab from "./sidetab";
+import SideTab from "./Sidetab";
 
 interface SidebarProps {
   tabData: { icon: React.ReactNode; title: string }[];

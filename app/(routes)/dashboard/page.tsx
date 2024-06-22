@@ -1,18 +1,18 @@
 "use client";
-import React, {useEffect, useState} from "react";
+import React, { useEffect, useState } from "react";
 import Sidebar from "./components/Sidebar";
-import Board from "./components/Board";
 import Configuration from "./components/Configuration";
 import TeamMembers from "./components/TeamMembers";
 import Commits from "./components/Commits";
 import Activities from "./components/Activities";
 import Kanban from "./components/Kanban";
 import { Activity, GitCommitHorizontal, Kanban as KanbanIcon, Settings2, Users } from "lucide-react";
-import {useConvex, useMutation} from "convex/react";
-import {api} from "@/convex/_generated/api";
-import {useKindeBrowserClient} from "@kinde-oss/kinde-auth-nextjs";
+import { useConvex, useMutation } from "convex/react";
+import { api } from "@/convex/_generated/api";
+import { useKindeBrowserClient } from "@kinde-oss/kinde-auth-nextjs";
+import Board from "./components/Board";
 
-const Dashboard: React.FC = ({mainData} : any) => {
+const Dashboard: React.FC = ({ mainData }: any) => {
   const data = [
     { icon: <Settings2 />, title: "Configuration" },
     { icon: <Users />, title: "Team Members" },
@@ -22,7 +22,7 @@ const Dashboard: React.FC = ({mainData} : any) => {
   ];
 
   const componentMap: { [key: string]: JSX.Element } = {
-    "Configuration": <Configuration projectId={"123"}/>,
+    "Configuration": <Configuration projectId={"123"} />,
     "Team Members": <TeamMembers />,
     "Commits": <Commits />,
     "Activities": <Activities />,
@@ -35,28 +35,26 @@ const Dashboard: React.FC = ({mainData} : any) => {
     setSelectedTab(tab);
   };
 
-  const convex=useConvex();
-  const {user}:any=useKindeBrowserClient();
+  const convex = useConvex();
+  const { user }: any = useKindeBrowserClient();
   //const getUser=useQuery(api.user.getUser,{email:user?.email});
 
-  const createUser=useMutation(api.user.createUser);
-  useEffect(()=>{
-    if(user)
-    {
+  const createUser = useMutation(api.user.createUser);
+  useEffect(() => {
+    if (user) {
       checkUser()
     }
-  },[user])
+  }, [user])
 
 
-  const checkUser=async()=>{
-    const result=await convex.query(api.user.getUser,{email:user?.email});
-    if(!result?.length)
-    {
+  const checkUser = async () => {
+    const result = await convex.query(api.user.getUser, { email: user?.email });
+    if (!result?.length) {
       createUser({
-        name:user.given_name,
-        email:user.email,
-        image:user.picture
-      }).then((resp)=>{
+        name: user.given_name,
+        email: user.email,
+        image: user.picture
+      }).then((resp) => {
         console.log(resp)
       })
     }

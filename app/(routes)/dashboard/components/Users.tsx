@@ -1,10 +1,10 @@
 import Image from "next/image";
 import { EllipsisVertical } from 'lucide-react';
-const Users = ({user}:any) => {
+const Users = ({ user }: any) => {
     return (
         <div className="bg-red-500 w-full h-full rounded-full flex justify-between items-center-4 gap-4">
-           
-          
+
+
         </div>
     );
 }
