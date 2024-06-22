@@ -1,8 +1,8 @@
 "use client";
 import React, { useState } from "react";
 import Sidebar from "./components/Sidebar";
-import Board from "./components/board";
-import Configuration from "./components/configuration";
+import Board from "./components/Board";
+import Configuration from "./components/Configuration";
 import TeamMembers from "./components/TeamMembers";
 import Commits from "./components/Commits";
 import Activities from "./components/Activities";
