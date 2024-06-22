@@ -8,7 +8,6 @@ import Commits from "./components/Commits";
 import Activities from "./components/Activities";
 import Kanban from "./components/Kanban";
 import { Activity, GitCommitHorizontal, Kanban as KanbanIcon, Settings2, Users } from "lucide-react";
-import Configuration from "@/app/(routes)/dashboard/components/Configuration";
 import {useConvex, useMutation} from "convex/react";
 import {api} from "@/convex/_generated/api";
 import {useKindeBrowserClient} from "@kinde-oss/kinde-auth-nextjs";
