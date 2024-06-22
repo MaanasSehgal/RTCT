@@ -1,84 +1,147 @@
 "use client";
-import React, {useState} from "react";
+import React, {useEffect, useRef, useState} from "react";
 import {IconBrandGithub, IconBrandGoogle, IconEye, IconEyeOff} from "@tabler/icons-react";
 import {cn} from "@/app/utils/cn";
 import Link from "next/link";
 import {Label} from "./Label";
 import {Input} from "./Input";
+import { LoginLink } from "@kinde-oss/kinde-auth-nextjs/components";
+import {api} from "@/convex/_generated/api";
+import {useConvex} from "convex/react";
+import {useKindeBrowserClient} from "@kinde-oss/kinde-auth-nextjs";
+import {createUser} from "@/convex/user";
+
 
 export function LoginForm() {
-    const [formData, setFormData] = useState({
-        email: "",
-        password: "",
-        showPassword: false, // Track whether password is visible or not
-    });
-
-    const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
-        e.preventDefault();
-        console.log("Form submitted");
+    // const [formData, setFormData] = useState({
+    //     email: "",
+    //     password: "",
+    //     showPassword: false, // Track whether password is visible or not
+    // });
+    const convex = useConvex();
+    const emailRef = useRef("");
+    const [email, setEmail] = useState("");
+    const[signinEnabled, setSigninEnabled] = useState(false);
+    const[showUserNotExists, setShowUserNotExists] = useState(false);
+    const validateEmail = (email: string) => {
+        return email.match(
+            /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
+        );
     };
 
-    const togglePasswordVisibility = () => {
-        setFormData((prevState) => ({
-            ...prevState,
-            showPassword: !prevState.showPassword,
-        }));
-    };
+    async function verifySignin(){
+        const result= await convex.query(api.user.getUser,{email:emailRef.current});
+        if(!result?.length){
+            setShowUserNotExists(true);
+            setSigninEnabled(false);
+            return;
+        }
+        setShowUserNotExists(false);
+        setSigninEnabled(true);
+    }
+
+    useEffect(() => {
+        const valid = validateEmail(emailRef.current);
+        if(!valid){
+            setSigninEnabled(false);
+            return;
+        }
+        verifySignin();
+
+    }, [emailRef.current]);
+
+
+
+    // const togglePasswordVisibility = () => {
+    //     setFormData((prevState) => ({
+    //         ...prevState,
+    //         showPassword: !prevState.showPassword,
+    //     }));
+    // };
 
     return (
         <div className="max-w-md w-full mx-auto rounded-none md:rounded-2xl p-6 md:p-10 shadow-input bg-white dark:bg-black">
             <h2 className="font-bold text-2xl text-white">Login</h2>
-            <form className="my-8" onSubmit={handleSubmit}>
+            <div className="my-8">
                 <LabelInputContainer className="mb-4">
                     <Label htmlFor="email">
                         Email Address <span className="text-red-500">*</span>
                     </Label>
-                    <Input id="email" placeholder="projectmayhem@fc.com" type="email" required />
-                </LabelInputContainer>
-                <LabelInputContainer className="mb-4">
-                    <Label htmlFor="password">
-                        Password <span className="text-red-500">*</span>
+                    <Input id="email" placeholder="projectmayhem@fc.com" type="email" onChange={(e)=>{
+                        setEmail(e.target.value);
+                        emailRef.current = e.target.value;
+                    }
+                    } required />
+                    <Label>
+                        <span className={`text-red-500 ${showUserNotExists?"visible":"invisible"}`}>Account does not exist</span>
                     </Label>
-                    <div className="relative">
-                        <Input
-                            id="password"
-                            name="password"
-                            value={formData.password}
-                            onChange={(e) => setFormData((prevState) => ({...prevState, password: e.target.value}))}
-                            placeholder="••••••••"
-                            type={formData.showPassword ? "text" : "password"}
-                            required
-                        />
-                        <button type="button" className="absolute inset-y-0 right-0 pr-3 flex items-center focus:outline-none" onClick={togglePasswordVisibility}>
-                            {formData.showPassword ? <IconEyeOff /> : <IconEye />}
-                        </button>
-                    </div>
                 </LabelInputContainer>
+                {/*<LabelInputContainer className="mb-4">*/}
+                {/*    <Label htmlFor="password">*/}
+                {/*        Password <span className="text-red-500">*</span>*/}
+                {/*    </Label>*/}
+                {/*    <div className="relative">*/}
+                {/*        <Input*/}
+                {/*            id="password"*/}
+                {/*            name="password"*/}
+                {/*            value={formData.password}*/}
+                {/*            onChange={(e) => setFormData((prevState) => ({...prevState, password: e.target.value}))}*/}
+                {/*            placeholder="••••••••"*/}
+                {/*            type={formData.showPassword ? "text" : "password"}*/}
+                {/*            required*/}
+                {/*        />*/}
+                {/*        <button type="button" className="absolute inset-y-0 right-0 pr-3 flex items-center focus:outline-none" onClick={togglePasswordVisibility}>*/}
+                {/*            {formData.showPassword ? <IconEyeOff /> : <IconEye />}*/}
+                {/*        </button>*/}
+                {/*    </div>*/}
+                {/*</LabelInputContainer>*/}
 
-                <button
-                    className="bg-gradient-to-br relative group/btn from-black dark:from-zinc-900 dark:to-zinc-900 to-neutral-600 block dark:bg-zinc-800 w-full text-white rounded-md h-10 font-medium shadow-[0px_1px_0px_0px_#ffffff40_inset,0px_-1px_0px_0px_#ffffff40_inset] dark:shadow-[0px_1px_0px_0px_var(--zinc-800)_inset,0px_-1px_0px_0px_var(--zinc-800)_inset]"
-                    type="submit">
-                    Sign In &rarr;
-                    <BottomGradient />
-                </button>
+                {signinEnabled?
+                    <LoginLink
+                        className="bg-gradient-to-br flex justify-center items-center relative group/btn from-black dark:from-zinc-900 dark:to-zinc-900 to-neutral-600 dark:bg-zinc-800 w-full text-white rounded-md h-10 font-medium shadow-[0px_1px_0px_0px_#ffffff40_inset,0px_-1px_0px_0px_#ffffff40_inset] dark:shadow-[0px_1px_0px_0px_var(--zinc-800)_inset,0px_-1px_0px_0px_var(--zinc-800)_inset]"
+                        authUrlParams={{
+                            connection_id: process.env.NEXT_PUBLIC_KINDE_EMAIL || "",
+                            login_hint: email,
+                        }}
+
+                    >
+                        Sign In &rarr;
+                        <BottomGradient />
+                    </LoginLink>
+                    :
+                    <button
+                        className="bg-gradient-to-br text-gray-500 flex justify-center items-center relative group/btn from-black dark:from-zinc-900 dark:to-zinc-900 to-neutral-600 dark:bg-zinc-800 w-full rounded-md h-10 font-medium shadow-[0px_1px_0px_0px_#ffffff40_inset,0px_-1px_0px_0px_#ffffff40_inset] dark:shadow-[0px_1px_0px_0px_var(--zinc-800)_inset,0px_-1px_0px_0px_var(--zinc-800)_inset]"
+
+                    >
+                        Sign In &rarr;
+                        <BottomGradient />
+                    </button>
+                }
+
 
                 <div className="bg-gradient-to-r from-transparent via-neutral-300 dark:via-neutral-700 to-transparent my-8 h-[1px] w-full" />
 
                 <div className="flex flex-col space-y-4">
-                    <button
+                    <LoginLink
+                        authUrlParams={{
+                            connection_id: process.env.NEXT_PUBLIC_KINDE_GOOGLE|| ""
+                        }}
                         className="relative group/btn flex space-x-2 justify-center items-center px-4 w-full text-black rounded-md h-10 font-medium shadow-input bg-gray-50 dark:bg-zinc-900 dark:shadow-[0px_0px_1px_1px_var(--neutral-800)]"
                         type="submit">
                         <IconBrandGoogle className="h-4 w-4 text-neutral-800 dark:text-neutral-300" />
                         <span className="text-neutral-700 dark:text-neutral-300 text-sm">Google</span>
                         <BottomGradient />
-                    </button>
-                    <button
+                    </LoginLink>
+                    <LoginLink
+                        authUrlParams={{
+                            connection_id: process.env.NEXT_PUBLIC_KINDE_GITHUB|| ""
+                        }}
                         className="relative group/btn flex space-x-2 justify-center items-center px-4 w-full text-black rounded-md h-10 font-medium shadow-input bg-gray-50 dark:bg-zinc-900 dark:shadow-[0px_0px_1px_1px_var(--neutral-800)]"
                         type="submit">
                         <IconBrandGithub className="h-4 w-4 text-neutral-800 dark:text-neutral-300" />
                         <span className="text-neutral-700 dark:text-neutral-300 text-sm">GitHub</span>
                         <BottomGradient />
-                    </button>
+                    </LoginLink>
                 </div>
                 <div className="mt-4">
                     Not registered yet?{" "}
@@ -86,7 +149,7 @@ export function LoginForm() {
                         Create an account
                     </Link>
                 </div>
-            </form>
+            </div>
         </div>
     );
 }
