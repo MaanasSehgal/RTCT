@@ -32,6 +32,8 @@ export const getTeams = query({
     },
 });
 
+
+
 export const createTeam = mutation({
     args: {
         teamName: v.string(),
@@ -47,6 +49,28 @@ export const createTeam = mutation({
             .filter((q) => q.eq(q.field("kindeId"), args.createdBy))
             .first();
         await updateUserTeams(ctx, {userId: user._id, teamIds: [...user.teams, id]});
+        return id;
+    },
+});
+
+
+export const addTeamMembers = mutation({
+    args: {
+        teamId: v.id("teams"),
+        members: v.array(v.string()),
+    },
+    handler: async (ctx, args) => {
+        const team = await ctx.db.get(args.teamId);
+        const id = await ctx.db.patch(args.teamId, {
+            members: [...team.members, args.members]
+        })
+        for(let member of args.members){
+            const user = await ctx.db
+                .query("user")
+                .filter((q) => q.eq(q.field("kindeId"), member))
+                .first();
+            await updateUserTeams(ctx, {userId: user._id, teamIds: [...user.teams, args.teamId]});
+        }
         return id;
     },
 });
