@@ -147,13 +147,13 @@ const Commits: React.FC = () => {
 
   const [value, setValue] = React.useState(0);
 
-  React.useEffect(() => {
-    const interval = setInterval(() => {
-      setValue((v) => (v >= 100 ? 0 : v + 10));
-    }, 200);
-
-    return () => clearInterval(interval);
-  }, []);
+  // React.useEffect(() => {
+  //   const interval = setInterval(() => {
+  //     setValue((v) => (v >= 100 ? 0 : v + 10));
+  //   }, 200);
+  //
+  //   return () => clearInterval(interval);
+  // }, []);
 
   if (loading) return <Progress
     color='danger'
