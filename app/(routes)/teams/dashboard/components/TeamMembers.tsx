@@ -124,10 +124,8 @@ const TeamMembers = () => {
                             <h2 className="text-md">{user.name}</h2>
                         </div>
                         <div className="text-white flex items-center gap-4 cursor-pointer p-3">
-                            <Trash2 color="#DB1057" size={30}/>
-                            <CircleEllipsis size={30}/>
-                        <div className="text-white cursor-pointer p-3">
-                            ...
+                            <Trash2 color="#DB1057" size={30} />
+                            <CircleEllipsis size={30} />
                         </div>
                     </div>
                 )
@@ -137,4 +135,4 @@ const TeamMembers = () => {
     )
 }
 
-export default TeamMembers;
+export default TeamMembers
