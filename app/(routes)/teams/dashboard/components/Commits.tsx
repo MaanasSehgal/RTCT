@@ -2,6 +2,8 @@ import React, { useEffect, useState } from 'react';
 import { Octokit } from '@octokit/core';
 import { CircularProgress, DatePicker, Progress, Spinner, Tooltip } from '@nextui-org/react';
 import { parseDate, CalendarDate } from '@internationalized/date';
+import { toast } from "sonner"
+
 import {
   Select,
   SelectContent,
@@ -9,8 +11,9 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/UI/select";
-import { ChevronRight, Code, Copy, GitBranch, UsersRound } from 'lucide-react';
+import { ChevronLeft, ChevronRight, Code, Copy, GitBranch, UsersRound } from 'lucide-react';
 import Image from 'next/image';
+import Link from 'next/link';
 
 
 interface Commit {
@@ -171,7 +174,7 @@ const Commits: React.FC = () => {
 
   const copyToClipboard = (text: string) => {
     navigator.clipboard.writeText(text);
-    alert('SHA copied to clipboard!');
+    toast("SHA copied to clipboard!")
   };
 
   const groupCommitsByDate = (commits: Commit[]) => {
@@ -250,7 +253,7 @@ const Commits: React.FC = () => {
                   </span>
                   <div className="items-center justify-between p-4 border-b-2 shadow-sm sm:flex h-20 overflow-hidden ms-4" style={{ backgroundColor: '#0D1117' }}>
                     <div className="text-md font-normal text-gray-500">
-                      <p className='truncate text-wrap line-clamp-2 pe-4 text-white'>Commit Message : {commit.commit.message}</p>
+                      <Link target='_blank' href={`https://github.com/MaanasSehgal/RTCT/commit/${commit.sha}`} className='truncate text-wrap line-clamp-2 pe-4 text-white hover:text-[#4493F8] cursor-pointer'>{commit.commit.message}</Link>
                       <p><span className='bg-gray-800 p-1 rounded-lg'>{commit.author.login}</span> committed at {new Date(commit.commit.author.date).toLocaleString().substring(12)}</p>
                     </div>
                     <div className="flex space-x-2 mt-2 sm:mt-0 text-gray-500">
@@ -290,15 +293,15 @@ const Commits: React.FC = () => {
         <button
           disabled={currentPage === 1}
           onClick={() => setCurrentPage(currentPage - 1)}
-          className="text-blue-500 px-2 py-1 rounded-md hover:bg-gray-800"
+          className="text-blue-500 px-2 py-1 rounded-md hover:bg-gray-800 flex items-center"
         >
-          Previous
+          <ChevronLeft className='h-6' /><p>Previous</p>
         </button>
         <button
           onClick={() => setCurrentPage(currentPage + 1)}
-          className="text-blue-500 px-2 py-1 rounded-md hover:bg-gray-800 flex"
+          className="text-blue-500 px-2 py-1 rounded-md hover:bg-gray-800 flex items-center"
         >
-          Next<ChevronRight />
+          <p>Next</p><ChevronRight className='h-6' />
         </button>
       </div>
     </div>

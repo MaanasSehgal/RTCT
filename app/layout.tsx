@@ -5,6 +5,8 @@ import { NextUIProvider } from "@nextui-org/react";
 import NavbarComponent from "@/components/Navbar/Navbar";
 import FooterComponent from "@/components/Footer/Footer";
 import ConvexClientProvider from "./ConvexClientProvider";
+import { Toaster } from "@/components/UI/sonner"
+
 const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
@@ -25,6 +27,7 @@ export default function RootLayout({
                     <ConvexClientProvider>
                         <NavbarComponent />
                         {children}
+                        <Toaster />
                         <FooterComponent />
                     </ConvexClientProvider>
                 </NextUIProvider>
