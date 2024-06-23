@@ -16,6 +16,7 @@ export const getUser = query({
 
 export const createUser = mutation({
     args: {
+        kindeId: v.string(),
         name: v.string(),
         email: v.string(),
         image: v.string(),

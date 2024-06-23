@@ -1,22 +1,28 @@
 import {v} from "convex/values";
 import {mutation, query} from "./_generated/server";
 
-export const getTeam = query({
-    args: {email: v.string()},
+export const getDefaultTeam = query({
+    args: {userId: v.string()},
     handler: async (ctx, args) => {
-        const result = await ctx.db
+        return await ctx.db
             .query("teams")
-            .filter((q) => q.eq(q.field("createdBy"), args.email))
+            .filter((q) => q.eq(q.field("createdBy"), args.userId))
             .collect();
-
-        return result;
+    },
+});
+export const getTeams = query({
+    args: {userId: v.string()},
+    handler: async (ctx, args) => {
+        return await ctx.db
+            .query("teams")
+            .filter((q) => q.eq(q.field("members"), args.userId))
+            .collect();
     },
 });
 
 export const createTeam = mutation({
-    args: {teamName: v.string(), createdBy: v.string()},
+    args: {teamName: v.string(), createdBy: v.string(), members: v.array(v.string()), workspaces: v.array(v.string())},
     handler: async (ctx, args) => {
-        const result = await ctx.db.insert("teams", args);
-        return result;
+        return await ctx.db.insert("teams", args);
     },
 });

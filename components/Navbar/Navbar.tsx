@@ -77,7 +77,9 @@ export default function NavbarComponent() {
                             </DropdownItem>
                             :
                             <DropdownItem key="logout" color="danger">
-                                <LogoutLink>Log Out</LogoutLink>
+                                <LogoutLink
+                                    postLogoutRedirectURL={process.env.NEXT_PUBLIC_SITE_URL}
+                                >Log Out</LogoutLink>
                             </DropdownItem>
                         }
 

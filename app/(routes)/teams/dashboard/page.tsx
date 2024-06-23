@@ -35,31 +35,7 @@ const Dashboard: React.FC = ({ mainData }: any) => {
     setSelectedTab(tab);
   };
 
-  const convex = useConvex();
-  const { user }: any = useKindeBrowserClient();
-  //const getUser=useQuery(api.user.getUser,{email:user?.email});
 
-  const createUser = useMutation(api.user.createUser);
-  useEffect(() => {
-    if (user) {
-      checkUser()
-    }
-  }, [user])
-
-
-  const checkUser = async () => {
-    const result = await convex.query(api.user.getUser, { email: user?.email });
-    if (!result?.length) {
-      createUser({
-        name: user.given_name,
-        email: user.email,
-        image: user.picture
-      }).then((resp) => {
-        console.log(resp)
-      })
-    }
-
-  }
 
   return (
     <div className="w-full h-screen bg-[#131217] flex">
