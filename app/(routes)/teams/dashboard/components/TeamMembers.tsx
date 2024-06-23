@@ -1,4 +1,4 @@
-import { Trash2 } from "lucide-react";
+import { CircleEllipsis, Trash2 } from "lucide-react";
 import Image from "next/image";
 
 const TeamMembers = () => {
@@ -111,7 +111,7 @@ const TeamMembers = () => {
     ];
 
     return (
-        <div className="w-full mt-16 h-[80%] flex flex-col items-center gap-4 overflow-y-auto">
+        <div className="w-full mt-16 flex flex-col items-center gap-4 mb-10">
             {/* <div className="bg-transparent my-2 w-4/5 flex gap-2">
                 <Image src="/userlogo.png" alt="logo" width={24} height={24} />
                 <h1>John Doe (Owner)</h1></div> */}
@@ -123,8 +123,9 @@ const TeamMembers = () => {
                             <Image className="w-12" src={user.avatar} alt="logo" width={24} height={24} />
                             <h2 className="text-md">{user.name}</h2>
                         </div>
-                        <div className="text-white cursor-pointer p-3">
-                            <Trash2 color="[#DB1057]"/>
+                        <div className="text-white flex items-center gap-4 cursor-pointer p-3">
+                            <Trash2 color="#DB1057" size={30}/>
+                            <CircleEllipsis size={30}/>
                         </div>
                     </div>
                 )
