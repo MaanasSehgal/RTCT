@@ -1,6 +1,6 @@
 "use client";
-import {Input} from "@/app/(auth)/_components/Input";
-import React, {useEffect} from "react";
+import { Input } from "@/app/(auth)/_components/Input";
+import React, { useEffect } from "react";
 import {
     AlertDialog,
     AlertDialogAction,
@@ -12,10 +12,10 @@ import {
     AlertDialogTitle,
     AlertDialogTrigger,
 } from "@/components/UI/alert-dialog";
-import {Button} from "@nextui-org/react";
-import {useConvex, useMutation} from "convex/react";
-import {useKindeBrowserClient} from "@kinde-oss/kinde-auth-nextjs";
-import {api} from "@/convex/_generated/api";
+import { Button } from "@nextui-org/react";
+import { useConvex, useMutation } from "convex/react";
+import { useKindeBrowserClient } from "@kinde-oss/kinde-auth-nextjs";
+import { api } from "@/convex/_generated/api";
 
 const Page: React.FC = () => {
 
@@ -48,7 +48,7 @@ const Page: React.FC = () => {
 
     }
     const checkTeam = async () => {
-        const result = await convex.query(api.teams.getDefaultTeam, {userId: user?.id || ""});
+        const result = await convex.query(api.teams.getDefaultTeam, { userId: user?.id || "" });
         if (!result?.length) {
             createTeam({
                 teamName: `${user?.given_name}'s Team`,

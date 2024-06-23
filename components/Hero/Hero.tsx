@@ -1,6 +1,7 @@
 import React from "react";
-import {RTCTLogo} from "../Logos/Logos";
-import {HoverBorderGradient} from "../UI/hover-border-gradient";
+import { RTCTLogo } from "../Logos/Logos";
+import { HoverBorderGradient } from "../UI/hover-border-gradient";
+import Link from "next/link";
 
 const Hero = () => {
     return (
@@ -15,9 +16,9 @@ const Hero = () => {
                         Transform collaboration with real-time editing of code, documents, and spreadsheets. Enjoy intuitive task management, chat, video calls, and secure cloud deployment. Accomplish
                         more, together.
                     </p>
-                    <div className="w-full">
+                    <Link href="/login" className="w-full">
                         <HoverBorderGradient className="flex justify-center items-center">Get Started</HoverBorderGradient>
-                    </div>
+                    </Link>
                 </div>
                 <div className="lg:w-1/2 lg:inline-block hidden">
                     <div className="floating-logo">
