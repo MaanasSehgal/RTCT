@@ -1,5 +1,6 @@
+"use client";
 import {Input} from "@/app/(auth)/_components/Input";
-import React from "react";
+import React, {useEffect} from "react";
 import {
     AlertDialog,
     AlertDialogAction,
@@ -12,8 +13,55 @@ import {
     AlertDialogTrigger,
 } from "@/components/UI/alert-dialog";
 import {Button} from "@nextui-org/react";
+import {useConvex, useMutation} from "convex/react";
+import {useKindeBrowserClient} from "@kinde-oss/kinde-auth-nextjs";
+import {api} from "@/convex/_generated/api";
 
 const Page: React.FC = () => {
+
+    const convex = useConvex();
+    const { user } = useKindeBrowserClient();
+    //const getUser=useQuery(api.user.getUser,{email:user?.email});
+
+    const createUser = useMutation(api.user.createUser);
+    const createTeam = useMutation(api.teams.createTeam);
+    useEffect(() => {
+        if (user) {
+            checkUser();
+            checkTeam();
+        }
+    }, [user])
+
+
+    const checkUser = async () => {
+        const result = await convex.query(api.user.getUser, { email: user?.email || "" });
+        if (!result?.length) {
+            createUser({
+                kindeId: user?.id || "",
+                name: `${user?.given_name} ${user?.family_name}` || "",
+                email: user?.email || "",
+                image: user?.picture || ""
+            }).then((resp) => {
+                console.log(resp)
+            })
+        }
+
+    }
+    const checkTeam = async () => {
+        const result = await convex.query(api.teams.getDefaultTeam, {userId: user?.id || ""});
+        if (!result?.length) {
+            createTeam({
+                teamName: `${user?.given_name}'s Team`,
+                createdBy: user?.id || "",
+                members: [user?.id || ""],
+                workspaces: []
+            }).then((resp) => {
+                console.log(resp)
+            })
+        }
+
+    }
+
     return (
         <div className="min-h-screen w-full flex justify-center items-center">
             <AlertDialog>

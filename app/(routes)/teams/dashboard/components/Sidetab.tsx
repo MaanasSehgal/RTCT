@@ -11,7 +11,8 @@ interface SideTabProps {
 
 const SideTab: React.FC<SideTabProps> = ({ icon, title, onClick, selected, isExpanded }) => {
   return (
-    <div
+    <Tooltip content={!isExpanded ? title : ''} placement="right">
+      <div
         className={`w-full h-12 p-2 flex ${isExpanded ? 'justify-start' : 'justify-center'} items-center hover:text-white ${selected ? 'bg-[#7731d8]' : 'hover:bg-[#564977]'} cursor-pointer rounded-md`}
         onClick={onClick}
       >
@@ -22,6 +23,7 @@ const SideTab: React.FC<SideTabProps> = ({ icon, title, onClick, selected, isExp
           </div>
         )}
       </div>
+    </Tooltip>
   );
 };
 
