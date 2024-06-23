@@ -1,14 +1,31 @@
-import Image from "next/image"; import { Dropdown, DropdownTrigger, DropdownMenu, DropdownItem, Button } from "@nextui-org/react";
+"use client";
+import Image from "next/image";
+import { Dropdown, DropdownTrigger, DropdownMenu, DropdownItem, Button, Input } from "@nextui-org/react";
+import { Mail, Trash2, UserPlus, Search, Copy } from "lucide-react";
+import { useState } from "react";
+import {
+    AlertDialog,
+    AlertDialogAction,
+    AlertDialogCancel,
+    AlertDialogContent,
+    AlertDialogDescription,
+    AlertDialogFooter,
+    AlertDialogHeader,
+    AlertDialogTitle,
+    AlertDialogTrigger,
+} from "@/components/UI/alert-dialog"
 
 const TeamMembers = () => {
     const items = [
         {
             key: "message",
             label: "Message",
+            logo: <Mail />
         },
         {
             key: "delete",
             label: "Remove User",
+            logo: <Trash2 />
         }
     ];
     const users = [
@@ -119,44 +136,104 @@ const TeamMembers = () => {
         }
     ];
 
+    const [copied, setCopied] = useState(false);
+    const [searchTerm, setSearchTerm] = useState("");
+
+    const handleSearchChange = (e: any) => {
+        setSearchTerm(e.target.value);
+    };
+
+    const filteredUsers = users.filter((user) =>
+        user.name.toLowerCase().includes(searchTerm.toLowerCase())
+    );
+
+
     return (
         <div className="w-full mt-16 h-[80%] flex flex-col items-center gap-4 overflow-y-auto">
-            {/* <div className="bg-transparent my-2 w-4/5 flex gap-2">
-                <Image src="/userlogo.png" alt="logo" width={24} height={24} />
-                <h1>John Doe (Owner)</h1></div> */}
-            <h1 className="text-3xl font-bold self-start ml-10 mb-4">Manage Team Members</h1>
-            {users.map((user) => {
-                return (
-                    <div className="w-4/5 rounded-full flex items-center justify-between bg-black p-2">
-                        <div className="flex items-center gap-8 p-3">
-                            <Image className="w-12" src={user.avatar == "" ? "/userlogo.png" : user.avatar} alt="logo" width={24} height={24} />
-                            <h2 className="text-md">{user.name}</h2>
+            <h1 className="text-3xl font-bold self-center ml-10 mb-4">Manage Team Members</h1>
+
+            <div className="flex items-center w-4/5">
+                <Input
+                    type="text"
+                    placeholder="Search users..."
+                    value={searchTerm}
+                    onChange={handleSearchChange}
+                    className="p-4"
+                />
+                
+
+                <AlertDialog>
+                    <AlertDialogTrigger asChild>
+                        <Button className="bg-[#15AAFF] rounded-full flex items-center h-14 px-4">
+                            <UserPlus className="mr-2" />
+                            <p>Invite</p>
+                        </Button>
+                    </AlertDialogTrigger>
+                    <AlertDialogContent>
+                        <div className="flex justify-between items-center">
+                            <AlertDialogHeader>
+                                <AlertDialogTitle>Invite a Team Member</AlertDialogTitle>
+                                <AlertDialogDescription>
+                                    Share this link to invite a new member to your team.
+                                </AlertDialogDescription>
+                            </AlertDialogHeader>
+                            <AlertDialogCancel asChild>
+                                <button className="text-red-500 font-bold text-xl">✕</button>
+                            </AlertDialogCancel>
                         </div>
-                        <Dropdown>
-                            <DropdownTrigger>
-                                <div className="text-white cursor-pointer p-3">
-                                    ...
-                                </div>
-                            </DropdownTrigger>
-                            <DropdownMenu aria-label="Dynamic Actions" items={items}>
-                                {(item) => (
-                                    <DropdownItem
-                                        key={item.key}
-                                        color={item.key === "delete" ? "danger" : "default"}
-                                        className={item.key === "delete" ? "text-danger" : ""}
-                                    >
-                                        {item.label}
-                                    </DropdownItem>
-                                )}
-                            </DropdownMenu>
-                        </Dropdown>
+                        <div className="flex items-center mt-4">
+                            <input
+                                type="text"
+                                value="rtct.vercel.app"
+                                readOnly
+                                className="border border-gray-300 rounded-l-full h-10 px-4 w-full"
+                            />
+                            <Button
+                                onClick={() => {
+                                    navigator.clipboard.writeText('rtct.vercel.app');
+                                    setCopied(true);
+                                    setTimeout(() => setCopied(false), 2000);
+                                }}
+                                className="bg-[#15AAFF] rounded-r-full h-10 px-4"
+                            >
+                                <Copy/>
+                            </Button>
+                        </div>
+                        {copied && <p className="text-green-500 mt-2">Link copied!</p>}
+                        <AlertDialogFooter></AlertDialogFooter>
+                    </AlertDialogContent>
+                </AlertDialog>
+            </div>
 
+            {filteredUsers.map((user) => (
+                <div key={user.id} className="w-4/5 rounded-full flex items-center justify-between bg-black p-2">
+                    <div className="flex items-center gap-8 p-3">
+                        <Image className="w-12" src={user.avatar == "" ? "/userlogo.png" : user.avatar} alt="logo" width={24} height={24} />
+                        <h2 className="text-md">{user.name}</h2>
                     </div>
-                )
-            })}
+                    <Dropdown>
+                        <DropdownTrigger>
+                            <div className="text-white cursor-pointer p-3 px-5">...</div>
+                        </DropdownTrigger>
+                        <DropdownMenu aria-label="Dynamic Actions" items={items}>
+                            {(item) => (
+                                <DropdownItem
+                                    key={item.key}
+                                    color={item.key === "delete" ? "danger" : "default"}
+                                    className={`${item.key === "delete" ? "text-danger" : ""}`}
+                                >
+                                    <div className="flex items-center gap-3">
+                                        {item.logo}
+                                        {item.label}
+                                    </div>
+                                </DropdownItem>
+                            )}
+                        </DropdownMenu>
+                    </Dropdown>
+                </div>
+            ))}
         </div>
-
-    )
-}
+    );
+};
 
 export default TeamMembers;
