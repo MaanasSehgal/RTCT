@@ -1,5 +1,6 @@
 import {v} from "convex/values";
 import {mutation, query} from "./_generated/server";
+import {getUser, updateUserTeams} from "@/convex/user";
 
 export const getDefaultTeam = query({
     args: {userId: v.string()},
@@ -10,19 +11,42 @@ export const getDefaultTeam = query({
             .collect();
     },
 });
-export const getTeams = query({
-    args: {userId: v.string()},
+export const getTeam = query({
+    args: {teamId: v.id("teams")},
     handler: async (ctx, args) => {
         return await ctx.db
-            .query("teams")
-            .filter((q) => q.eq(q.field("members"), args.userId))
-            .collect();
+            .get(args.teamId);
+    },
+});
+
+export const getTeams = query({
+    args: {email: v.string()},
+    handler: async (ctx, args) => {
+        const user = await getUser(ctx, {email: args.email});
+        let teams = [];
+        for (let teamId of user.teams) {
+            const team = await ctx.db.get(teamId);
+            teams.push(team);
+        }
+        return teams;
     },
 });
 
 export const createTeam = mutation({
-    args: {teamName: v.string(), createdBy: v.string(), members: v.array(v.string()), workspaces: v.array(v.string())},
+    args: {
+        teamName: v.string(),
+        image: v.string(),
+        createdBy: v.string(),
+        members: v.array(v.string()),
+        workspaces: v.array(v.string())
+    },
     handler: async (ctx, args) => {
-        return await ctx.db.insert("teams", args);
+        const id = await ctx.db.insert("teams", args);
+        const user = await ctx.db
+            .query("user")
+            .filter((q) => q.eq(q.field("kindeId"), args.createdBy))
+            .first();
+        await updateUserTeams(ctx, {userId: user._id, teamIds: [...user.teams, id]});
+        return id;
     },
 });
