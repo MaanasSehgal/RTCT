@@ -13,6 +13,14 @@ import { useKindeBrowserClient } from "@kinde-oss/kinde-auth-nextjs";
 import Board from "./components/Board";
 
 const Dashboard: React.FC = ({ mainData }: any) => {
+
+  useEffect(() => {
+    const footer = document.querySelector('Footer') as HTMLElement;
+    if (footer) {
+        footer.style.display = 'none';
+    }
+}, []);
+
   const data = [
     { icon: <Settings2 />, title: "Configuration" },
     { icon: <Users />, title: "Team Members" },
@@ -62,7 +70,7 @@ const Dashboard: React.FC = ({ mainData }: any) => {
   }
 
   return (
-    <div className="w-full h-screen bg-[#131217] flex">
+    <div className="w-full bg-[#0D1117] flex h-[93vh] lg:h-[90vh] overflow-hidden">
       <Sidebar tabData={data} handleTabClick={handleTabClick} selectedTab={selectedTab} />
       <Board boardData={componentMap[selectedTab]} />
     </div>

@@ -1,4 +1,5 @@
 {
+  "type": "module",
   "name": "rtc",
   "version": "0.1.0",
   "private": true,
@@ -37,6 +38,7 @@
     "class-variance-authority": "^0.7.0",
     "clsx": "^2.1.1",
     "convex": "^1.12.2",
+    "date-fns": "^3.6.0",
     "dotenv": "^16.4.5",
     "emoji-mart": "^5.6.0",
     "flowbite": "^2.3.0",
@@ -49,6 +51,7 @@
     "next": "14.2.4",
     "next-themes": "^0.3.0",
     "react": "^18.3.1",
+    "react-day-picker": "^8.10.1",
     "react-dom": "^18.3.1",
     "react-icons": "^5.2.1",
     "react-loading-skeleton": "^3.4.0",

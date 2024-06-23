@@ -20,7 +20,7 @@ export default function RootLayout({
     return (
         <html lang="en">
             <body
-                className={`${inter.className} dark text-foreground bg-background text-white overflow-x-hidden overflow-y-scroll h-64 scrollbar scrollbar-thumb-gray-400 scrollbar-track-gray-200 scrollbar-thumb-rounded-full bg-black`}>
+                className={`${inter.className} dark text-foreground bg-background text-white overflow-x-hidden overflow-y-auto h-64 scrollbar scrollbar-thumb-gray-400 scrollbar-track-gray-200 scrollbar-thumb-rounded-full bg-black`}>
                 <NextUIProvider className={`flex flex-col w-full bg-black`}>
                     <ConvexClientProvider>
                         <NavbarComponent />

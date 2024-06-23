@@ -1,3 +1,4 @@
+import { Trash2 } from "lucide-react";
 import Image from "next/image";
 
 const TeamMembers = () => {
@@ -114,16 +115,16 @@ const TeamMembers = () => {
             {/* <div className="bg-transparent my-2 w-4/5 flex gap-2">
                 <Image src="/userlogo.png" alt="logo" width={24} height={24} />
                 <h1>John Doe (Owner)</h1></div> */}
-            <h1 className="text-3xl font-bold">Manage Team Members</h1>
+            <h1 className="text-3xl font-bold self-start ml-10 mb-4">Manage Team Members</h1>
             {users.map((user) => {
                 return (
-                    <div className="w-4/5 rounded-full flex items-center justify-between bg-black p-2">
+                    <div className="w-[95%] rounded-full flex items-center justify-between bg-black p-1">
                         <div className="flex items-center gap-8 p-3">
                             <Image className="w-12" src={user.avatar} alt="logo" width={24} height={24} />
                             <h2 className="text-md">{user.name}</h2>
                         </div>
                         <div className="text-white cursor-pointer p-3">
-                            ...
+                            <Trash2 color="[#DB1057]"/>
                         </div>
                     </div>
                 )
