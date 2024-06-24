@@ -24,7 +24,7 @@ export default function NavbarComponent() {
                 <NavbarBrand className="mr-4">
                     <Link href="/" className="flex items-center gap-2">
                         <RTCTLogo/>
-                        <p className="hidden sm:block font-bold">RTCT</p>
+                        <p className="hidden sm:block font-bold text-2xl">RTCT</p>
                     </Link>
                 </NavbarBrand>
             </NavbarContent>

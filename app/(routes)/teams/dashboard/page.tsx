@@ -44,7 +44,7 @@ const Dashboard: React.FC = ({ mainData }: any) => {
 
 
   return (
-    <div className="h-[93vh] lg:h-[90vh] w-full h-screen bg-[#0D1117] flex">
+    <div className="lg:h-[90vh] w-full h-screen bg-[#0D1117] flex">
       <Sidebar tabData={data} handleTabClick={handleTabClick} selectedTab={selectedTab} />
       <Board boardData={componentMap[selectedTab]} />
     </div>
