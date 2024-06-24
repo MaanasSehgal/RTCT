@@ -5,7 +5,7 @@ import Configuration from "./components/Configuration";
 import TeamMembers from "./components/TeamMembers";
 import Commits from "./components/Commits";
 import Activities from "./components/Activities";
-import Kanban from "./components/Kanban";
+import KanbanBoard from "./components/KanbanBoard";
 import { Activity, GitCommitHorizontal, Kanban as KanbanIcon, Settings2, Users } from "lucide-react";
 import { useConvex, useMutation } from "convex/react";
 import { api } from "@/convex/_generated/api";
@@ -26,7 +26,7 @@ const Dashboard: React.FC = ({ mainData }: any) => {
     "Team Members": <TeamMembers />,
     "Commits": <Commits />,
     "Activities": <Activities />,
-    "Kanban": <Kanban />,
+    "Kanban": <KanbanBoard />,
   };
 
   const [selectedTab, setSelectedTab] = useState<string>("Configuration");
@@ -44,7 +44,7 @@ const Dashboard: React.FC = ({ mainData }: any) => {
 
 
   return (
-    <div className="h-[93vh] lg:h-[90vh] w-full h-screen bg-[#0D1117] flex">
+    <div className="h-[93vh] lg:h-[90vh] w-full bg-[#0D1117] flex">
       <Sidebar tabData={data} handleTabClick={handleTabClick} selectedTab={selectedTab} />
       <Board boardData={componentMap[selectedTab]} />
     </div>
