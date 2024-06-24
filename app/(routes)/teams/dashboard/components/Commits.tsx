@@ -154,7 +154,7 @@ const Commits: React.FC = () => {
   />
   if (error) return <div className="p-6">{error}</div>;
 
-  const copyToClipboard = (text: string) => { 
+  const copyToClipboard = (text: string) => {
     navigator.clipboard.writeText(text);
     toast("SHA copied to clipboard!")
   };
@@ -171,6 +171,7 @@ const Commits: React.FC = () => {
   };
 
   const groupedCommits = groupCommitsByDate(commits);
+  console.log(groupedCommits);
 
   return (
     <div className="p-6 bg-[#0D1117] h-full overflow-y-auto">
@@ -230,9 +231,10 @@ const Commits: React.FC = () => {
             <ol className="relative ms-6 border-s border-gray-700 mt-4">
               {groupedCommits[date].map((commit, index) => (
                 <li key={index} className="mb-10 ms-6">
-                  <span className="absolute flex items-center justify-center w-10 h-10 rounded-full -start-5 ring-8 ring-gray-900 ">
-                    <Image className="rounded-full shadow-lg w-10 h-10" src={commit.author.avatar_url} alt={commit.author.login} width={10} height={10} />
+                  <span className="absolute flex items-center justify-center rounded-full -start-5 ring-8 ring-gray-900 ">
+                    <Image className="rounded-full shadow-lg w-12 h-12" src={commit.author.avatar_url} alt={commit.author.login} width={50} height={50} />
                   </span>
+
                   <div className="items-center justify-between p-4 border-b-2 shadow-sm sm:flex  overflow-hidden ms-4" style={{ backgroundColor: '#0D1117' }}>
                     <div className="text-md font-normal text-gray-500">
                       <Link target='_blank' href={`https://github.com/MaanasSehgal/RTCT/commit/${commit.sha}`} className='truncate text-wrap line-clamp-2 pe-4 text-white hover:text-[#4493F8] cursor-pointer'>{commit.commit.message}</Link>
