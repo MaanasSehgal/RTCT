@@ -1,7 +1,7 @@
 "use client";
 import Image from "next/image";
 import { Dropdown, DropdownTrigger, DropdownMenu, DropdownItem, Button, Input } from "@nextui-org/react";
-import { Mail, Trash2, UserPlus, Search, Copy } from "lucide-react";
+import { Mail, Trash2, UserPlus, Search, Copy, Ellipsis, UserRoundPlus } from "lucide-react";
 import { useState } from "react";
 import {
     AlertDialog,
@@ -149,24 +149,25 @@ const TeamMembers = () => {
 
 
     return (
-        <div className="w-full mt-16 h-[80%] flex flex-col items-center gap-4 overflow-y-auto">
-            <h1 className="text-3xl font-bold self-center ml-10 mb-4">Manage Team Members</h1>
+        <div className="w-full mt-16 h-[80%] flex flex-col items-center gap-4 ">
+            <h1 className="text-3xl font-bold self-start ml-10 mb-4">Manage Team Members</h1>
 
-            <div className="flex items-center w-4/5">
+            <div className="flex items-center self-center sm:w-4/5 md:w-3/5 rounded-full">
                 <Input
                     type="text"
                     placeholder="Search users..."
                     value={searchTerm}
                     onChange={handleSearchChange}
                     className="p-4"
+                    variant="underlined"
                 />
                 
 
                 <AlertDialog>
                     <AlertDialogTrigger asChild>
-                        <Button className="bg-[#15AAFF] rounded-full flex items-center h-14 px-4">
-                            <UserPlus className="mr-2" />
-                            <p>Invite</p>
+                        <Button className="bg-[#8964E8] rounded-full flex items-center px-3">
+                            <UserRoundPlus size={50} className="" strokeWidth={4} />
+                            <p className="font-bold text-lg">Invite</p>
                         </Button>
                     </AlertDialogTrigger>
                     <AlertDialogContent>
@@ -200,20 +201,19 @@ const TeamMembers = () => {
                             </Button>
                         </div>
                         {copied && <p className="text-green-500 mt-2">Link copied!</p>}
-                        <AlertDialogFooter></AlertDialogFooter>
                     </AlertDialogContent>
                 </AlertDialog>
             </div>
 
             {filteredUsers.map((user) => (
-                <div key={user.id} className="w-4/5 rounded-full flex items-center justify-between bg-black p-2">
+                <div key={user.id} className="w-11/12 rounded-full flex items-center justify-between bg-black overflow-y">
                     <div className="flex items-center gap-8 p-3">
                         <Image className="w-12" src={user.avatar == "" ? "/userlogo.png" : user.avatar} alt="logo" width={24} height={24} />
                         <h2 className="text-md">{user.name}</h2>
                     </div>
                     <Dropdown>
                         <DropdownTrigger>
-                            <div className="text-white cursor-pointer p-3 px-5">...</div>
+                            <div className="text-white cursor-pointer p-3 px-5"><Ellipsis/></div>
                         </DropdownTrigger>
                         <DropdownMenu aria-label="Dynamic Actions" items={items}>
                             {(item) => (

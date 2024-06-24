@@ -35,10 +35,16 @@ const Dashboard: React.FC = ({ mainData }: any) => {
     setSelectedTab(tab);
   };
 
+  useEffect(() => {
+    const footer = document.querySelector('Footer') as HTMLElement;
+    if (footer) {
+        footer.style.display = 'none';
+    }
+  }, []);
 
 
   return (
-    <div className="w-full h-screen bg-[#131217] flex">
+    <div className="h-[93vh] lg:h-[90vh] w-full h-screen bg-[#0D1117] flex">
       <Sidebar tabData={data} handleTabClick={handleTabClick} selectedTab={selectedTab} />
       <Board boardData={componentMap[selectedTab]} />
     </div>
