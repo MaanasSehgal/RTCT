@@ -143,9 +143,9 @@ const TeamMembers = () => {
         setSearchTerm(e.target.value);
     };
 
-    const filteredUsers = users.filter((user) =>
+    const filteredUsers = users.length != 0 ? users.filter((user) =>
         user.name.toLowerCase().includes(searchTerm.toLowerCase())
-    );
+    ) : [];
 
 
     return (
@@ -161,7 +161,7 @@ const TeamMembers = () => {
                     className="p-4"
                     variant="underlined"
                 />
-                
+
 
                 <AlertDialog>
                     <AlertDialogTrigger asChild>
@@ -197,7 +197,7 @@ const TeamMembers = () => {
                                 }}
                                 className="bg-[#15AAFF] rounded-r-full h-10 px-4"
                             >
-                                <Copy/>
+                                <Copy />
                             </Button>
                         </div>
                         {copied && <p className="text-green-500 mt-2">Link copied!</p>}
@@ -205,33 +205,41 @@ const TeamMembers = () => {
                 </AlertDialog>
             </div>
 
-            {filteredUsers.map((user) => (
-                <div key={user.id} className="w-11/12 rounded-full flex items-center justify-between bg-black overflow-y">
-                    <div className="flex items-center gap-8 p-3">
-                        <Image className="w-12" src={user.avatar == "" ? "/userlogo.png" : user.avatar} alt="logo" width={24} height={24} />
-                        <h2 className="text-md">{user.name}</h2>
-                    </div>
-                    <Dropdown>
-                        <DropdownTrigger>
-                            <div className="text-white cursor-pointer p-3 px-5"><Ellipsis/></div>
-                        </DropdownTrigger>
-                        <DropdownMenu aria-label="Dynamic Actions" items={items}>
-                            {(item) => (
-                                <DropdownItem
-                                    key={item.key}
-                                    color={item.key === "delete" ? "danger" : "default"}
-                                    className={`${item.key === "delete" ? "text-danger" : ""}`}
-                                >
-                                    <div className="flex items-center gap-3">
-                                        {item.logo}
-                                        {item.label}
-                                    </div>
-                                </DropdownItem>
-                            )}
-                        </DropdownMenu>
-                    </Dropdown>
+            {users.length == 0 ?
+                <div className="w-full h-full flex justify-center items-center">
+                    <h1 className="text-white text-3xl font-bold">No results found! Invite members to your team.</h1>
                 </div>
-            ))}
+                : filteredUsers.length == 0 ?
+                    <div className="w-full h-full flex justify-center items-center">
+                        <h1 className="text-white text-3xl font-bold">No results found for query "{searchTerm}"</h1>
+                    </div>
+                    : filteredUsers.map((user) => (
+                        <div key={user.id} className="w-11/12 rounded-full flex items-center justify-between bg-black overflow-y">
+                            <div className="flex items-center gap-8 p-3">
+                                <Image className="w-12" src={user.avatar == "" ? "/userlogo.png" : user.avatar} alt="logo" width={24} height={24} />
+                                <h2 className="text-md">{user.name}</h2>
+                            </div>
+                            <Dropdown>
+                                <DropdownTrigger>
+                                    <div className="text-white cursor-pointer p-3 px-5"><Ellipsis /></div>
+                                </DropdownTrigger>
+                                <DropdownMenu aria-label="Dynamic Actions" items={items}>
+                                    {(item) => (
+                                        <DropdownItem
+                                            key={item.key}
+                                            color={item.key === "delete" ? "danger" : "default"}
+                                            className={`${item.key === "delete" ? "text-danger" : ""}`}
+                                        >
+                                            <div className="flex items-center gap-3">
+                                                {item.logo}
+                                                {item.label}
+                                            </div>
+                                        </DropdownItem>
+                                    )}
+                                </DropdownMenu>
+                            </Dropdown>
+                        </div>
+                    ))}
         </div>
     );
 };
