@@ -1,7 +1,7 @@
 "use client";
 import Image from "next/image";
 import { Dropdown, DropdownTrigger, DropdownMenu, DropdownItem, Button, Input } from "@nextui-org/react";
-import { Mail, Trash2, UserPlus, Search, Copy, Ellipsis, UserRoundPlus } from "lucide-react";
+import { Mail, Trash2, UserPlus, Search, Copy, Ellipsis, UserRoundPlus, SearchIcon } from "lucide-react";
 import { useState } from "react";
 import {
     AlertDialog,
@@ -153,9 +153,11 @@ const TeamMembers = () => {
             <h1 className="text-3xl font-bold self-start ml-10 mb-4">Manage Team Members</h1>
 
             <div className="flex items-center self-center sm:w-4/5 md:w-3/5 rounded-full">
+                <label htmlFor="#searchTeamMember"></label><SearchIcon />
                 <Input
+                    id="searchTeamMember"
                     type="text"
-                    placeholder="Search users..."
+                    placeholder={`Search for a team member...`}
                     value={searchTerm}
                     onChange={handleSearchChange}
                     className="p-4"

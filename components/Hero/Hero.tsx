@@ -12,7 +12,7 @@ const Hero = () => {
                     <p className="text-[5vh] md:text-[6vh] lg:text-[7vh] py-2 font-bold relative z-10 bg-clip-text text-transparent bg-gradient-to-b from-neutral-200 to-neutral-400">
                         Collaborate seamlessly, create effortlessly
                     </p>
-                    <p className="mt-4 text-lg font-bold relative z-10 bg-clip-text text-transparent bg-gradient-to-b from-neutral-200 to-neutral-400">
+                    <p className="mt-4 text-xl font-bold relative z-10 bg-clip-text text-transparent bg-gradient-to-b from-neutral-200 to-neutral-400">
                         Transform collaboration with real-time editing of code, documents, and spreadsheets. Enjoy intuitive task management, chat, video calls, and secure cloud deployment. Accomplish
                         more, together.
                     </p>
