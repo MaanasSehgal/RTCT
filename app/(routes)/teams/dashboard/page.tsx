@@ -4,7 +4,6 @@ import Sidebar from "./components/Sidebar";
 import Configuration from "./components/Configuration";
 import TeamMembers from "./components/TeamMembers";
 import Commits from "./components/Commits";
-import Activities from "./components/Activities";
 import KanbanBoard from "./components/KanbanBoard";
 import { Activity, GitCommitHorizontal, Kanban as KanbanIcon, Settings2, Users } from "lucide-react";
 import { useConvex, useMutation } from "convex/react";
@@ -17,7 +16,6 @@ const Dashboard: React.FC = ({ mainData }: any) => {
     { icon: <Settings2 />, title: "Configuration" },
     { icon: <Users />, title: "Team Members" },
     { icon: <GitCommitHorizontal />, title: "Commits" },
-    { icon: <Activity />, title: "Activities" },
     { icon: <KanbanIcon />, title: "Kanban" },
   ];
 
@@ -25,7 +23,6 @@ const Dashboard: React.FC = ({ mainData }: any) => {
     "Configuration": <Configuration projectId={"123"} />,
     "Team Members": <TeamMembers />,
     "Commits": <Commits />,
-    "Activities": <Activities />,
     "Kanban": <KanbanBoard />,
   };
 
@@ -38,7 +35,7 @@ const Dashboard: React.FC = ({ mainData }: any) => {
   useEffect(() => {
     const footer = document.querySelector('Footer') as HTMLElement;
     if (footer) {
-        footer.style.display = 'none';
+      footer.style.display = 'none';
     }
   }, []);
 
