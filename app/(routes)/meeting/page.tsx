@@ -83,6 +83,11 @@ const page = () => {
             <div className='w-screen h-[90vh] bg-[#202124]'>
                 {renderParticipants()}
             </div>
+            <div className='w-screen h-[10vh] bg-blue-400 flex justify-between items-center'>
+                <div className="">Current</div>
+                <div></div>
+                <div></div>
+            </div>
         </div>
     )
 }
