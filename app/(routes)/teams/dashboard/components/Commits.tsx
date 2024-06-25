@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import { Octokit } from '@octokit/core';
-import { CircularProgress, DatePicker, Progress, Spinner, Tooltip } from '@nextui-org/react';
-import { parseDate, CalendarDate } from '@internationalized/date';
-import { toast } from "sonner"
+import { Button, CircularProgress, DatePicker, DateRangePicker, Progress, Spinner, Tooltip } from '@nextui-org/react';
+import { today, getLocalTimeZone } from '@internationalized/date';
+import { toast } from "sonner";
 
 import {
   Select,
@@ -11,10 +11,9 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/UI/select";
-import { ChevronLeft, ChevronRight, Code, Copy, GitBranch, UsersRound } from 'lucide-react';
+import { CalendarX2, ChevronLeft, ChevronRight, Code, Copy, GitBranch, UsersRound } from 'lucide-react';
 import Image from 'next/image';
 import Link from 'next/link';
-
 
 interface Commit {
   sha: string;
@@ -48,8 +47,9 @@ const Commits: React.FC = () => {
   const [users, setUsers] = useState<User[]>([]);
   const [branch, setBranch] = useState<string>('main');
   const [user, setUser] = useState<string>('all');
-  const [dateRange, setDateRange] = useState<CalendarDate | null>(null);
+  const [dateRange, setDateRange] = useState<{ start: Date | null; end: Date | null }>({ start: null, end: null });
   const [currentPage, setCurrentPage] = useState<number>(1);
+  const [hasNextPage, setHasNextPage] = useState<boolean>(true);
   const commitsPerPage = 10;
 
   const octokit = new Octokit({
@@ -107,6 +107,7 @@ const Commits: React.FC = () => {
           per_page?: number;
           author?: string;
           since?: string;
+          until?: string;
           headers: {
             'X-GitHub-Api-Version': string;
           };
@@ -121,7 +122,8 @@ const Commits: React.FC = () => {
           }
         };
         if (user !== 'all') params.author = user;
-        if (dateRange) params.since = new Date(dateRange.toString()).toISOString();
+        if (dateRange.start) params.since = dateRange.start.toISOString();
+        if (dateRange.end) params.until = dateRange.end.toISOString();
 
         const response = await octokit.request('GET /repos/{owner}/{repo}/commits', params);
         const commits = response.data.map((commit: any) => ({
@@ -135,6 +137,7 @@ const Commits: React.FC = () => {
           commit: commit.commit
         }));
         setCommits(commits);
+        setHasNextPage(commits.length === commitsPerPage);
       } catch (err) {
         setError('Error fetching commits: either the repo does not exist or you do not have access to it.');
       } finally {
@@ -171,7 +174,6 @@ const Commits: React.FC = () => {
   };
 
   const groupedCommits = groupCommitsByDate(commits);
-  console.log(groupedCommits);
 
   return (
     <div className="p-6 bg-[#0D1117] h-full overflow-y-auto">
@@ -184,7 +186,6 @@ const Commits: React.FC = () => {
               <SelectValue />
             </SelectTrigger>
             <SelectContent className="bg-[#161B22] rounded-lg">
-              {/* <SelectItem value={branches[0].name}></SelectItem> */}
               {branches.map((branch) => (
                 <SelectItem key={branch.name} value={branch.name}>
                   {branch.name}
@@ -208,20 +209,28 @@ const Commits: React.FC = () => {
             </SelectContent>
           </Select>
         </div>
-
-        <DatePicker
-          value={dateRange}
-          onChange={(date) => setDateRange(date)}
+        <div className='flex flex-col'>
+        <DateRangePicker
+          maxValue={today(getLocalTimeZone())}
+          onChange={(range) => {
+            const startDate = range.start ? new Date(range.start.year, range.start.month - 1, range.start.day) : null;
+            const endDate = range.end ? new Date(range.end.year, range.end.month - 1, range.end.day+1) : null;
+            console.log(startDate, endDate);
+            setDateRange({ start: startDate, end: endDate });
+            
+          }}
           className="w-46 rounded-lg py-2 px-4 mt-4 md:mt-0"
         />
-        {/* {dateRange && (
-          <button
-            onClick={() => setDateRange(null)}
-            className="bg-gray-300 text-gray-700 px-2 py-1 rounded hover:bg-gray-400"
+        {dateRange.start && dateRange.end && (
+          <Button
+            color="danger" variant="ghost"
+            onClick={() => setDateRange({ start: null, end: null})}
+            className="flex gap-2 bg-[#161B22] w-24 px-2 py-1 rounded-full mt-4 mr-4 md:mt-0 self-end font-semibold text-lg hover"
           >
-            Clear Date
-          </button>
-        )} */}
+          <CalendarX2/>Clear 
+          </Button>
+        )}
+        </div>
       </div>
 
       <div className="space-y-4">
@@ -277,13 +286,14 @@ const Commits: React.FC = () => {
         <button
           disabled={currentPage === 1}
           onClick={() => setCurrentPage(currentPage - 1)}
-          className="text-blue-500 px-2 py-1 rounded-md hover:bg-gray-800 flex items-center"
+          className={`text-blue-500 px-2 py-1 rounded-md hover:bg-gray-800 flex items-center ${currentPage === 1 ? 'hidden' : ''}`}
         >
           <ChevronLeft className='h-6' /><p>Previous</p>
         </button>
         <button
+          disabled={!hasNextPage}
           onClick={() => setCurrentPage(currentPage + 1)}
-          className="text-blue-500 px-2 py-1 rounded-md hover:bg-gray-800 flex items-center"
+          className={`text-blue-500 px-2 py-1 rounded-md hover:bg-gray-800 flex items-center ${!hasNextPage ? 'hidden' : ''}`}
         >
           <p>Next</p><ChevronRight className='h-6' />
         </button>
@@ -293,6 +303,3 @@ const Commits: React.FC = () => {
 };
 
 export default Commits;
-
-
-

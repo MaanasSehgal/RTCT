@@ -6,6 +6,10 @@ const nextConfig = {
         remotePatterns: [
             {
                 protocol: "https",
+                hostname: "https://randomuser.me",
+            },
+            {
+                protocol: "https",
                 hostname: "**",
             },
             {

@@ -163,8 +163,6 @@ const TeamMembers = () => {
                     className="p-4"
                     variant="underlined"
                 />
-
-
                 <AlertDialog>
                     <AlertDialogTrigger asChild>
                         <Button className="bg-[#8964E8] rounded-full flex items-center px-3">
@@ -197,7 +195,7 @@ const TeamMembers = () => {
                                     setCopied(true);
                                     setTimeout(() => setCopied(false), 2000);
                                 }}
-                                className="bg-[#15AAFF] rounded-r-full h-10 px-4"
+                                className="bg-white text-black rounded-r-full h-10 px-4"
                             >
                                 <Copy />
                             </Button>
