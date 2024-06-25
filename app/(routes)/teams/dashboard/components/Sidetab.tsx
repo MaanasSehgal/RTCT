@@ -17,7 +17,7 @@ const SideTab: React.FC<SideTabProps> = ({ icon, title, onClick, selected, isExp
     >
       <div>{icon}</div>
       {isExpanded && (
-        <div className="ml-4 text-md font-medium text-white">
+        <div className="ml-4 text-lg font-medium text-white">
           {title}
         </div>
       )}

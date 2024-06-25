@@ -17,9 +17,9 @@ const Sidebar: React.FC<SidebarProps> = ({ tabData, handleTabClick, selectedTab 
 
   return (
     <div onMouseEnter={toggleSidebar} onMouseLeave={toggleSidebar} className={`flex h-full ${isExpanded ? 'w-64' : 'w-16'} flex-col justify-between border-e bg-[#191B22] transition-all duration-300 pt-6`}>
-      <div className="flex flex-col">
-        <div className="px-2">
-          <div className="space-y-8 pt-2 flex flex-col items-start">
+      <div className="flex flex-col ">
+        <div className="px-2 ">
+          <div className="space-y-8 pt-2 flex flex-col items-center">
             {tabData.map((tab) => (
               <SideTab
                 key={tab.title}

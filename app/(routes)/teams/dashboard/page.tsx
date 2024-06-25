@@ -13,10 +13,10 @@ import Board from "./components/Board";
 
 const Dashboard: React.FC = ({ mainData }: any) => {
   const data = [
-    { icon: <Settings2 />, title: "Configuration" },
-    { icon: <Users />, title: "Team Members" },
-    { icon: <GitCommitHorizontal />, title: "Commits" },
-    { icon: <KanbanIcon />, title: "Kanban" },
+    { icon: <Settings2 size={30}/>, title: "Configuration" },
+    { icon: <Users size={30}/>, title: "Team Members" },
+    { icon: <GitCommitHorizontal size={30}/>, title: "Commits" },
+    { icon: <KanbanIcon size={30}/>, title: "Kanban" },
   ];
 
   const componentMap: { [key: string]: JSX.Element } = {

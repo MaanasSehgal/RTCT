@@ -208,7 +208,7 @@ const Commits: React.FC = () => {
   return (
     <div className="p-6 bg-[#0D1117] h-full overflow-y-auto">
       <h1 className="text-3xl font-bold self-start mb-4">Commits</h1>
-      <div className="flex items-center justify-between flex-col md:flex-row mb-6">
+      <div className="flex items-center justify-between gap-6 flex-col md:flex-row mb-6">
         <div className='flex items-center space-x-2'>
           <Select value={branch} onValueChange={setBranch}>
             <SelectTrigger className="flex items-center w-[150px] bg-[#21262D] rounded-lg py-2 px-4 font-semibold">
@@ -239,7 +239,26 @@ const Commits: React.FC = () => {
             </SelectContent>
           </Select>
         </div>
-        <div className='flex flex-col'>
+        <div className="flex justify-center items-center gap-2">
+        <button
+          disabled={currentPage === 1}
+          onClick={() => setCurrentPage(currentPage - 1)}
+          className={`text-zinc-200 px-2 py-1 rounded-md hover:bg-gray-700 bg-[#21262D] flex items-center disabled:opacity-50 disabled:cursor-not-allowed`}
+        >
+          <ChevronLeft className='h-6' />
+        </button>
+        <button
+          disabled={!hasNextPage}
+          onClick={() => setCurrentPage(currentPage + 1)}
+          className={`text-zinc-200 px-2 py-1 rounded-md hover:bg-gray-700 bg-[#21262D] flex items-center disabled:opacity-50 disabled:cursor-not-allowed`}
+        >
+          <ChevronRight className='h-6' />
+        </button>
+      </div>
+        <div className='flex flex-col '>
+          {dateRange.start && dateRange.end && (
+            <div className="bg-neutral-800 z-10 rounded-lg p-2 text-center">{dateRange.start.toLocaleDateString()} - {dateRange.end.toLocaleDateString()}</div>
+          )}
         <DateRangePicker
           maxValue={today(getLocalTimeZone())}
           onChange={(range) => {
@@ -255,7 +274,7 @@ const Commits: React.FC = () => {
           <Button
             color="danger" variant="ghost"
             onClick={() => setDateRange({ start: null, end: null})}
-            className="flex gap-2 bg-[#161B22] w-24 px-2 py-1 rounded-full mt-4 mr-4 md:mt-0 self-end font-semibold text-lg hover"
+            className="flex gap-2 bg-[#161B22] w-24 px-2 py-1 rounded-lg mt-4 mr-4 md:mt-0 self-end font-semibold text-lg"
           >
           <CalendarX2/>Clear 
           </Button>
@@ -311,22 +330,6 @@ const Commits: React.FC = () => {
             </ol>
           </div>
         ))}
-      </div>
-      <div className="flex justify-center items-center gap-4">
-        <button
-          disabled={currentPage === 1}
-          onClick={() => setCurrentPage(currentPage - 1)}
-          className={`text-blue-500 px-2 py-1 rounded-md hover:bg-gray-800 flex items-center ${currentPage === 1 ? 'hidden' : ''}`}
-        >
-          <ChevronLeft className='h-6' /><p>Previous</p>
-        </button>
-        <button
-          disabled={!hasNextPage}
-          onClick={() => setCurrentPage(currentPage + 1)}
-          className={`text-blue-500 px-2 py-1 rounded-md hover:bg-gray-800 flex items-center ${!hasNextPage ? 'hidden' : ''}`}
-        >
-          <p>Next</p><ChevronRight className='h-6' />
-        </button>
       </div>
     </div>
   );

@@ -305,10 +305,10 @@ const Page: React.FC = () => {
     }, []);
 
     return (
-        <div className="w-screen h-auto md:h-[90vh] mx-auto p-10 shadow-md flex flex-col md:flex-row ">
+        <div className="w-screen h-auto md:h-[90vh] mx-auto p-10 shadow-md flex flex-col md:flex-row bg-zinc-950">
             <div className="md:w-1/2 w-full md:mb-0 mb-10 md:h-full flex flex-col items-center justify-center text-white px-[5%] md:px-[2%] lg:px-[5%] gap-10 md:gap-20">
                 <div className='self-start flex flex-col md:px-0 gap-4 mt-6'>
-                    <h1 className='text-5xl my-4 md:w-full w-[110%]'>Welcome back</h1>
+                    <h1 className='text-4xl my-4 md:w-full w-[110%]'>Welcome back</h1>
                     <p className='w-full self-start text-start hidden md:inline-block'>Code what in your mind, just like you did when you were younger</p>
                 </div>
                 <div className='md:px-4 min:w-[80%] flex items-center self-start flex-col gap-10'>
@@ -327,7 +327,7 @@ const Page: React.FC = () => {
                 </div>
                 
             </div>
-            <div className="md:w-1/2 w-full h-1/2 md:h-full flex flex-col justify-center items-center gap-6 md:gap-4 py-4   bg-zinc-950 px-[5%] rounded-lg">
+            <div className="md:w-1/2 w-full h-1/2 md:h-full flex flex-col justify-center items-center gap-6 md:gap-4 py-4  bg-[#15151c] px-[5%] rounded-lg">
                 <div className=" w-full flex flex-col">
                     <h1 className="text-2xl font-semibold mb-4">Your Projects</h1>
                     <div className="flex justify-center">
