@@ -315,7 +315,7 @@ const Page: React.FC = () => {
                     <h1 className='text-5xl my-4 md:w-full w-[110%]'>Welcome back</h1>
                     <p className='w-full self-start text-start hidden md:inline-block'>Code what in your mind, just like you did when you were younger</p>
                 </div>
-                <div className='md:px-0 md:px-4 min:w-[80%] flex items-center self-start flex-col gap-10'>
+                <div className='md:px-4 min:w-[80%] flex items-center self-start flex-col gap-10'>
                     <Button className="md:text-2xl text-xl h-auto py-3 px-6 w-full font-semibold" color="secondary" radius="md">
                         <div className="flex items-center gap-2">
                             <Github strokeWidth={3} size={30}/>
@@ -325,7 +325,7 @@ const Page: React.FC = () => {
                             </div>
                         </div>
                     </Button>
-                    <Button className="md:text-2xl text-xl h-auto py-3 px-6 font-semibold w-64 w-full" variant="ghost" color="danger" radius="md">
+                    <Button className="md:text-2xl text-xl h-auto py-3 px-6 font-semibold w-full" variant="ghost" color="danger" radius="md">
                         <Rocket strokeWidth={3} size={30}/> New Project
                     </Button>
                 </div>

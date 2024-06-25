@@ -85,7 +85,7 @@ const iconClasses = "text-xl text-default-500 pointer-events-none flex-shrink-0"
     </Carousel>
 
     {/*  small screen size */}
-    <div className="md:hidden block flex flex-col px-[10%] w-full gap-10 mt-10">
+    <div className="md:hidden flex flex-col px-[10%] w-full gap-10 mt-10">
     {projects.map((project) => (
         
         <Card className="h-64 w-full" shadow="sm" key={'item'} isPressable onPress={() => console.log("item pressed")}>
