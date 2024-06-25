@@ -94,59 +94,65 @@ const Commits: React.FC = () => {
     fetchUsers();
   }, []);
 
-  useEffect(() => {
-    const fetchCommits = async () => {
-      setLoading(true);
-      setError(null);
-      try {
-        const params: {
-          owner: string;
-          repo: string;
-          sha?: string;
-          page?: number;
-          per_page?: number;
-          author?: string;
-          since?: string;
-          until?: string;
-          headers: {
-            'X-GitHub-Api-Version': string;
-          };
-        } = {
-          owner: 'MaanasSehgal',
-          repo: 'RTCT',
-          sha: branch,
-          page: currentPage,
-          per_page: commitsPerPage,
-          headers: {
-            'X-GitHub-Api-Version': '2022-11-28'
-          }
+  const fetchCommits = async () => {
+    setLoading(true);
+    setError(null);
+    try {
+      const params: {
+        owner: string;
+        repo: string;
+        sha?: string;
+        page?: number;
+        per_page?: number;
+        author?: string;
+        since?: string;
+        until?: string;
+        headers: {
+          'X-GitHub-Api-Version': string;
         };
-        if (user !== 'all') params.author = user;
-        if (dateRange.start) params.since = dateRange.start.toISOString();
-        if (dateRange.end) params.until = dateRange.end.toISOString();
+      } = {
+        owner: 'MaanasSehgal',
+        repo: 'RTCT',
+        sha: branch,
+        page: currentPage,
+        per_page: commitsPerPage,
+        headers: {
+          'X-GitHub-Api-Version': '2022-11-28'
+        }
+      };
+      if (user !== 'all') params.author = user;
+      if (dateRange.start) params.since = dateRange.start.toISOString();
+      if (dateRange.end) params.until = dateRange.end.toISOString();
 
-        const response = await octokit.request('GET /repos/{owner}/{repo}/commits', params);
-        const commits = response.data.map((commit: any) => ({
-          sha: commit.sha,
-          message: commit.commit.message,
-          author: {
-            login: commit.author ? commit.author.login : 'Unknown',
-            avatar_url: commit.author ? commit.author.avatar_url : 'https://via.placeholder.com/150'
-          },
-          url: commit.html_url,
-          commit: commit.commit
-        }));
-        setCommits(commits);
-        setHasNextPage(commits.length === commitsPerPage);
-      } catch (err) {
-        setError('Unable to retrieve commits: The repository may not exist, or you may not have the necessary access permissions.');
-      } finally {
-        setLoading(false);
-      }
-    };
+      const response = await octokit.request('GET /repos/{owner}/{repo}/commits', params);
+      const commits = response.data.map((commit: any) => ({
+        sha: commit.sha,
+        message: commit.commit.message,
+        author: {
+          login: commit.author ? commit.author.login : 'Unknown',
+          avatar_url: commit.author ? commit.author.avatar_url : 'https://via.placeholder.com/150'
+        },
+        url: commit.html_url,
+        commit: commit.commit
+      }));
+      setCommits(commits);
+      setHasNextPage(commits.length === commitsPerPage);
+    } catch (err) {
+      setError('Unable to retrieve commits: The repository may not exist, or you may not have the necessary access permissions.');
+    } finally {
+      setLoading(false);
+    }
+  };
 
+  useEffect(() => {
     fetchCommits();
   }, [branch, user, dateRange, currentPage]);
+
+  const handleOnBackClick = () => {
+    dateRange.start = null;
+    dateRange.end = null;
+    fetchCommits();
+  };
 
   if (loading) return <Progress
     color='danger'
@@ -155,14 +161,15 @@ const Commits: React.FC = () => {
     aria-label="Loading..."
     className="w-full color-blue-500"
   />
-  if (error) return <div className='w-full h-full flex justify-center items-center'>
-                      <Button className='mx-auto w-[80vw] h-auto text-center text-xl py-10 font-semibold rounded-[20px]' color="danger" variant="bordered">
-                        <div className='w-full text-center break-words whitespace-normal'>
-                          <CircleAlert className="inline-block mr-2 align-middle" /> 
-                          <span className='align-middle'>{error}</span>
-                        </div>
-                      </Button>
-                    </div>
+  if (error) return( 
+    <div className='w-full h-full flex justify-center items-center'>
+      <Button className='mx-auto w-[80vw] h-auto text-center text-xl py-10 font-semibold rounded-[20px]' color="danger" variant="bordered">
+        <div className='w-full text-center break-words whitespace-normal'>
+          <CircleAlert className="inline-block mr-2 align-middle" /> 
+          <span className='align-middle'>{error}</span>
+        </div>
+      </Button>
+    </div>)
 
   if(commits.length === 0) {
     return (
@@ -171,6 +178,9 @@ const Commits: React.FC = () => {
           <GitCommitHorizontal size={40} strokeWidth={1}/>
           <h2 className='text-3xl font-bold'>No Commits history</h2>
           <p className='text-center text-lg text-zinc-400'>There isn't any commit history to show here</p>
+          <Button onClick={() => {handleOnBackClick()}} color="success" variant="flat" className='hover:bg-green-900 text-white'>
+            <p className='text-white text-lg font-bold'>Back to commits</p>
+          </Button> 
         </div>
       </div>
     )
@@ -273,7 +283,7 @@ const Commits: React.FC = () => {
                       <Tooltip content="View Commit">
                         <button
                           onClick={() => window.open(`https://github.com/MaanasSehgal/RTCT/commit/${commit.sha}`, '_blank')}
-                          className="text-white px-2 py-1 rounded-lg hover:bg-gray-800"
+                          className="text-white px-2 py-1 rounded-lg bg-gray-900 hover:bg-gray-800"
                         >
                           {commit.sha.substring(0, 7)}
                         </button>
