@@ -11,7 +11,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/UI/select";
-import { CalendarX2, ChevronLeft, ChevronRight, Code, Copy, GitBranch, UsersRound } from 'lucide-react';
+import { CalendarX2, ChevronLeft, ChevronRight, CircleAlert, Code, Copy, GitBranch, GitCommitHorizontal, UsersRound } from 'lucide-react';
 import Image from 'next/image';
 import Link from 'next/link';
 
@@ -139,7 +139,7 @@ const Commits: React.FC = () => {
         setCommits(commits);
         setHasNextPage(commits.length === commitsPerPage);
       } catch (err) {
-        setError('Error fetching commits: either the repo does not exist or you do not have access to it.');
+        setError('Unable to retrieve commits: The repository may not exist, or you may not have the necessary access permissions.');
       } finally {
         setLoading(false);
       }
@@ -155,7 +155,27 @@ const Commits: React.FC = () => {
     aria-label="Loading..."
     className="w-full color-blue-500"
   />
-  if (error) return <div className="p-6">{error}</div>;
+  if (error) return <div className='w-full h-full flex justify-center items-center'>
+                      <Button className='mx-auto w-[80vw] h-auto text-center text-xl py-10 font-semibold rounded-[20px]' color="danger" variant="bordered">
+                        <div className='w-full text-center break-words whitespace-normal'>
+                          <CircleAlert className="inline-block mr-2 align-middle" /> 
+                          <span className='align-middle'>{error}</span>
+                        </div>
+                      </Button>
+                    </div>
+
+  if(commits.length === 0) {
+    return (
+      <div className='w-full h-full flex justify-center items-center'>
+        <div className='flex flex-col items-center justify-center gap-4'>
+          <GitCommitHorizontal size={40} strokeWidth={1}/>
+          <h2 className='text-3xl font-bold'>No Commits history</h2>
+          <p className='text-center text-lg text-zinc-400'>There isn't any commit history to show here</p>
+        </div>
+      </div>
+    )
+  }
+
 
   const copyToClipboard = (text: string) => {
     navigator.clipboard.writeText(text);
