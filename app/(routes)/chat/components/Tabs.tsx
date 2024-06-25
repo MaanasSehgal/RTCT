@@ -10,8 +10,8 @@ const TabsComponent: React.FC = () => {
         const vcElement = document.getElementById('vc');
 
         if (msgElement && vcElement) {
-            console.log("this is msg element = ", msgElement)
-            console.log("this is active tab = ", activeTab)
+            // console.log("this is msg element = ", msgElement)
+            // console.log("this is active tab = ", activeTab)
             if (activeTab === 'msg') {
                 msgElement.style.display = 'inline-block';
                 vcElement.style.display = 'none';

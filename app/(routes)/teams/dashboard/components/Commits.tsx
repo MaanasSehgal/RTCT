@@ -235,7 +235,7 @@ const Commits: React.FC = () => {
           onChange={(range) => {
             const startDate = range.start ? new Date(range.start.year, range.start.month - 1, range.start.day) : null;
             const endDate = range.end ? new Date(range.end.year, range.end.month - 1, range.end.day+1) : null;
-            console.log(startDate, endDate);
+            // console.log(startDate, endDate);
             setDateRange({ start: startDate, end: endDate });
             
           }}

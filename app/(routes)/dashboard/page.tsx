@@ -43,9 +43,9 @@ const Page: React.FC = () => {
         }
     }, [user])
 
-    useEffect(() => {
-        console.log(teamList);
-    }, [teamList]);
+    // useEffect(() => {
+    //     console.log(teamList);
+    // }, [teamList]);
 
     const fetchTeams = async () => {
         const result = await convex.query(api.teams.getTeams, { email: user?.email || "" });
@@ -104,7 +104,7 @@ const Page: React.FC = () => {
         } else {
             file = await fileToBase64(file);
         }
-        console.log(name, file);
+        // console.log(name, file);
 
         const result = await createTeam({
             teamName: name,
@@ -295,10 +295,6 @@ const Page: React.FC = () => {
 
     const yourProjects = dummyProjects.filter((project) => project.owner === currUser);
     const sharedProjects = dummyProjects.filter((project) => project.participants.includes(currUser));
-    
-
-    console.log(yourProjects[0].type.imageUrl);
-    console.log(sharedProjects);
 
     useEffect(() => {
         const footer = document.querySelector('Footer') as HTMLElement;

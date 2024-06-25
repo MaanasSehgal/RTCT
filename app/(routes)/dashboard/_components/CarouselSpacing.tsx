@@ -27,7 +27,7 @@ const iconClasses = "text-xl text-default-500 pointer-events-none flex-shrink-0"
       <CarouselContent className="-ml-1">
         {projects.map((project, index) => (
           <CarouselItem key={index} className="w-1/2 px-3 py-2 h-full md:basis-1/2 lg:basis-1/3">
-            <Card className="mx:h-30 w-full" shadow="sm" key={'item'} isPressable onPress={() => console.log("item pressed")}>
+            <Card className="mx:h-30 w-full" shadow="sm" key={'item'} isPressable >
             <Dropdown>
                 <DropdownTrigger className="">
                     <CircleEllipsisIcon
@@ -88,7 +88,7 @@ const iconClasses = "text-xl text-default-500 pointer-events-none flex-shrink-0"
     <div className="md:hidden flex flex-col px-[10%] w-full gap-10 mt-10">
     {projects.map((project) => (
         
-        <Card className="h-64 w-full" shadow="sm" key={'item'} isPressable onPress={() => console.log("item pressed")}>
+        <Card className="h-64 w-full" shadow="sm" key={'item'} isPressable >
         <Dropdown>
             <DropdownTrigger className="">
                 <CircleEllipsisIcon
