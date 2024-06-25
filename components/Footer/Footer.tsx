@@ -68,7 +68,7 @@ export default function FooterComponent() {
                             </li>
                             <li className="mb-6">
                                 <Link href="#" className=" text-[--darkText2] hover:text-[--darkText1]">
-                                    Q@ck Start
+                                    Quick Start
                                 </Link>
                             </li>
                             <li className="mb-6">
