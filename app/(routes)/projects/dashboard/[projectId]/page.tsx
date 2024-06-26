@@ -10,8 +10,12 @@ import { useConvex, useMutation } from "convex/react";
 import { api } from "@/convex/_generated/api";
 import { useKindeBrowserClient } from "@kinde-oss/kinde-auth-nextjs";
 import Board from "@/app/(routes)/projects/dashboard/[projectId]/components/Board";
+import axios from "axios";
 
-const Dashboard: React.FC = ({ mainData }: any) => {
+export function Dashboard({ params }: { params: { projectId: string } }) {
+  const [project, setProject] = useState(undefined);
+  const [unAuthorized, setUnauthorized] = useState(false);
+  const [users, setUsers] = useState<string[]>([]);
   const data = [
     { icon: <Settings2 size={30}/>, title: "Configuration" },
     { icon: <Users size={30}/>, title: "Team Members" },
@@ -19,9 +23,11 @@ const Dashboard: React.FC = ({ mainData }: any) => {
     { icon: <KanbanIcon size={30}/>, title: "Kanban" },
   ];
 
+  const {user, getToken } = useKindeBrowserClient();
+
   const componentMap: { [key: string]: JSX.Element } = {
-    "Configuration": <Configuration projectId={"123"} />,
-    "Team Members": <TeamMembers />,
+    "Configuration": <Configuration data={project} />,
+    "Team Members": <TeamMembers data={project} users1={users} setUsers={setUsers}/>,
     "Commits": <Commits />,
     "Kanban": <KanbanBoard />,
   };
@@ -39,11 +45,41 @@ const Dashboard: React.FC = ({ mainData }: any) => {
     }
   }, []);
 
+  useEffect(() => {
+    if(!user) return;
+    axios.get(`${process.env.NEXT_PUBLIC_BACKEND_URL}/projects/${params.projectId}`,
+        {
+          params: {
+            audience: "rtct_backend_api"
+          },
+          headers: {
+            'Authorization': 'Bearer ' + getToken()
+          },
+
+        }
+    )
+        .then(function (response) {
+          console.log(response);
+          setProject(response.data);
+          setUnauthorized(false);
+        })
+        .catch(function (error) {
+          console.log(error);
+          setUnauthorized(true);
+        });
+  }, [user]);
+
 
   return (
     <div className="h-[93vh] lg:h-[90vh] w-full bg-[#0D1117] flex">
-      <Sidebar tabData={data} handleTabClick={handleTabClick} selectedTab={selectedTab} />
-      <Board boardData={componentMap[selectedTab]} />
+      {unAuthorized ?<div className="w-full h-full flex justify-center items-center text-white">You are not authorized to view this page.</div>
+          :
+          <>
+            {project === undefined ? <div className="w-full h-full flex justify-center items-center text-white absolute z-10 bg-background">Loading...</div> : null}
+            <Sidebar tabData={data} handleTabClick={handleTabClick} selectedTab={selectedTab} />
+            <Board boardData={componentMap[selectedTab]} />
+          </>
+      }
     </div>
   );
 };

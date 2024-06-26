@@ -56,7 +56,7 @@ const defaultTasks: Task[] = [
   {
     id: "5",
     columnId: "done",
-    content: "Create UI kit documentation",
+    content: "Create ui kit documentation",
   },
   {
     id: "6",
@@ -96,7 +96,7 @@ const defaultTasks: Task[] = [
   {
     id: "13",
     columnId: "doing",
-    content: "Design and implement responsive UI",
+    content: "Design and implement responsive ui",
   },
 ];
 

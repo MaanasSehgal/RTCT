@@ -2,7 +2,7 @@
 import Image from "next/image";
 import { Dropdown, DropdownTrigger, DropdownMenu, DropdownItem, Button, Input } from "@nextui-org/react";
 import { Mail, Trash2, UserPlus, Search, Copy, Ellipsis, UserRoundPlus, SearchIcon } from "lucide-react";
-import { useState } from "react";
+import {useEffect, useState} from "react";
 import {
     AlertDialog,
     AlertDialogAction,
@@ -15,7 +15,12 @@ import {
     AlertDialogTrigger,
 } from "@/components/ui/alert-dialog"
 
-const TeamMembers = () => {
+const TeamMembers = ({data,users1, setUsers}: any) => {
+    setUsers("123");
+    useEffect(() => {
+        console.log("TEST", users1)
+    }, [users1]);
+
     const items = [
         {
             key: "message",
