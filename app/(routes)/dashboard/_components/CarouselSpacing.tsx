@@ -23,7 +23,7 @@ export function CarouselSpacing({ isShared, projects = [] }: CarouselSpacingProp
 const iconClasses = "text-xl text-default-500 pointer-events-none flex-shrink-0";
   return ( 
     <>
-    <Carousel className="md:w-full w-1/2 h-48 md:inline-block hidden">
+    <Carousel className="md:w-4/5 w-1/2 h-48 md:inline-block hidden">
       <CarouselContent className="-ml-1">
         {projects.map((project, index) => (
           <CarouselItem key={index} className="w-1/2 px-3 py-2 h-full md:basis-1/2 lg:basis-1/3">
