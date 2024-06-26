@@ -11,7 +11,7 @@ import {
     AlertDialogHeader,
     AlertDialogTitle,
     AlertDialogTrigger,
-} from "@/components/UI/alert-dialog"
+} from "@/components/ui/alert-dialog"
 
 
 const Configuration = ({ projectId }: any) => {

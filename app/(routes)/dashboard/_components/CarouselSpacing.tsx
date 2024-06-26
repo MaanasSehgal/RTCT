@@ -1,13 +1,13 @@
 import * as React from "react"
 
-import { CardContent } from "@/components/UI/card"
+import { CardContent } from "@/components/ui/card"
 import {
   Carousel,
   CarouselContent,
   CarouselItem,
   CarouselNext,
   CarouselPrevious,
-} from "@/components/UI/carousel"
+} from "@/components/ui/carousel"
 
 import { Card, CardBody, CardFooter, Dropdown, DropdownItem, DropdownMenu, DropdownSection, DropdownTrigger, Button } from "@nextui-org/react";
 import { AddNoteIcon, CopyDocumentIcon, DeleteDocumentIcon, EditDocumentIcon } from './NextUIIcons';

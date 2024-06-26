@@ -1,17 +1,8 @@
 "use client";
-// import { Input } from "@/app/(auth)/_components/Input";
-import { Card, CardBody, CardFooter, Image, Divider, useDisclosure } from "@nextui-org/react";
+import { Image, Button } from "@nextui-org/react";
 import React, { useEffect, useRef, useState } from "react";
-import { cn } from "@/lib/utils"
-import {
-    Dialog,
-    DialogContent,
-    DialogDescription,
-    DialogFooter,
-    DialogHeader,
-    DialogTitle,
-    DialogTrigger,
-} from "@/components/UI/dialog"
+import { cn } from "@/lib/utils";
+import { Dialog, DialogContent, DialogFooter, DialogHeader, DialogTitle, DialogTrigger, DialogDescription } from "@/components/ui/dialog";
 import {
     Command,
     CommandEmpty,
@@ -19,20 +10,18 @@ import {
     CommandInput,
     CommandItem,
     CommandList,
-} from "@/components/UI/command"
+} from "@/components/ui/command";
 import {
     Popover,
     PopoverContent,
     PopoverTrigger,
-} from "@/components/UI/popover"
-import { Input } from "@/components/UI/input"
-import { Label } from "@/components/UI/label"
-import { Button, Slider } from "@nextui-org/react";
+} from "@/components/ui/popover";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
 import { useConvex, useMutation } from "convex/react";
 import { useKindeBrowserClient } from "@kinde-oss/kinde-auth-nextjs";
 import { api } from "@/convex/_generated/api";
-import TeamCard from "./_components/TeamCard";
-import { CirclePlus, Github, Rocket, ChevronsUpDown, Check } from "lucide-react";
+import { Github, Rocket, ChevronsUpDown, Check } from "lucide-react";
 import { CarouselSpacing } from "./_components/CarouselSpacing";
 
 const Page: React.FC = () => {

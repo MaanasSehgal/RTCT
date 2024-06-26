@@ -5,7 +5,7 @@ import { NextUIProvider } from "@nextui-org/react";
 import NavbarComponent from "@/components/Navbar/Navbar";
 import FooterComponent from "@/components/Footer/Footer";
 import ConvexClientProvider from "./ConvexClientProvider";
-import { Toaster } from "@/components/UI/sonner"
+import { Toaster } from "@/components/ui/sonner"
 
 const inter = Inter({ subsets: ["latin"] });
 

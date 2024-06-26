@@ -10,7 +10,7 @@ import {
   SelectItem,
   SelectTrigger,
   SelectValue,
-} from "@/components/UI/select";
+} from "@/components/ui/select";
 import { CalendarX2, ChevronLeft, ChevronRight, CircleAlert, Code, Copy, GitBranch, GitCommitHorizontal, UsersRound } from 'lucide-react';
 import Image from 'next/image';
 import Link from 'next/link';

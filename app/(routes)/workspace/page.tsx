@@ -1,5 +1,5 @@
 "use client";
-import {ResizableHandle, ResizablePanel, ResizablePanelGroup} from "@/components/UI/resizable";
+import {ResizableHandle, ResizablePanel, ResizablePanelGroup} from "@/components/ui/resizable";
 import {api} from "@/convex/_generated/api";
 import {useConvex} from "convex/react";
 import {useEffect, useState} from "react";
