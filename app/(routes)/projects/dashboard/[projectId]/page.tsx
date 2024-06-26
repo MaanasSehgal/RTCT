@@ -1,15 +1,15 @@
 "use client";
 import React, { useEffect, useState } from "react";
-import Sidebar from "./components/Sidebar";
-import Configuration from "./components/Configuration";
-import TeamMembers from "./components/TeamMembers";
-import Commits from "./components/Commits";
-import KanbanBoard from "./components/KanbanBoard";
+import Sidebar from "@/app/(routes)/projects/dashboard/[projectId]/components/Sidebar";
+import Configuration from "@/app/(routes)/projects/dashboard/[projectId]/components/Configuration";
+import TeamMembers from "@/app/(routes)/projects/dashboard/[projectId]/components/TeamMembers";
+import Commits from "@/app/(routes)/projects/dashboard/[projectId]/components/Commits";
+import KanbanBoard from "@/app/(routes)/projects/dashboard/[projectId]/components/KanbanBoard";
 import { Activity, GitCommitHorizontal, Kanban as KanbanIcon, Settings2, Users } from "lucide-react";
 import { useConvex, useMutation } from "convex/react";
 import { api } from "@/convex/_generated/api";
 import { useKindeBrowserClient } from "@kinde-oss/kinde-auth-nextjs";
-import Board from "./components/Board";
+import Board from "@/app/(routes)/projects/dashboard/[projectId]/components/Board";
 
 const Dashboard: React.FC = ({ mainData }: any) => {
   const data = [
