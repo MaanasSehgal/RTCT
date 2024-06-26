@@ -28,7 +28,7 @@ export default function RootLayout({
                         <NavbarComponent />
                         {children}
                         <Toaster />
-                        <FooterComponent />
+                        {/* <FooterComponent /> */}
                     </ConvexClientProvider>
                 </NextUIProvider>
             </body>

@@ -19,8 +19,8 @@
         --tabsBg: #272a35;
         --tabsColor: #8964e8;
         --chatSectionBg: #131217;
-        --mainBackgroundColor: #0D1117;
-        --columnBackgroundColor: #161C22;
+        --mainBackgroundColor: #0d1117;
+        --columnBackgroundColor: #161c22;
     }
 }
 
@@ -130,16 +130,17 @@
 
 ::-webkit-scrollbar {
     width: 4px;
-  }
-  
-  ::-webkit-scrollbar:horizontal {
+}
+
+::-webkit-scrollbar:horizontal {
     height: 8px;
-  }
-  
-  ::-webkit-scrollbar-thumb {
+}
+
+::-webkit-scrollbar-thumb {
     @apply bg-purple-600 rounded-xl;
-  }
-  
-  .task > ::-webkit-scrollbar-thumb {
+}
+
+.task > ::-webkit-scrollbar-thumb {
     @apply bg-purple-400 rounded-xl;
-  }
+}
+
