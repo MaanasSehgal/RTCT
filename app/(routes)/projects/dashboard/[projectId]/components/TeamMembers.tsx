@@ -14,12 +14,15 @@ import {
     AlertDialogTitle,
     AlertDialogTrigger,
 } from "@/components/ui/alert-dialog"
+import {User} from "@/app/utils/types";
+import {useKindeBrowserClient} from "@kinde-oss/kinde-auth-nextjs";
 
-const TeamMembers = ({data,users1, setUsers}: any) => {
-    setUsers("123");
-    useEffect(() => {
-        console.log("TEST", users1)
-    }, [users1]);
+
+
+const TeamMembers = ({data, setData}: any) => {
+
+
+    const{user, getToken} = useKindeBrowserClient();
 
     const items = [
         {
@@ -33,7 +36,10 @@ const TeamMembers = ({data,users1, setUsers}: any) => {
             logo: <Trash2 />
         }
     ];
-    const users = [
+
+
+
+    const usersDummy = [
         {
             id: "1",
             name: "William",
@@ -148,7 +154,7 @@ const TeamMembers = ({data,users1, setUsers}: any) => {
         setSearchTerm(e.target.value);
     };
 
-    const filteredUsers = users.length != 0 ? users.filter((user) =>
+    const filteredUsers = data.members.length != 0 ? data.members.filter((user: User) =>
         user.name.toLowerCase().includes(searchTerm.toLowerCase())
     ) : [];
 
@@ -190,13 +196,13 @@ const TeamMembers = ({data,users1, setUsers}: any) => {
                         <div className="flex items-center mt-4">
                             <input
                                 type="text"
-                                value="rtct.vercel.app"
+                                value={`${window.location.host}/projects/dashboard/${data.projectId}?invite=true`}
                                 readOnly
                                 className="border border-gray-300 rounded-l-full h-10 px-4 w-full"
                             />
                             <Button
                                 onClick={() => {
-                                    navigator.clipboard.writeText('rtct.vercel.app');
+                                    navigator.clipboard.writeText(`${window.location.host}/projects/dashboard/${data.projectId}?invite=true`);
                                     setCopied(true);
                                     setTimeout(() => setCopied(false), 2000);
                                 }}
@@ -210,7 +216,7 @@ const TeamMembers = ({data,users1, setUsers}: any) => {
                 </AlertDialog>
             </div>
 
-            {users.length == 0 ?
+            {data.members.length == 0 ?
                 <div className="w-full h-full flex justify-center items-center">
                     <h1 className="text-white text-3xl font-bold">No results found! Invite members to your team.</h1>
                 </div>
@@ -218,22 +224,31 @@ const TeamMembers = ({data,users1, setUsers}: any) => {
                     <div className="w-full h-full flex justify-center items-center">
                         <h1 className="text-white text-3xl font-bold">No results found for query "{searchTerm}"</h1>
                     </div>
-                    : filteredUsers.map((user) => (
-                        <div key={user.id} className="w-11/12 rounded-full flex items-center justify-between bg-black overflow-y">
+                    : filteredUsers.map((member: User) => (
+                        <div key={member.id} className="w-11/12 rounded-full flex items-center justify-between bg-black overflow-y">
                             <div className="flex items-center gap-8 p-3">
-                                <Image className="w-12" src={user.avatar == "" ? "/userlogo.png" : user.avatar} alt="logo" width={24} height={24} />
-                                <h2 className="text-md">{user.name}</h2>
+                                <Image className="w-12" src={member.image} alt="logo" width={24} height={24} />
+                                <h2 className="text-md">{member.name}</h2>
+                                {(member.id === data.adminId ) && (
+                                    <span className="ml-auto">Admin</span>
+                                )}
                             </div>
                             <Dropdown>
                                 <DropdownTrigger>
                                     <div className="text-white cursor-pointer p-3 px-5"><Ellipsis /></div>
                                 </DropdownTrigger>
-                                <DropdownMenu aria-label="Dynamic Actions" items={items}>
+                                <DropdownMenu aria-label="Dynamic Actions" items={items.filter((item)=>{
+                                    if(item.key === "delete"){
+                                        return user?.id === data.adminId && member.id !== data.adminId;
+                                    }
+                                    return true;
+                                })}>
                                     {(item) => (
                                         <DropdownItem
                                             key={item.key}
                                             color={item.key === "delete" ? "danger" : "default"}
                                             className={`${item.key === "delete" ? "text-danger" : ""}`}
+
                                         >
                                             <div className="flex items-center gap-3">
                                                 {item.logo}
