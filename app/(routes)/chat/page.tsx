@@ -3,14 +3,28 @@ import React, { useState, useEffect } from "react";
 import SideBar from "./components/ChatSidebar";
 import ChatSection from "./components/ChatSection";
 import { chatData } from "@/app/data/chats";
+import {useKindeBrowserClient} from "@kinde-oss/kinde-auth-nextjs";
+import {socket} from "@/app/utils/socket";
 
 const ChatApp = () => {
+
+    const{user, getToken} = useKindeBrowserClient();
+
     useEffect(() => {
         const footer = document.querySelector('Footer') as HTMLElement;
         if (footer) {
             footer.style.display = 'none';
         }
     }, []);
+
+    useEffect(() => {
+        if(!user) return;
+        socket.auth={token: getToken()};
+        socket.connect();
+        console.log("socket");
+    }, [user]);
+
+
 
     const [showChat, setShowChat] = useState(false);
     const [selectedChat, setSelectedChat] = useState<any>(null);
