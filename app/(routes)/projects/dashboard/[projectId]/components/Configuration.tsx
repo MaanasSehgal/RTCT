@@ -17,7 +17,7 @@ import axios from "axios";
 import {useEffect, useRef, useState} from "react";
 import {Input} from "@/components/ui/input";
 
-const Configuration = ({data}:any)  => {
+const Configuration = ({data, setData}:any)  => {
     const [inputLogo, setInputLogo] = useState(false);
     const [currLogoUrl, setCurrLogoUrl] = useState(data?.image);
     const {user, getToken } = useKindeBrowserClient();
@@ -42,15 +42,18 @@ const Configuration = ({data}:any)  => {
         });
     }
 
-    async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
-        e.preventDefault();
-        const formData = new FormData(e.currentTarget);
+    async function handleSubmit(e: React.FormEvent<HTMLFormElement> | HTMLFormElement) {
+        if(!(e instanceof HTMLFormElement)) {
+            e.preventDefault();
+            e = e.currentTarget;
+        }
+        const formData = new FormData(e as HTMLFormElement);
         const name = formData.get('projectName') as string;
         const repo = formData.get('projectRepo') as string;
-        let file: File | string = formData.get('logo') as File;
+        let file: File | string | null = formData.get('logo') as File;
         console.log(file)
         if (file.size === 0) {
-            file = user?.picture || "";
+            file = null;
         } else {
             file = await fileToBase64(file);
         }
@@ -73,7 +76,8 @@ const Configuration = ({data}:any)  => {
         )
             .then(function (response) {
                 console.log(response);
-                setDataState(response.data)
+                // setDataState(response.data)
+                setData(response.data);
             })
             .catch(function (error) {
                 console.log(error);
@@ -100,12 +104,13 @@ const Configuration = ({data}:any)  => {
 
     const handleInputLogoSave = () => {
         setInputLogo(false);
+        handleSubmit((document.getElementById("configForm") as HTMLFormElement));
     }
     return (
         <>
             <h1 className="text-3xl font-bold text-white ml-6 mt-6">Configuration</h1>
             <h5 className="text-xl font-semibold text-white ml-6 text-zinc-600">Project Information</h5>
-            <form className="w-full h-5/6 lg:p-8 flex lg:flex-row flex-col items-center gap-14 lg:gap-3 min-w-[300px]"
+            <form id="configForm" className="w-full h-5/6 lg:p-8 flex lg:flex-row flex-col items-center gap-14 lg:gap-3 min-w-[300px]"
             action="" onSubmit={handleSubmit}>
                 <br /><br />
                 <div className="flex flex-col lg:w-2/5 items-center gap-10">

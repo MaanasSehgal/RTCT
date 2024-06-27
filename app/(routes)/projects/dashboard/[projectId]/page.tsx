@@ -15,7 +15,6 @@ import axios from "axios";
 const Dashboard = ({params}: { params: { projectId: string } }) => {
     const [project, setProject] = useState(undefined);
     const [unAuthorized, setUnauthorized] = useState(false);
-    const [users, setUsers] = useState<string[]>([]);
     const data = [
         {icon: <Settings2 size={30}/>, title: "Configuration"},
         {icon: <Users size={30}/>, title: "Team Members"},
@@ -26,8 +25,8 @@ const Dashboard = ({params}: { params: { projectId: string } }) => {
     const {user, getToken} = useKindeBrowserClient();
 
     const componentMap: { [key: string]: JSX.Element } = {
-        "Configuration": <Configuration data={project}/>,
-        "Team Members": <TeamMembers data={project} users1={users} setUsers={setUsers}/>,
+        "Configuration": <Configuration data={project} setData={setProject}/>,
+        "Team Members": <TeamMembers data={project} setData={setProject}/>,
         "Commits": <Commits/>,
         "Kanban": <KanbanBoard/>,
     };
