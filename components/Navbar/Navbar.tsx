@@ -19,7 +19,7 @@ import {LogoutLink, useKindeBrowserClient} from "@kinde-oss/kinde-auth-nextjs";
 export default function NavbarComponent() {
     const {user, isLoading} = useKindeBrowserClient();
     return (
-        <Navbar className="lg:h-[10vh] h-[7vh]">
+        <Navbar className="h-20">
             <NavbarContent justify="start">
                 <NavbarBrand className="mr-4">
                     <Link href="/" className="flex items-center gap-2">

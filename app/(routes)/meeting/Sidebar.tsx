@@ -1,4 +1,4 @@
-import { X } from 'lucide-react';
+import { Menu, X } from 'lucide-react';
 import React from 'react';
 
 interface SidebarProps {
@@ -12,11 +12,12 @@ const Sidebar: React.FC<SidebarProps> = ({ isSidebarOpen, setIsSidebarOpen }) =>
     };
 
     return (
-        <div className={`h-full w-64 fixed top-18 right-0 bg-white transform transition-transform ${isSidebarOpen ? 'translate-x-0' : 'translate-x-full'} transition-all`}>
-            <button onClick={toggleSidebar} className="p-2 m-2 bg-blue-500 text-white rounded">
-                <X />
-            </button>
-            {isSidebarOpen && <div>Content here</div>}
+        <div style={{ height: 'calc(100% - 10rem)' }} className={`w-72 absolute top-18 right-0 bg-[#0e0e11] transform transition-transform ${isSidebarOpen ? 'translate-x-0' : 'translate-x-full'} transition-all rounded-lg`}>
+            {isSidebarOpen && <div className=' w-full h-full'>
+                <button onClick={toggleSidebar} className="p-1 m-2 hover:bg-zinc-800 rounded-full text-white">
+                    <X />
+                </button>
+            </div>}
         </div>
     );
 };

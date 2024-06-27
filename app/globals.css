@@ -3,14 +3,18 @@
 @tailwind utilities;
 
 @import url("https://fonts.googleapis.com/css2?family=IBM+Plex+Mono&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=JetBrains+Mono&display=swap");
 
 * {
     scroll-behavior: smooth;
 }
 
+
+
 @media (prefers-color-scheme: dark) {
     :root {
         --darkBtn: #8964e8;
+        --BtnOff: [#272A35];
         --darkBg: #000000;
         --darkText1: #f0f0f0;
         --darkText2: #c0c0c0;
@@ -21,6 +25,7 @@
         --chatSectionBg: #131217;
         --mainBackgroundColor: #0d1117;
         --columnBackgroundColor: #161c22;
+        --timerFont: "JetBrains Mono", monospace;
     }
 }
 
@@ -93,6 +98,7 @@
         @apply border-border;
         font-family: "IBM Plex Mono", monospace;
     }
+
     body {
         @apply bg-background text-foreground;
     }
@@ -102,25 +108,40 @@
     }
 }
 
+#timer {
+    font-family: var(--timerFont, "JetBrains Mono", monospace) !important;
+}
+
+
+.main-Container {
+    height: calc(100vh - 5rem);
+}
+
 .floating-logo {
     animation: float 3s linear infinite;
 }
 
 @keyframes float {
+
     0%,
     100% {
         transform: translateY(0);
     }
+
     50% {
         transform: translateY(-25px);
     }
 }
 
 .hiddenScrollbar {
-    scrollbar-width: none; /* Firefox */
-    -ms-overflow-style: none; /* Internet Explorer 10+ */
-    scrollbar-color: transparent transparent; /* Firefox (thumb, track) */
-    overflow: auto; /* Trigger scrolling behavior */
+    scrollbar-width: none;
+    /* Firefox */
+    -ms-overflow-style: none;
+    /* Internet Explorer 10+ */
+    scrollbar-color: transparent transparent;
+    /* Firefox (thumb, track) */
+    overflow: auto;
+    /* Trigger scrolling behavior */
 }
 
 /* Hide scrollbar for Webkit browsers */
@@ -140,7 +161,6 @@
     @apply bg-purple-600 rounded-xl;
 }
 
-.task > ::-webkit-scrollbar-thumb {
+.task> ::-webkit-scrollbar-thumb {
     @apply bg-purple-400 rounded-xl;
 }
-

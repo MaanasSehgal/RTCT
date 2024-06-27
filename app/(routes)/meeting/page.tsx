@@ -1,20 +1,26 @@
 "use client";
 
-import { Hand, LogOut, MessageSquareMore, Mic, MicOff, UserRound, Video, VideoOff } from "lucide-react";
+import { ArrowLeft, CircleArrowOutUpRight, Hand, LogOut, MessageSquareMore, Mic, MicOff, ScreenShare, ScreenShareOff, UserRound, Video, VideoOff } from "lucide-react";
 import React, { useEffect, useState } from "react";
 import { toast } from "sonner";
 import Sidebar from "./Sidebar";
+import { Button, ButtonGroup } from "@nextui-org/react";
+import Image from "next/image";
+import useSound from 'use-sound';
 
 const Page = () => {
-    const [participantCount, setParticipantCount] = useState(1);
+    const [participantCount, setParticipantCount] = useState(6);
     const [micOn, setMicOn] = useState(false);
     const [videoOn, setVideoOn] = useState(false);
-    const [handRaised, setHandRaised] = useState(false);
-    const [leaveCall, setLeaveCall] = useState(false);
+    const [screenShare, setScreenShare] = useState(false);
+    const [leaveRoom, setLeaveRoom] = useState(false);
     const [changeFlex, setChangeFlex] = useState(true);
-
+    const [isInRoom, setIsInRoom] = useState(false);
     const [elapsedTime, setElapsedTime] = useState(0);
     const [isSidebarOpen, setIsSidebarOpen] = useState(false);
+
+    const [playJoinSound] = useSound('/Sounds/join-sound.mp3');
+    const [playEndSound] = useSound('./Sounds/end-sound.mp3');
 
     useEffect(() => {
         const timer = setInterval(() => {
@@ -25,10 +31,12 @@ const Page = () => {
     }, []);
 
     const formatTime = (seconds: any) => {
-        const mins = Math.floor(seconds / 60);
+        const hours = Math.floor(seconds / 3600);
+        const mins = Math.floor((seconds % 3600) / 60);
         const secs = seconds % 60;
-        return `${mins}:${secs < 10 ? '0' : ''}${secs}`;
+        return `${hours < 10 ? '0' : ''}${hours}:${mins < 10 ? '0' : ''}${mins}:${secs < 10 ? '0' : ''}${secs}`;
     };
+
 
     const increaseParticipant = () => {
         setParticipantCount(participantCount + 1);
@@ -52,13 +60,15 @@ const Page = () => {
         setVideoOn(!videoOn);
     }
 
-    const handleHandRaised = () => {
-        setHandRaised(!handRaised);
+    const handleScreenShare = () => {
+        setScreenShare(!screenShare);
     }
 
-    const handleLeaveCall = () => {
-        setLeaveCall(true);
-        toast("Leaving the call");
+    const handleLeaveRoom = () => {
+        playEndSound();
+        setLeaveRoom(true);
+        setIsInRoom(false);
+        toast("You have left the room", {className: "bg-red-500"});
     }
 
     const handleMessageOpen = () => {
@@ -69,94 +79,133 @@ const Page = () => {
         setIsSidebarOpen(!isSidebarOpen);
     }
 
+    const handleJoinRoom = () => {
+        playJoinSound();
+        setIsInRoom(true);
+        toast.success("You have joined the room");
+    }
+
     const renderParticipants = () => {
         return (
-            <div className="w-full h-full py-8 px-4 flex flex-wrap justify-center items-center">
-                {participantCount < 4 && [...Array(participantCount)].map((_, index) => (
-                    <div key={index} className={`${participantCount === 1 ? 'w-4/5 h-full' : participantCount === 2 ? 'w-1/3 h-1/2 gap-2' : 'w-1/3 h-1/2'} bg-[#3C4043] border border-white rounded-3xl m-4 flex justify-center items-center`}>
-                        <p className="text-white text-xl font-bold">Participant {index + 1}</p>
+            <div className="w-full h-full p-4 flex flex-wrap justify-center items-center overflow-y-auto">
+                {participantCount < 3 && [...Array(participantCount)].map((_, index) => (
+                    <div key={index} className={`relative flex flex-col justify-center items-center gap-2 bg-[#272A35] ${participantCount === 1 ? 'md:w-[115vh] md:h-[90%] w-11/12 h-[48vw]' : participantCount === 2 ? 'md:w-[45%] md:h-[70%] gap-2 w-4/5 h-2/5' : 'md:min-w-96 md:w-[27%] md:h-[60%] gap-2 w-11/12'} bg-[#272A35] rounded-3xl m-4 flex justify-center items-center`}>
+                        <Image src={'/userlogo.png'} alt={''} className="w-16 h-16" width={100} height={100} />
+                        <p className="absolute bottom-0 left-0 m-4">Doraemon</p>
                     </div>
                 ))}
 
-                {participantCount === 4 && (
+                {participantCount === 3 && (
                     <>
-                        <div className="w-1/2 h-full bg-[#3C4043] border border-white rounded-3xl m-4 flex justify-center items-center">
-                            <p className="text-white text-xl font-bold">Participant 1</p>
+                        <div className="relative md:w-[70%] md:h-[98%] h-[48%] w-full border rounded-3xl flex justify-center items-center bg-[#272A35]">
+                            <Image src={'/userlogo.png'} alt={''} className="w-16 h-16" width={100} height={100} />
+                            <p className="absolute bottom-0 left-0 m-4">Doraemon</p>
                         </div>
-                        <div className="w-1/4 h-full gap-4 rounded-3xl flex flex-col justify-between items-center">
-                            {[...Array(3)].map((_, index) => (
-                                <div key={index} className="w-full h-full bg-[#3C4043] border border-white rounded-3xl flex justify-center items-center">
-                                    <p className="text-white text-xl font-bold">Participant {index + 2}</p>
+                        <div className="md:w-1/4 md:h-full w-full h-[100%] gap-4 rounded-3xl md:mt-0 mt-4 md:pl-4 flex flex-col justify-between items-center">
+                            {[...Array(2)].map((_, index) => (
+                                <div key={index} className="relative w-full h-full border rounded-3xl flex justify-center items-center bg-[#272A35]">
+                                    <Image src={'/userlogo.png'} alt={''} className="w-16 h-16" width={100} height={100} />
+                                    <p className="absolute bottom-0 left-0 m-4">Doraemon</p>
                                 </div>
                             ))}
                         </div>
                     </>
                 )}
 
-                {participantCount > 4 && !changeFlex && (
+                {participantCount === 4 && (
                     <>
-                        <div className="w-2/4 h-full bg-[#3C4043] border border-white rounded-3xl m-4 flex justify-center items-center">
-                            <p className="text-white text-xl font-bold">Participant 1</p>
+                        <div className="relative md:w-[70%] md:h-[98%] h-[48%] w-full border rounded-3xl flex justify-center items-center bg-[#272A35]">
+                            <Image src={'/userlogo.png'} alt={''} className="w-16 h-16" width={100} height={100} />
+                            <p className="absolute bottom-0 left-0 m-4">Doraemon</p>
                         </div>
-                        <div className="w-1/4 h-full gap-4 rounded-3xl flex flex-col justify-between items-center">
-                            {[...Array(2)].map((_, index) => (
-                                <div key={index} className="w-full h-full bg-[#3C4043] border border-white rounded-3xl flex justify-center items-center">
-                                    <p className="text-white text-xl font-bold">Participant {index + 2}</p>
+                        <div className="md:w-1/4 md:h-full w-full h-[133%] gap-4 rounded-3xl md:mt-0 mt-4 md:pl-4 flex flex-col justify-between items-center">
+                            {[...Array(3)].map((_, index) => (
+                                <div key={index} className="relative w-full h-full border rounded-3xl flex justify-center items-center bg-[#272A35]">
+                                    <Image src={'/userlogo.png'} alt={''} className="w-16 h-16" width={100} height={100} />
+                                    <p className="absolute bottom-0 left-0 m-4">Doraemon</p>
                                 </div>
                             ))}
-                            <div onClick={() => setChangeFlex(true)} className="w-full h-full bg-[#3C4043] border cursor-pointer border-white rounded-3xl flex justify-center items-center">
-                                <p className="text-white text-xl font-bold">+{participantCount - 4}</p>
+                        </div>
+                    </>
+                )}
+
+                {participantCount > 4 && changeFlex && (
+                    <>
+                        <div className="relative md:w-[70%] md:h-[98%] h-[48%] w-full border rounded-3xl flex justify-center items-center bg-[#272A35]">
+                            <Image src={'/userlogo.png'} alt={''} className="w-16 h-16" width={100} height={100} />
+                            <p className="absolute bottom-0 left-0 m-4">Doraemon</p>
+                        </div>
+                        <div className="md:w-1/4 md:h-full w-full h-[133%] gap-4 rounded-3xl md:mt-0 mt-4 md:pl-4 flex flex-col justify-between items-center">
+                            {[...Array(2)].map((_, index) => (
+                                <div key={index} className="relative w-full h-full border rounded-3xl flex justify-center items-center bg-[#272A35]">
+                                    <Image src={'/userlogo.png'} alt={''} className="w-16 h-16" width={100} height={100} />
+                                    <p className="absolute bottom-0 left-0 m-4">Doraemon</p>
+                                </div>
+                            ))}
+                            <div onClick={() => setChangeFlex(false)} className="relative w-full h-full border rounded-3xl flex justify-center items-center bg-[#272A35] cursor-pointer">
+                                <p>{`+${participantCount - 4}`} more</p>
                             </div>
                         </div>
                     </>
                 )}
-                {participantCount > 4 && changeFlex && (
-                    [...Array(participantCount)].map((_, index) => (
-                        <div key={index} className="w-1/4 h-1/2 bg-[#3C4043] border border-white rounded-3xl m-4 flex justify-center items-center">
-                            <p className="text-white text-xl font-bold">Participant {index + 1}</p>
-                        </div>
-                    ))
+                {participantCount > 4 && !changeFlex && (
+                    <>
+                        <ArrowLeft className="absolute top-20 left-0 m-4 cursor-pointer hover:bg-zinc-800 p-1 w-8 h-8 rounded-full" onClick={() => setChangeFlex(true)} />
+                        {[...Array(participantCount)].map((_, index) => (
+                            <div key={index} className="relative w-96 h-1/2 bg-[#272A35] rounded-3xl m-4 flex justify-center items-center">
+                                <Image src={'/userlogo.png'} alt={''} className="w-16 h-16" width={100} height={100} />
+                                <p className="absolute bottom-0 left-0 m-4">Doraemon</p>
+                            </div>
+                        ))}
+                    </>
                 )}
+
             </div>
         );
     }
 
     return (
-        <div className="flex flex-row min-h-screen">
-            <div className={`w-[${isSidebarOpen ? '60vw' : '80vw'}] min-h-[90vh] flex flex-col transition-width duration-300`}>
+        <div className="main-Container flex flex-row bg-[#131217]">
+            <div className={`flex flex-col transition-width duration-300`}>
                 {/* bar */}
-                <div className='w-screen h-[10vh] bg-blue-400 flex justify-center items-center'>
+                {/* <div className='w-screen h-[10vh] bg-blue-400 flex justify-center items-center'>
                     <button disabled={participantCount === 1} className="bg-[#29903B] p-2 px-4 rounded-xl text-white text-medium hover:bg-[#36a048] font-bold cursor-pointer" onClick={decreaseParticipant}>Remove</button>
                     <p className="text-white text-xl font-bold mx-4">Participants -&gt; {participantCount}</p>
                     <button className="bg-[#29903B] p-2 px-4 rounded-xl text-white text-medium hover:bg-[#36a048] font-bold cursor-pointer" onClick={increaseParticipant}>Add</button>
-                </div>
+                </div> */}
                 {/* main meet area */}
-                <div className='w-screen min-h-[90vh] bg-[#202124] pb-40'>
+                <div className={`w-screen transition-opacity duration-1000 ${isInRoom ? " opacity-100" : "opacity-30"}`} style={{ height: 'calc(100% - 5rem)' }}>
                     {renderParticipants()}
                 </div>
                 {/* Menu bar */}
-                <div className='w-screen h-[10vh] z-20 fixed bottom-0 left-0 bg-blue-400 flex justify-between items-center'>
-                    <div className="text-white text-xl font-bold mx-4 flex justify-center items-center">
-                        {formatTime(elapsedTime)}
-                    </div>
-                    <div className="flex flex-row gap-2 h-full justify-center items-center ">
-                        <div onClick={() => handleMicOn()} className={`bg-${micOn ? "gray-500" : "red-500"} rounded-full w-12 h-12 flex justify-center items-center text-white`}>{micOn ? <Mic /> : <MicOff />}</div>
-                        <div onClick={() => handleVideoOn()} className={`bg-${videoOn ? "gray-500" : "red-500"} rounded-full w-12 h-12 flex justify-center items-center text-white`}>{videoOn ? <Video /> : <VideoOff />}</div>
-                        <div onClick={() => handleHandRaised()} className={`bg-${handRaised ? "gray-500" : "yellow-500"} rounded-full w-12 h-12 flex justify-center items-center text-white`}>
-                            <Hand />
-                        </div>
-                        <div onClick={() => handleLeaveCall()} className="bg-red-500 rounded-full w-12 h-12 flex justify-center items-center text-white">
-                            <LogOut />
-                        </div>
-                    </div>
-                    <div className="flex justify-center items-center h-full">
-                        <div onClick={() => handleMessageOpen()} className="rounded-full w-12 h-12 flex justify-center items-center text-white">
-                            <MessageSquareMore />
-                        </div>
-                        <div onClick={() => handleParticipantsOpen()} className="rounded-full w-12 h-12 flex justify-center items-center text-white">
-                            <UserRound />
-                        </div>
-                    </div>
+                <div className={`${isInRoom ? 'justify-center md:justify-between' : 'justify-center'} w-screen h-20 flex  items-center px-4`}>
+                    {isInRoom ? (
+                        <>
+                            <div id="timer" className={`text-white text-xl justify-center items-center border-4 rounded-full h-12 px-2 border-neutral-800 hidden md:flex`}>
+                                {formatTime(elapsedTime)}
+                            </div>
+                            <div className="flex flex-row gap-4 h-full justify-center items-center">
+                                <Button size="sm" onClick={() => handleMicOn()} className={`bg-${micOn ? "[--darkBtn]" : "neutral-800"} rounded-full h-12 flex justify-center items-center text-white`} >{micOn ? <Mic /> : <MicOff />}</Button>
+                                <Button size="sm" onClick={() => handleVideoOn()} className={`bg-${videoOn ? "[--darkBtn]" : "neutral-800"} rounded-full h-12 flex justify-center items-center text-white`}>{videoOn ? <Video /> : <VideoOff />}</Button>
+                                <Button size="sm" onClick={() => handleScreenShare()} className={`bg-${screenShare ? "[--darkBtn]" : "neutral-800"} rounded-full h-12 flex justify-center items-center text-white`}>
+                                    {screenShare ? <ScreenShare /> : <ScreenShareOff />}
+                                </Button>
+                                <Button size="md" onClick={() => handleLeaveRoom()} className="bg-[#FF4343] rounded-full h-12 flex justify-center items-center text-white">
+                                    <CircleArrowOutUpRight className="rotate-45" />
+                                </Button>
+                            </div>
+                            <div className="justify-center items-center h-full cursor-pointer hidden md:flex">
+                                <div onClick={() => handleMessageOpen()} className="rounded-full w-12 h-12 flex justify-center items-center text-white">
+                                    <MessageSquareMore />
+                                </div>
+                                <div onClick={() => handleParticipantsOpen()} className="rounded-full w-12 h-12 flex justify-center items-center text-white">
+                                    <UserRound />
+                                </div>
+                            </div>
+                        </>
+                    ) :
+                        <Button onClick={() => handleJoinRoom()} className="bg-[--darkBtn] rounded-full h-12 flex justify-center items-center text-white text-2xl font-extrabold self-center">Join Room</Button>
+                    }
                 </div>
             </div>
             <Sidebar isSidebarOpen={isSidebarOpen} setIsSidebarOpen={setIsSidebarOpen} />
