@@ -181,7 +181,7 @@ const Page = () => {
                 <div className={`${isInRoom ? 'justify-center md:justify-between' : 'justify-center'} w-screen h-20 flex  items-center px-4`}>
                     {isInRoom ? (
                         <>
-                            <div id="timer" className={`text-white text-xl flex justify-center items-center border-4 rounded-full h-12 px-2 border-neutral-800 hidden md:flex`}>
+                            <div id="timer" className={`text-white text-xl justify-center items-center border-4 rounded-full h-12 px-2 border-neutral-800 hidden md:flex`}>
                                 {formatTime(elapsedTime)}
                             </div>
                             <div className="flex flex-row gap-4 h-full justify-center items-center">
@@ -194,7 +194,7 @@ const Page = () => {
                                     <CircleArrowOutUpRight className="rotate-45" />
                                 </Button>
                             </div>
-                            <div className="flex justify-center items-center h-full cursor-pointer hidden md:flex">
+                            <div className="justify-center items-center h-full cursor-pointer hidden md:flex">
                                 <div onClick={() => handleMessageOpen()} className="rounded-full w-12 h-12 flex justify-center items-center text-white">
                                     <MessageSquareMore />
                                 </div>
