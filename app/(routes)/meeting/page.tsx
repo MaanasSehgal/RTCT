@@ -19,8 +19,8 @@ const Page = () => {
     const [elapsedTime, setElapsedTime] = useState(0);
     const [isSidebarOpen, setIsSidebarOpen] = useState(false);
 
-    const [playJoinSound] = useSound('/Sounds/join-sound.mp3');
-    const [playEndSound] = useSound('./Sounds/end-sound.mp3');
+    const [playJoinSound] = useSound('/Sounds/join-sound.mp3', {volume: 0.3});
+    const [playEndSound] = useSound('./Sounds/end-sound.mp3', {volume: 0.3});
 
     useEffect(() => {
         const timer = setInterval(() => {
