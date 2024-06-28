@@ -27,6 +27,7 @@
         "@kinde-oss/kinde-auth-nextjs": "^2.3.1",
         "@nextui-org/accordion": "^2.0.35",
         "@nextui-org/react": "^2.4.2",
+        "@nextui-org/spinner": "^2.0.30",
         "@nextui-org/switch": "^2.0.31",
         "@nextui-org/system": "^2.2.2",
         "@nextui-org/theme": "^2.2.6",
