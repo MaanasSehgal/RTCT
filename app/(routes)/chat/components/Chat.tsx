@@ -2,6 +2,7 @@ import Image from "next/image";
 import React from "react";
 
 const Chat = ({image, name, time, onClick, selected, notifications}: any) => {
+    console.log("CHAT");
     return (
         <div className={`flex items-center p-4 cursor-pointer transition duration-200 ease-in-out ${selected ? "bg-[#7731d8]" : "hover:bg-[#564977]"}`} onClick={onClick}>
             <Image src={image == "" ? "/userlogo.png" : image} alt="User" className="w-12 h-12 rounded-full" width={18} height={18} />

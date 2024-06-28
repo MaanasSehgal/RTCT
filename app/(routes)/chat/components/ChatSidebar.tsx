@@ -1,14 +1,30 @@
-import { Input } from "@nextui-org/react";
-import { SearchIcon } from "lucide-react";
-import React, { useState } from "react";
+import {Input} from "@nextui-org/react";
+import {SearchIcon} from "lucide-react";
+import React, {useEffect, useState} from "react";
 import Chat from "./Chat";
 
-const SideBar = ({ chatData, onChatClick, selectedChat }: any) => {
+const SideBar = ({chatData, onChatClick, selectedChat}: any) => {
     const [searchQuery, setSearchQuery] = useState("");
+    const [filteredChats, setFilteredChats] = useState<any[]>(chatData.values());
+    const [update, setUpdate] = useState("");
+    useEffect(() => {
+        const chats = chatData.values().filter((data: [any, [{}]]) => {
+            const a = (data[0].first_name + " " + data[0].last_name).toLowerCase().includes(searchQuery.toLowerCase());
+            console.log(a);
+            return a;
+        });
+        setFilteredChats(Array.from(chats));
+    }, [chatData]);
 
-    const filteredChats: Array<{ chatName: string }> = chatData.filter((chat: { chatName: string }) =>
-        chat.chatName.toLowerCase().includes(searchQuery.toLowerCase())
-    );
+    useEffect(() => {
+        const chats = chatData.values().filter((data: [any, [{}]]) => {
+            const a = (data[0].first_name + " " + data[0].last_name).toLowerCase().includes(searchQuery.toLowerCase());
+            console.log(a);
+            return a;
+        });
+        setFilteredChats(Array.from(chats));
+    }, [searchQuery]);
+
 
     return (
         <div className="w-full h-full bg-[#191B22] border-r-white">
@@ -22,23 +38,26 @@ const SideBar = ({ chatData, onChatClick, selectedChat }: any) => {
                     }}
                     placeholder="Type to search..."
                     size="sm"
-                    startContent={<SearchIcon size={18} width={18} height={18} />}
+                    startContent={<SearchIcon size={18} width={18} height={18}/>}
                     type="search"
-                    onChange={(e) => setSearchQuery(e.target.value)}
+                    onChange={(e) => {
+                        setSearchQuery(e.target.value);
+                    }}
                 />
             </div>
             <div className="flex flex-col w-full h-[85%] py-4 hiddenScrollbar">
-                {filteredChats && filteredChats.map((chat: any) => (
+                {filteredChats.map((chat: any) => (
                     <Chat
-                        key={chat.chatID}
-                        image={chat.chats[0]?.senderID === "u001" ? "/userlogo.png" : ""}
-                        name={chat.chatName}
-                        time={chat.latestMsgtime}
+                        // key={chat[0].id}
+                        image={chat[0].image}
+                        name={chat[0].first_name + " " + chat[0].last_name}
+                        time={chat[1].at(-1)?.time}
                         onClick={() => onChatClick(chat)}
-                        selected={selectedChat?.chatID === chat.chatID}
-                        notifications={chat.notifications}
+                        selected={selectedChat?.id === chat[0].id}
+                        notifications={chat[0].unread}
                     />
                 ))}
+                {/*{update && (<div></div>)}*/}
             </div>
         </div>
     );
