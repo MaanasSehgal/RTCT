@@ -1,7 +1,7 @@
 "use client";
 // import { Input } from "@/app/(auth)/_components/Input";
-import {Card, CardBody, CardFooter, Input, Image, Divider} from "@nextui-org/react";
-import React, {useEffect, useRef, useState} from "react";
+import { Card, CardBody, CardFooter, Image, Divider } from "@nextui-org/react";
+import React, { useEffect, useRef, useState } from "react";
 import {
     AlertDialog,
     AlertDialogAction,
@@ -13,13 +13,19 @@ import {
     AlertDialogTitle,
     AlertDialogTrigger,
 } from "@/components/ui/alert-dialog";
-import {Button, Slider} from "@nextui-org/react";
-import {useConvex, useMutation} from "convex/react";
-import {useKindeBrowserClient} from "@kinde-oss/kinde-auth-nextjs";
-import {api} from "@/convex/_generated/api";
+import { Button, Slider } from "@nextui-org/react";
+import { useConvex, useMutation } from "convex/react";
+import { useKindeBrowserClient } from "@kinde-oss/kinde-auth-nextjs";
+import { api } from "@/convex/_generated/api";
 import TeamCard from "./_components/TeamCard";
-import {CirclePlus, Github, Plus, Rocket} from "lucide-react";
-import {CarouselSpacing} from "./_components/CarouselSpacing";
+import { CirclePlus, Github, Plus, Rocket, Terminal } from "lucide-react";
+import { CarouselSpacing } from "./_components/CarouselSpacing";
+import {
+    Alert,
+    AlertDescription,
+    AlertTitle,
+} from "@/components/ui/alert";
+import { Input } from "@/components/ui/input";
 
 import axios from "axios";
 
@@ -28,7 +34,7 @@ const Page: React.FC = () => {
     const teamImage = useRef("");
     const [open, setOpen] = useState(false)
     const convex = useConvex();
-    const {user, getToken} = useKindeBrowserClient();
+    const { user, getToken } = useKindeBrowserClient();
     const [projects, setProjects] = useState<any[] | undefined>(undefined);
     const [yourProjects, setYourProjects] = useState<any[] | undefined>(undefined);
     //const getUser=useQuery(api.user.getUser,{email:user?.email});
@@ -50,13 +56,13 @@ const Page: React.FC = () => {
 
     const checkUser = async () => {
         axios.post(`${process.env.NEXT_PUBLIC_BACKEND_URL}/users/create`, {}, {
-                params: {
-                    audience: "rtct_backend_api"
-                },
-                headers: {
-                    'Authorization': 'Bearer ' + getToken()
-                }
+            params: {
+                audience: "rtct_backend_api"
+            },
+            headers: {
+                'Authorization': 'Bearer ' + getToken()
             }
+        }
         )
             .then(function (response) {
                 console.log(response);
@@ -91,7 +97,7 @@ const Page: React.FC = () => {
         const repo = formData.get('projectRepo') as string;
         console.log(file)
         if (file.size === 0) {
-            file = user?.picture || "";
+            file = '/RTCTLOGOIMG.png';
         } else {
             file = await fileToBase64(file);
         }
@@ -113,7 +119,7 @@ const Page: React.FC = () => {
             }
         )
             .then(function (response) {
-                console.log(response);
+                console.log("this is shared project = " + response.data.projects);
                 setProjects(response.data.projects);
                 setYourProjects(response.data.adminProjects);
                 setOpen(false)
@@ -145,46 +151,46 @@ const Page: React.FC = () => {
     }
 
     const users: User[] = [
-        {name: "John Doe", image: "https://randomuser.me/api/portraits/men/1.jpg"},
-        {name: "Jane Smith", image: "https://randomuser.me/api/portraits/women/1.jpg"},
-        {name: "Alice Johnson", image: "https://randomuser.me/api/portraits/women/2.jpg"},
-        {name: "Bob Brown", image: "https://randomuser.me/api/portraits/men/2.jpg"},
-        {name: "Charlie White", image: "https://randomuser.me/api/portraits/men/3.jpg"},
-        {name: "David Black", image: "https://randomuser.me/api/portraits/men/4.jpg"},
-        {name: "Eve Green", image: "https://randomuser.me/api/portraits/women/3.jpg"},
-        {name: "Frank Blue", image: "https://randomuser.me/api/portraits/men/5.jpg"},
-        {name: "Grace Yellow", image: "https://randomuser.me/api/portraits/women/4.jpg"},
-        {name: "Hank Red", image: "https://randomuser.me/api/portraits/men/6.jpg"},
-        {name: "Ivy Purple", image: "https://randomuser.me/api/portraits/women/5.jpg"},
-        {name: "Jack Orange", image: "https://randomuser.me/api/portraits/men/7.jpg"},
-        {name: "Kate Pink", image: "https://randomuser.me/api/portraits/women/6.jpg"},
-        {name: "Leo Gray", image: "https://randomuser.me/api/portraits/men/8.jpg"},
-        {name: "Mia Cyan", image: "https://randomuser.me/api/portraits/women/7.jpg"},
-        {name: "Nina Magenta", image: "https://randomuser.me/api/portraits/women/8.jpg"},
-        {name: "Oscar Lime", image: "https://randomuser.me/api/portraits/men/9.jpg"},
-        {name: "Paul Teal", image: "https://randomuser.me/api/portraits/men/10.jpg"},
-        {name: "Quincy Maroon", image: "https://randomuser.me/api/portraits/men/11.jpg"},
-        {name: "Rita Beige", image: "https://randomuser.me/api/portraits/women/9.jpg"},
-        {name: "Sam Silver", image: "https://randomuser.me/api/portraits/men/12.jpg"},
-        {name: "Tina Gold", image: "https://randomuser.me/api/portraits/women/10.jpg"},
-        {name: "Uma Violet", image: "https://randomuser.me/api/portraits/women/11.jpg"},
-        {name: "Vic Indigo", image: "https://randomuser.me/api/portraits/men/13.jpg"},
+        { name: "John Doe", image: "https://randomuser.me/api/portraits/men/1.jpg" },
+        { name: "Jane Smith", image: "https://randomuser.me/api/portraits/women/1.jpg" },
+        { name: "Alice Johnson", image: "https://randomuser.me/api/portraits/women/2.jpg" },
+        { name: "Bob Brown", image: "https://randomuser.me/api/portraits/men/2.jpg" },
+        { name: "Charlie White", image: "https://randomuser.me/api/portraits/men/3.jpg" },
+        { name: "David Black", image: "https://randomuser.me/api/portraits/men/4.jpg" },
+        { name: "Eve Green", image: "https://randomuser.me/api/portraits/women/3.jpg" },
+        { name: "Frank Blue", image: "https://randomuser.me/api/portraits/men/5.jpg" },
+        { name: "Grace Yellow", image: "https://randomuser.me/api/portraits/women/4.jpg" },
+        { name: "Hank Red", image: "https://randomuser.me/api/portraits/men/6.jpg" },
+        { name: "Ivy Purple", image: "https://randomuser.me/api/portraits/women/5.jpg" },
+        { name: "Jack Orange", image: "https://randomuser.me/api/portraits/men/7.jpg" },
+        { name: "Kate Pink", image: "https://randomuser.me/api/portraits/women/6.jpg" },
+        { name: "Leo Gray", image: "https://randomuser.me/api/portraits/men/8.jpg" },
+        { name: "Mia Cyan", image: "https://randomuser.me/api/portraits/women/7.jpg" },
+        { name: "Nina Magenta", image: "https://randomuser.me/api/portraits/women/8.jpg" },
+        { name: "Oscar Lime", image: "https://randomuser.me/api/portraits/men/9.jpg" },
+        { name: "Paul Teal", image: "https://randomuser.me/api/portraits/men/10.jpg" },
+        { name: "Quincy Maroon", image: "https://randomuser.me/api/portraits/men/11.jpg" },
+        { name: "Rita Beige", image: "https://randomuser.me/api/portraits/women/9.jpg" },
+        { name: "Sam Silver", image: "https://randomuser.me/api/portraits/men/12.jpg" },
+        { name: "Tina Gold", image: "https://randomuser.me/api/portraits/women/10.jpg" },
+        { name: "Uma Violet", image: "https://randomuser.me/api/portraits/women/11.jpg" },
+        { name: "Vic Indigo", image: "https://randomuser.me/api/portraits/men/13.jpg" },
     ];
 
     const projectTypes: ProjectType[] = [
-        {name: "Next.js", imageUrl: "./TechIcons/logo_nextjs.svg"},
-        {name: "Angular", imageUrl: "./TechIcons/logo_angular.svg"},
-        {name: "Astro", imageUrl: "./TechIcons/logo_astro.svg"},
-        {name: "React", imageUrl: "./TechIcons/logo_react.svg"},
-        {name: "HTML", imageUrl: "./TechIcons/logo_html.svg"},
-        {name: "Svelte", imageUrl: "./TechIcons/logo_svelte.svg"},
-        {name: "Go", imageUrl: "./TechIcons/logo_go.svg"},
-        {name: "Python", imageUrl: "./TechIcons/logo_python.svg"},
-        {name: "Node.js", imageUrl: "./TechIcons/logo_nodejs.svg"},
-        {name: "Rust", imageUrl: "./TechIcons/logo_rust.svg"},
-        {name: "Laravel", imageUrl: "./TechIcons/logo_laravel.svg"},
-        {name: "Django", imageUrl: "./TechIcons/logo_python.svg"},
-        {name: "Flutter", imageUrl: "./TechIcons/logo_flutter.svg"},
+        { name: "Next.js", imageUrl: "./TechIcons/logo_nextjs.svg" },
+        { name: "Angular", imageUrl: "./TechIcons/logo_angular.svg" },
+        { name: "Astro", imageUrl: "./TechIcons/logo_astro.svg" },
+        { name: "React", imageUrl: "./TechIcons/logo_react.svg" },
+        { name: "HTML", imageUrl: "./TechIcons/logo_html.svg" },
+        { name: "Svelte", imageUrl: "./TechIcons/logo_svelte.svg" },
+        { name: "Go", imageUrl: "./TechIcons/logo_go.svg" },
+        { name: "Python", imageUrl: "./TechIcons/logo_python.svg" },
+        { name: "Node.js", imageUrl: "./TechIcons/logo_nodejs.svg" },
+        { name: "Rust", imageUrl: "./TechIcons/logo_rust.svg" },
+        { name: "Laravel", imageUrl: "./TechIcons/logo_laravel.svg" },
+        { name: "Django", imageUrl: "./TechIcons/logo_python.svg" },
+        { name: "Flutter", imageUrl: "./TechIcons/logo_flutter.svg" },
     ];
 
     const dummyProjects: Project[] = [
@@ -307,33 +313,33 @@ const Page: React.FC = () => {
     }, []);
 
     return (
-        <div className="w-screen h-auto md:h-[90vh] mx-auto p-10 shadow-md flex flex-col md:flex-row bg-zinc-950">
+        <div className="projectDashBoradContainer h-auto w-screen mx-auto p-10 shadow-md flex flex-col md:flex-row bg-zinc-950 dark:bg-grid-white/[0.2] bg-grid-black/[0.2] relative">
+            <div className="absolute pointer-events-none inset-0 flex items-center justify-center bg-black [mask-image:radial-gradient(ellipse_at_center,transparent_20%,black)]"></div>
             <div
-                className="md:w-1/2 w-full md:mb-0 mb-10 md:h-full flex flex-col items-center justify-center text-white px-[5%] md:px-[2%] lg:px-[5%] gap-10 md:gap-20">
+                className="md:w-2/5 w-full md:mb-0 mb-10 md:h-full flex flex-col items-center justify-center text-white px-[5%] md:px-[2%] lg:px-[5%] gap-10 md:gap-20">
                 <div className='self-start flex flex-col md:px-0 gap-4 mt-6'>
                     <h1 className='text-6xl my-4 md:w-full w-[110%] font-bold'>Welcome Back</h1>
                     <p className='w-full self-start text-start hidden md:inline-block text-2xl font-bold'>Code what in your mind, just like
                         you did when you were younger</p>
                 </div>
                 <div className='md:px-4 min:w-[80%] flex items-center self-start flex-col gap-10'>
-                    <Button className="md:text-2xl text-xl h-auto py-3 px-6 w-full font-semibold" color="secondary"
-                            radius="md">
+                    {/* <Button className="md:text-2xl text-xl h-auto py-3 px-6 w-full font-semibold" color="secondary"
+                        radius="md">
                         <div className="flex items-center gap-2">
-                            <Github strokeWidth={3} size={30}/>
+                            <Github strokeWidth={3} size={30} />
                             <div className="flex flex-col w-4/5">
                                 <h4>Import a repo</h4>
                                 <p className="text-xs text-gray-400 md:visible hidden">Get started with a GitHub
                                     repository</p>
                             </div>
                         </div>
-                    </Button>
-
+                    </Button> */}
                     <AlertDialog open={open} onOpenChange={setOpen}>
                         <AlertDialogTrigger asChild>
                             <Button className="md:text-2xl text-xl h-auto py-3 px-6 font-semibold w-full"
-                                    variant="ghost"
-                                    color="danger" radius="md">
-                                <Rocket strokeWidth={3} size={30}/> New Project
+                                variant="ghost"
+                                color="danger" radius="md">
+                                <Rocket strokeWidth={3} size={30} /> New Project
                             </Button>
                         </AlertDialogTrigger>
                         <AlertDialogContent>
@@ -342,47 +348,43 @@ const Page: React.FC = () => {
                                 <AlertDialogDescription>
                                     <div>
                                         <form action="" className="bg-transparent p-6 rounded-lg shadow-md space-y-4"
-                                              onSubmit={handleSubmit}>
+                                            onSubmit={handleSubmit}>
                                             <div className="flex flex-col my-2 gap-2">
                                                 <label htmlFor="projectName" className="text-white">
                                                     Project Name <span className="text-red-500">*</span>
                                                 </label>
                                                 <Input id="projectName" name="projectName" type="text"
-                                                       placeholder="Project Name"
-                                                       className=" text-black p-2 rounded-lg w-full" required
+                                                    placeholder="Project Name"
+                                                    className="text-white p-2 rounded-lg w-full" required
                                                 />
                                             </div>
                                             <div className="flex flex-col my-2 gap-2">
                                                 <label htmlFor="projectRepo" className="text-white">
                                                     Project Github Repo <span className="text-red-500">*</span>
                                                 </label>
-                                                <Input id="projectRepo" name="projectRepo" type="text"
-                                                       placeholder="www.github.com"
-                                                       className=" text-black p-2 rounded-lg w-full" required
+                                                <Input id="projectRepo" name="projectRepo"
+                                                    type="url"
+                                                    placeholder="github.com/username/repo-name"
+                                                    className="text-white p-2 w-full" required
                                                 />
                                             </div>
                                             <div className="flex flex-col my-2 gap-2">
                                                 <label htmlFor="projectImage" className="text-white">
                                                     Project Image
                                                 </label>
-                                                <Input id="projectImage" name="projectImage" type="file"
-                                                       accept="image/*"
-                                                       className=" text-black rounded-lg w-full"
-                                                />
+                                                <Input id="projectImage" name="projectImage" accept="image/*" type="file" />
                                             </div>
-                                            {/*<div className="flex flex-col my-2 gap-2">*/}
+                                            {/* <div className="flex flex-col my-2 gap-2">*/}
                                             {/*    <label htmlFor="githubRepo" className="text-white">*/}
                                             {/*        GitHub Repo <span className="text-red-500">*</span>*/}
                                             {/*    </label>*/}
                                             {/*    <Input id="githubRepo" type="url" placeholder="GitHub Repo"*/}
                                             {/*           className="bg-white text-black p-2 rounded-lg w-full" required/>*/}
-                                            {/*</div>*/}
-                                            <br/>
-                                            <div className="flex items-center my-2 gap-4">
-                                                <AlertDialogCancel>Cancel</AlertDialogCancel>
-                                                <Button type="submit" className="bg-gray-600 text-white rounded-lg">
-                                                    Create
-                                                </Button>
+                                            {/*</div> */}
+                                            <br />
+                                            <div className="flex justify-end my-2 gap-4">
+                                                <AlertDialogCancel className="p-0 border-none hover:bg-transparent"><Button as={AlertDialogCancel} className="text-lg font-black" variant="ghost" type="button">Cancel</Button></AlertDialogCancel>
+                                                <Button className="text-lg font-black" variant="ghost" color="success" type="submit">Create</Button>
                                             </div>
                                         </form>
                                     </div>
@@ -395,20 +397,29 @@ const Page: React.FC = () => {
 
             </div>
             <div
-                className="md:w-1/2 w-full h-1/2 md:h-full flex flex-col justify-center items-center gap-6 md:gap-4 py-4  bg-[#15151c] px-[5%] rounded-lg">
+                className={`md:w-3/5 w-full h-1/2 md:h-full flex flex-col justify-center items-center gap-6 md:gap-4 py-10  bg-[#111114] px-[5%] rounded-lg z-10 ${projects && projects?.length > 0 && yourProjects && yourProjects?.length ? 'flex' : 'hidden'}`}>
                 <div className=" w-full flex flex-col">
                     <h1 className="text-2xl font-semibold mb-4">Your Projects</h1>
                     <div className="flex justify-center">
-                        <CarouselSpacing isShared={false} projects={yourProjects} states={[setProjects, setYourProjects]}/>
+                        <CarouselSpacing isShared={false} projects={yourProjects} states={[setProjects, setYourProjects]} />
                     </div>
                 </div>
-                <Divider className="my-4 bg-zinc-600"/>
                 <div className=" w-full flex flex-col">
                     <h1 className="text-2xl font-semibold mb-4">Shared Projects</h1>
                     <div className="flex justify-center">
-                        <CarouselSpacing isShared={true} projects={projects} states={[setProjects, setYourProjects]}/>
+                        <CarouselSpacing isShared={true} projects={projects} states={[setProjects, setYourProjects]} />
                     </div>
                 </div>
+            </div>
+            <div
+                className={`md:w-3/5 w-full h-1/2 md:h-full flex flex-col justify-center items-center gap-6 md:gap-4 py-10 bg-[#111114] px-[5%] rounded-lg z-10 cursor-default ${projects && projects?.length > 0 && yourProjects && yourProjects?.length > 0 ? 'hidden' : 'flex'}`}>
+                <Alert className="border-0 bg-transparent">
+                    <Terminal className="h-4 w-4" />
+                    <AlertTitle className="text-3xl font-semibold">Heads up!</AlertTitle>
+                    <AlertDescription className="text-xl">
+                        You don't have any projects yet, Create one.
+                    </AlertDescription>
+                </Alert>
             </div>
 
         </div>
