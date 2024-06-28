@@ -56,6 +56,7 @@
         "mini-svg-data-uri": "^1.4.4",
         "next": "14.2.4",
         "next-themes": "^0.3.0",
+        "nodemailer": "^6.9.14",
         "react": "^18.3.1",
         "react-day-picker": "^8.10.1",
         "react-dom": "^18.3.1",
@@ -73,6 +74,7 @@
     },
     "devDependencies": {
         "@types/node": "^20",
+        "@types/nodemailer": "^6.4.15",
         "@types/react": "^18",
         "@types/react-dom": "^18",
         "autoprefixer": "^10.4.19",
