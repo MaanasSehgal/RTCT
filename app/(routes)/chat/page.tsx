@@ -40,26 +40,26 @@ const ChatApp = () => {
         )
             .then(function (response) {
                 console.log(response);
-                if(!response.data)return;
-                let map = new Map<string, [{},[]]>
-                for(let project of response.data){
+                if (!response.data) return;
+                let map = new Map<string, [{}, []]>
+                for (let project of response.data) {
                     map.set(project.projectId, [{
                         id: project.projectId,
                         first_name: project.name,
                         last_name: '',
                         type: 'group',
                         image: project.image
-                    },[]])
+                    }, []])
                 }
-                for(let project of response.data){
-                    for(let member of project.members){
+                for (let project of response.data) {
+                    for (let member of project.members) {
                         map.set(member.id, [{
                             id: member.id,
                             first_name: member.name,
                             last_name: '',
                             type: 'personal',
                             image: member.image
-                        },[]])
+                        }, []])
                     }
 
                 }
@@ -114,7 +114,9 @@ const ChatApp = () => {
 
     const onSend = (target: any, msg: string) => {
         console.log("send", target, msg);
-        socket.emit("message:send", target.id, msg);
+        if (target.type === 'group') {
+            socket.emit("project:message:send", target.id, msg);
+        }
     }
 
     return (
