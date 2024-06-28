@@ -5,7 +5,7 @@ import Link from "next/link";
 
 const Hero = () => {
     return (
-        <div className="h-[90vh] w-full dark:bg-grid-white/[0.2] bg-grid-black/[0.2] relative flex items-center justify-center bg-black">
+        <div id="scroll-to-home" className="h-[90vh] w-full dark:bg-grid-white/[0.2] bg-grid-black/[0.2] relative flex items-center justify-center bg-black">
             <div className="absolute pointer-events-none inset-0 flex items-center justify-center bg-black [mask-image:radial-gradient(ellipse_at_center,transparent_20%,black)]"></div>
             <div className="flex flex-col justify-center items-center px-[7vw] gap-2 lg:flex-row lg:gap-10">
                 <div className="flex flex-col justify-between items-center lg:w-[70%]">
