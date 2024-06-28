@@ -44,17 +44,17 @@ const Editor = ({onSaveTrigger, fileId, fileData}: {onSaveTrigger: any; fileId: 
 
     const [document, setDocument] = useState(rawDocument);
 
-    // useEffect(() => {
-    //     if (!ref.current) {
-    //         fileData && initEditor(); 
-    //     }
-    //     return () => {
-    //         if (ref.current) {
-    //             ref.current.destroy();
-    //             ref.current = undefined;
-    //         }
-    //     };
-    // }, [fileData]);
+    useEffect(() => {
+        if (!ref.current) {
+             initEditor();
+        }
+        return () => {
+            if (ref.current) {
+                ref.current.destroy();
+                ref.current = undefined;
+            }
+        };
+    }, [fileData]);
 
     useEffect(() => {
         // console.log("Trigger value: ", onSaveTrigger);
@@ -114,32 +114,32 @@ const Editor = ({onSaveTrigger, fileId, fileData}: {onSaveTrigger: any; fileId: 
     };
 
     const onSaveDocument = () => {
-        // if (ref.current) {
-        //     ref.current
-        //         .save()
-        //         .then((outputData) => {
-        //             console.log("Article data: ", outputData);
-        //             updateDocument({
-        //                 _id: fileId,
-        //                 document: JSON.stringify(outputData),
-        //             }).then(
-        //                 (res) => {
-        //                     toast("Document Updated!");
-        //                 },
-        //                 (e) => {
-        //                     toast("Server Error: ", e);
-        //                 },
-        //             );
-        //         })
-        //         .catch((error) => {
-        //             console.log("Saving failed: ", error);
-        //         });
-        // }
+        if (ref.current) {
+            ref.current
+                .save()
+                .then((outputData) => {
+                    console.log("Article data: ", outputData);
+                    // updateDocument({
+                    //     _id: fileId,
+                    //     document: JSON.stringify(outputData),
+                    // }
+                    // ).then(
+                    //     (res) => {
+                    //         toast("Document Updated!");
+                    //     },
+                    //     (e) => {
+                    //         toast("Server Error: ", e);
+                    //     },
+                    // );
+                    //TODO: Save the document to the database
+                })
+                .catch((error) => {
+                    console.log("Saving failed: ", error);
+                });
+        }
     };
     return (
-        <div>
-            <div className="ml-20" id="editorjs"></div>
-        </div>
+            <div className="ml-20 w-full h-full" id="editorjs"></div>
     );
 };
 
