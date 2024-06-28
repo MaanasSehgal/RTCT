@@ -151,7 +151,7 @@ const ChatApp = () => {
     }
 
     return (
-        <div className="h-[93vh] lg:h-[90vh] flex bg-black">
+        <div className="h-[--mainheight] flex bg-black">
             <div className={`${showChat ? "hidden" : "block"} md:block w-full md:w-1/4`}>
                 <SideBar
                     chatData={chatData}

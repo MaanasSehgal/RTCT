@@ -177,17 +177,17 @@ const TeamMembers = ({ data, setData }: any) => {
         <div className="w-full mt-16 h-[80%] flex flex-col items-center gap-4 ">
             {pendingRequests && pendingRequests.length !== 0 && (
                 <>
-                    <Accordion className="space-y-4">
-                        <AccordionItem className="p-4 rounded-lg shadow-sm text-xl" title={<span className="text-3xl font-bold self-start ml-10 mb-4">Pending Requests</span>}>
+                    <Accordion className="bg-zinc-900">
+                        <AccordionItem className="px-4 rounded-lg shadow-sm text-xl" title={<span className="text-3xl font-bold self-start ml-4 mb-4">Pending Requests</span>}>
                             {pendingRequests.map((member: any) => (
-                                <div key={member.id} className="w-11/12 my-6 rounded-full flex items-center justify-between bg-black overflow-y">
+                                <div key={member.id} className="md:w-4/5 w-72 my-6 md:rounded-full rounded-lg flex md:flex-row flex-col  items-center justify-between bg-black overflow-y">
                                     <div className="flex items-center gap-8 p-3">
                                         <Image className="w-12" src={member.image ? member.image : "/userlogo.png"} alt="logo" width={24} height={24} />
                                         <h2 className="text-md">{member.name}</h2>
                                     </div>
-                                    <div className="flex justify-center items-center gap-3">
-                                    <Button>Accept</Button>
-                                    <Button>Deny</Button>
+                                    <div className="flex justify-center items-center mr-4 gap-3">
+                                        <Button className="text-lg font-bold" size="md" radius="full" variant="ghost" color="danger">Deny</Button>
+                                        <Button className="text-lg font-bold" size="md" radius="full" color="success">Accept</Button>
                                     </div>
                                 </div>
                             ))}
