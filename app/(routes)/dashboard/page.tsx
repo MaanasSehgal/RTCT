@@ -49,6 +49,12 @@ const Page: React.FC = () => {
     //     console.log(teamList);
     // }, [teamList]);
 
+    const getSharedProjects = (projects:any, yourProjects:any) => {
+        return projects.filter((project: any) => {
+            return !yourProjects.some((yourProject: any) => yourProject.name === project.name);
+        })
+    }
+
     const checkUser = async () => {
         axios.post(`${process.env.NEXT_PUBLIC_BACKEND_URL}/users/create`, {}, {
             params: {
@@ -60,15 +66,9 @@ const Page: React.FC = () => {
         })
             .then(function (response) {
                 console.log(response);
-                // let yourProjects = response.data.adminProjects;
-                // let sharedProjects = response.data.projects;
-                // sharedProjects = sharedProjects.filter((project: any) => {
-                //     return !yourProjects.some((yourProject: any) => yourProject.name === project.name);
-                // });
-                const sharedProjects = response.data.projects.filter((project: any) => {
-                    return !response.data.adminProjects.some((yourProject: any) => yourProject.name === project.name);
-                })
-                setYourProjects(response.data.adminProjects);//your projects
+                const yourProjects = response.data.adminProjects;
+                const sharedProjects = getSharedProjects(response.data.projects, yourProjects);
+                setYourProjects(yourProjects);//your projects
                 setProjects(sharedProjects);//shared projects
             })
             .catch(function (error) {
@@ -122,8 +122,10 @@ const Page: React.FC = () => {
         )
             .then(function (response) {
                 console.log("this is shared project = " + response.data.projects);
-                setProjects(response.data.projects);
-                setYourProjects(response.data.adminProjects);
+                const yourProjects = response.data.adminProjects;
+                const sharedProjects = getSharedProjects(response.data.projects, yourProjects);
+                setYourProjects(yourProjects);//your projects
+                setProjects(sharedProjects);//shared projects
                 setOpen(false)
             })
             .catch(function (error) {
