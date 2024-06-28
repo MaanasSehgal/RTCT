@@ -118,16 +118,16 @@ const FeedBackSection = () => {
                     <h1 className="text-4xl my-4 self-start text-start w-full">Help us improve our website!</h1>
                     <p className="w-full self-start text-start">We're always looking for ways to make our website better. Tell us what you think and how we can improve your experience.</p>
                 </div>
-                <div className="md:px-0 px-4 w-full">
+                <div className="md:px-0 px-4 w-4/5 self-start">
                     <Slider
-                        size="lg"
+                        size="md"
                         step={1}
                         color="success"
                         label="Your Experience"
                         showSteps={true}
                         maxValue={5}
                         minValue={1}
-                        defaultValue={3}
+                        defaultValue={5}
                         className="max-w-md font-bold"
                     />
                 </div>
