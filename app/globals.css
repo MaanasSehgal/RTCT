@@ -24,6 +24,7 @@
         --chatSectionBg: #131217;
         --mainBackgroundColor: #0d1117;
         --columnBackgroundColor: #161c22;
+        --mainheight: height: calc(100vh - 5rem);
     }
 }
 
@@ -106,6 +107,16 @@
     }
 }
 
+.projectDashBoradContainer {
+    min-height: calc(100vh - 5rem);
+}
+
+@media (min-width: 768px) {
+   .projectDashBoradContainer {
+        height: calc(100vh - 5rem);
+    }
+    
+}
 
 .main-Container {
     height: calc(100vh - 5rem);

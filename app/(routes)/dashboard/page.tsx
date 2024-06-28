@@ -97,7 +97,7 @@ const Page: React.FC = () => {
         const repo = formData.get('projectRepo') as string;
         console.log(file)
         if (file.size === 0) {
-            file = './TechIcons/default.svg';
+            file = '/RTCTLOGOIMG.png';
         } else {
             file = await fileToBase64(file);
         }
@@ -313,7 +313,8 @@ const Page: React.FC = () => {
     }, []);
 
     return (
-        <div style={{minHeight: 'calc(100vh - 5rem)'}} className="w-screen h-auto mx-auto p-10 shadow-md flex flex-col md:flex-row bg-zinc-950">
+        <div className="projectDashBoradContainer h-auto w-screen mx-auto p-10 shadow-md flex flex-col md:flex-row bg-zinc-950 dark:bg-grid-white/[0.2] bg-grid-black/[0.2] relative">
+            <div className="absolute pointer-events-none inset-0 flex items-center justify-center bg-black [mask-image:radial-gradient(ellipse_at_center,transparent_20%,black)]"></div>
             <div
                 className="md:w-2/5 w-full md:mb-0 mb-10 md:h-full flex flex-col items-center justify-center text-white px-[5%] md:px-[2%] lg:px-[5%] gap-10 md:gap-20">
                 <div className='self-start flex flex-col md:px-0 gap-4 mt-6'>
@@ -396,7 +397,7 @@ const Page: React.FC = () => {
 
             </div>
             <div
-                className={`md:w-3/5 w-full h-1/2 md:h-full flex flex-col justify-center items-center gap-6 md:gap-4 py-10  bg-[#111114] px-[5%] rounded-lg ${projects && projects?.length > 0 && yourProjects && yourProjects?.length ? 'flex' : 'hidden'}`}>
+                className={`md:w-3/5 w-full h-1/2 md:h-full flex flex-col justify-center items-center gap-6 md:gap-4 py-10  bg-[#111114] px-[5%] rounded-lg z-10 ${projects && projects?.length > 0 && yourProjects && yourProjects?.length ? 'flex' : 'hidden'}`}>
                 <div className=" w-full flex flex-col">
                     <h1 className="text-2xl font-semibold mb-4">Your Projects</h1>
                     <div className="flex justify-center">
@@ -411,7 +412,7 @@ const Page: React.FC = () => {
                 </div>
             </div>
             <div
-                className={`md:w-1/2 w-full h-1/2 md:h-full flex-col justify-center items-center gap-6 md:gap-4 py-4 px-[5%] bg-[#15151c] rounded-lg z-20 cursor-default ${projects && projects?.length > 0 && yourProjects && yourProjects?.length > 0 ? 'hidden' : 'flex'}`}>
+                className={`md:w-3/5 w-full h-1/2 md:h-full flex flex-col justify-center items-center gap-6 md:gap-4 py-10 bg-[#111114] px-[5%] rounded-lg z-10 cursor-default ${projects && projects?.length > 0 && yourProjects && yourProjects?.length > 0 ? 'hidden' : 'flex'}`}>
                 <Alert className="border-0 bg-transparent">
                     <Terminal className="h-4 w-4" />
                     <AlertTitle className="text-3xl font-semibold">Heads up!</AlertTitle>

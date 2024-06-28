@@ -19,8 +19,8 @@ const Page = () => {
     const [elapsedTime, setElapsedTime] = useState(0);
     const [isSidebarOpen, setIsSidebarOpen] = useState(false);
 
-    const [playJoinSound] = useSound('/Sounds/join-sound.mp3', {volume: 0.3});
-    const [playEndSound] = useSound('./Sounds/end-sound.mp3', {volume: 0.3});
+    const [playJoinSound] = useSound('/Sounds/join-sound.mp3', { volume: 0.2 });
+    const [playEndSound] = useSound('./Sounds/end-sound.mp3', { volume: 0.2 });
 
     useEffect(() => {
         const timer = setInterval(() => {
@@ -68,7 +68,7 @@ const Page = () => {
         playEndSound();
         setLeaveRoom(true);
         setIsInRoom(false);
-        toast("You have left the room", {className: "bg-red-500"});
+        toast("You have left the room", { className: "bg-red-500" });
     }
 
     const handleMessageOpen = () => {
@@ -150,9 +150,9 @@ const Page = () => {
                 )}
                 {participantCount > 4 && !changeFlex && (
                     <>
-                        <ArrowLeft className="absolute top-20 left-0 m-4 cursor-pointer hover:bg-zinc-800 p-1 w-8 h-8 rounded-full" onClick={() => setChangeFlex(true)} />
+                        <ArrowLeft className="absolute top-20 left-0 m-4 cursor-pointer hover:bg-zinc-700 p-1 w-8 h-8 rounded-full z-20 bg-zinc-800" onClick={() => setChangeFlex(true)} />
                         {[...Array(participantCount)].map((_, index) => (
-                            <div key={index} className="relative w-96 h-1/2 bg-[#272A35] rounded-3xl m-4 flex justify-center items-center">
+                            <div key={index} className="relative w-80 h-[43%] bg-[#272A35] rounded-3xl mx-4 flex justify-center items-center">
                                 <Image src={'/userlogo.png'} alt={''} className="w-16 h-16" width={100} height={100} />
                                 <p className="absolute bottom-0 left-0 m-4">Doraemon</p>
                             </div>
@@ -174,14 +174,25 @@ const Page = () => {
                     <button className="bg-[#29903B] p-2 px-4 rounded-xl text-white text-medium hover:bg-[#36a048] font-bold cursor-pointer" onClick={increaseParticipant}>Add</button>
                 </div> */}
                 {/* main meet area */}
-                <div className={`w-screen transition-opacity duration-1000 ${isInRoom ? " opacity-100" : "opacity-30"}`} style={{ height: 'calc(100% - 5rem)' }}>
+                <div className={`w-screen transition-opacity duration-1000 ${isInRoom ? "inline-block" : "hidden"}`} style={{ height: 'calc(100% - 5rem)' }}>
                     {renderParticipants()}
+                </div>
+                <div className={`w-screen transition-opacity duration-1000 ${isInRoom ? "hidden" : "inline-block"}`} style={{ height: 'calc(100% - 5rem)' }}>
+                    <div className="flex md:flex-row flex-col gap-10 justify-center md:justify-evenly items-center w-full h-full p-10">
+                        <div className="flex flex-col gap-10 justify-center items-center md:w-3/5 w-full h-full md:mt-0 mt-10">
+                            <h1 className="text-white md:text-3xl text-2xl font-bold">Elevate Your Team's Collaboration with Live Room Features</h1>
+                            <Button onClick={() => handleJoinRoom()} className="bg-[--darkBtn] rounded-full h-12 flex justify-center items-center text-white text-2xl font-extrabold self-center self-start">Join Room</Button>
+                        </div>
+                        <div className="flex justify-center items-center w-4/5 md:w-2/5 h-full">
+                            <video className="rounded-full object-cover p-0 m-0" autoPlay={true} muted loop src={'/team-meeting.mp4'} width={300} height={300} />
+                        </div>
+                    </div>
                 </div>
                 {/* Menu bar */}
                 <div className={`${isInRoom ? 'justify-center md:justify-between' : 'justify-center'} w-screen h-20 flex  items-center px-4`}>
-                    {isInRoom ? (
+                    {isInRoom && (
                         <>
-                            <div id="timer" className={`text-white text-xl justify-center items-center border-4 rounded-full h-12 px-2 border-neutral-800 hidden md:flex`}>
+                            <div id="timer" className={`text-white text-lg justify-center items-center border-4 rounded-full h-12 px-2 border-neutral-800 hidden md:flex`}>
                                 {formatTime(elapsedTime)}
                             </div>
                             <div className="flex flex-row gap-4 h-full justify-center items-center">
@@ -203,8 +214,7 @@ const Page = () => {
                                 </div>
                             </div>
                         </>
-                    ) :
-                        <Button onClick={() => handleJoinRoom()} className="bg-[--darkBtn] rounded-full h-12 flex justify-center items-center text-white text-2xl font-extrabold self-center">Join Room</Button>
+                    )
                     }
                 </div>
             </div>

@@ -60,7 +60,7 @@ return (
       <CarouselContent className="-ml-1">
         {projects.map((project, index) => (
           <CarouselItem key={index} className="w-1/2 px-3 py-2 h-full md:basis-1/2 lg:basis-1/3">
-            <Card className="mx:h-30 w-full min-w-32 bg-red-300" shadow="sm" key={'item'} isPressable
+            <Card className="mx:h-30 w-full min-w-32" shadow="sm" key={'item'} isPressable
                   onClick={() => router.push("/" +
                       "projects/dashboard/" + project.projectId
                   )}>
