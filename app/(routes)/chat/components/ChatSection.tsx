@@ -24,6 +24,12 @@ const ChatSection = ({ onBack, chatData, draft, onDraftChange, onSend}: any) => 
     }, []);
 
     useEffect(() => {
+        const elem = document.getElementById('msg');
+        if(!elem)return;
+        elem.scrollTo({ top: elem.scrollHeight , behavior: 'instant'})
+    }, []);
+
+    useEffect(() => {
         if (chatData) {
             fuse.current = new Fuse(chatData[1], {
                 keys: ["senderName", "content.text"],
