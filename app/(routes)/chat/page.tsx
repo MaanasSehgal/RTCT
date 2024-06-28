@@ -114,9 +114,15 @@ const ChatApp = () => {
             });
 
         socket.auth = {token: getToken()};
-        socket.connect();
-        console.log("socket");
 
+        console.log("socket");
+        socket.on('connect', () => {
+          console.log("connected");
+        })
+        socket.on('disconnect', () => {
+            console.log("connected");
+        })
+        socket.connect();
 
 
 

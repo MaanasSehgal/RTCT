@@ -1,40 +1,53 @@
-import {RTCTLogo} from "@/components/Logos/Logos";
+"use client";
+import { RTCTLogo } from "@/components/Logos/Logos";
 import Link from "next/link";
 
 export default function FooterComponent() {
+    const scrollToFunc = (scrollToId: any) => {
+        let element = document.getElementById(scrollToId) as HTMLElement;
+        if (!element) {
+            console.log("Element not found");
+            return;
+        }
+
+        element.scrollIntoView({
+            behavior: "smooth",
+            block: "start",
+            inline: "nearest",
+        });
+    };
     return (
         <footer className="w-full">
             <div className="px-[6%]">
                 <div className="grid grid-cols-2 sm:grid-cols-4 lg:grid-cols-6 gap-3 md:gap-8 py-10 max-sm:max-w-sm max-sm:mx-auto gap-y-8">
                     <div className="col-span-full mb-10 lg:col-span-2 lg:mb-0">
-                        <Link href="/" className="flex justify-center lg:justify-start items-center">
+                        <div className="flex justify-center lg:justify-start items-center">
                             <RTCTLogo />
                             <h1>RTCT</h1>
-                        </Link>
+                        </div>
                         <p className="py-8 text-sm text-[--darkText2] lg:max-w-xs text-center lg:text-left">Trusted by top developers all over the world. Have any query?</p>
-                        <Link
-                            href="/"
+                        <div
                             className="py-2.5 px-5 h-9 block w-fit bg-[--darkBtn] rounded-full shadow-sm text-xs text-[darkText1] mx-auto transition-all  duration-500 hover:bg-indigo-700 lg:mx-0">
                             Contact us
-                        </Link>
+                        </div>
                     </div>
                     <div className="lg:mx-auto text-left">
                         <h4 className="text-lg text-[--darkText1] font-medium mb-7">RTCT</h4>
                         <ul className="text-sm  transition-all duration-500">
                             <li className="mb-6">
-                                <Link href="#" className="text-[--darkText2] hover:text-[--darkText1]">
+                                <div onClick={() => scrollToFunc("scroll-to-home")} className="text-[--darkText2] hover:text-[--darkText1] cursor-pointer">
                                     Home
-                                </Link>
+                                </div>
                             </li>
                             <li className="mb-6">
-                                <Link href="#" className="text-[--darkText2] hover:text-[--darkText1]">
-                                    About Us
-                                </Link>
+                                <div onClick={() => scrollToFunc("scroll-to-features")} className="text-[--darkText2] hover:text-[--darkText1] cursor-pointer">
+                                    Features
+                                </div>
                             </li>
                             <li>
-                                <Link href="#" className="text-[--darkText2] hover:text-[--darkText1]">
-                                    Features
-                                </Link>
+                                <div onClick={() => scrollToFunc("scroll-to-feedback")} className="text-[--darkText2] hover:text-[--darkText1]   cursor-pointer">
+                                    Feedback
+                                </div>
                             </li>
                         </ul>
                     </div>
@@ -42,68 +55,68 @@ export default function FooterComponent() {
                         <h4 className="text-lg text-[--darkText1] font-medium mb-7">Products</h4>
                         <ul className="text-sm  transition-all duration-500">
                             <li className="mb-6">
-                                <Link href="#" className="text-[--darkText2] hover:text-[--darkText1]">
+                                <div className="text-[--darkText2] hover:text-[--darkText1] cursor-pointer">
                                     Collaborative coding
-                                </Link>
+                                </div>
                             </li>
                             <li className="mb-6">
-                                <Link href="#" className="text-[--darkText2] hover:text-[--darkText1]">
+                                <div className="text-[--darkText2] hover:text-[--darkText1] cursor-pointer">
                                     Task Management
-                                </Link>
+                                </div>
                             </li>
                             <li>
-                                <Link href="#" className="text-[--darkText2] hover:text-[--darkText1]">
+                                <div className="text-[--darkText2] hover:text-[--darkText1] cursor-pointer">
                                     Progress Tracking
-                                </Link>
+                                </div>
                             </li>
                         </ul>
                     </div>
                     <div className="lg:mx-auto text-left">
                         <h4 className="text-lg text-[--darkText1] font-medium mb-7">Resources</h4>
                         <ul className="text-sm  transition-all duration-500">
-                            <li className="mb-6">
-                                <Link href="#" className="text-[--darkText2] hover:text-[--darkText1]">
+                            <li className="mb-6 cursor-pointer">
+                                <div className="text-[--darkText2] hover:text-[--darkText1]">
                                     FAQs
-                                </Link>
+                                </div>
                             </li>
-                            <li className="mb-6">
-                                <Link href="#" className=" text-[--darkText2] hover:text-[--darkText1]">
+                            <li className="mb-6 cursor-pointer">
+                                <div className=" text-[--darkText2] hover:text-[--darkText1]">
                                     Quick Start
-                                </Link>
+                                </div>
                             </li>
-                            <li className="mb-6">
-                                <Link href="#" className=" text-[--darkText2] hover:text-[--darkText1]">
+                            <li className="mb-6 cursor-pointer">
+                                <div className=" text-[--darkText2] hover:text-[--darkText1]">
                                     Documentation
-                                </Link>
+                                </div>
                             </li>
                         </ul>
                     </div>
                     <div className="lg:mx-auto text-left">
                         <h4 className="text-lg text-[--darkText1] font-medium mb-7">Blogs</h4>
                         <ul className="text-sm  transition-all duration-500">
-                            <li className="mb-6">
-                                <Link href="#" className=" text-[--darkText2] hover:text-[--darkText1]">
+                            <li className="mb-6 cursor-pointer">
+                                <div className=" text-[--darkText2] hover:text-[--darkText1]">
                                     Tips & Tricks
-                                </Link>
+                                </div>
                             </li>
-                            <li className="mb-6">
-                                <Link href="#" className=" text-[--darkText2] hover:text-[--darkText1]">
+                            <li className="mb-6 cursor-pointer">
+                                <div className=" text-[--darkText2] hover:text-[--darkText1]">
                                     Latest Updates
-                                </Link>
+                                </div>
                             </li>
-                            <li>
-                                <Link href="#" className=" text-[--darkText2] hover:text-[--darkText1]">
+                            <li className="cursor-pointer">
+                                <div className=" text-[--darkText2] hover:text-[--darkText1]">
                                     Events
-                                </Link>
+                                </div>
                             </li>
                         </ul>
                     </div>
                 </div>
                 <div className="py-7 border-t border-gray-200">
                     <div className="flex items-center justify-center flex-col lg:justify-between lg:flex-row">
-                        <span className="text-sm text-[darkText1] ">
-                            <Link href="/">@RTCT 2024, All rights reserved.</Link>
-                        </span>
+                        <Link href="https://www.linkedin.com/in/maanassehgal" className="text-sm text-[darkText1] underline underline-offset-4">
+                            <div>@RTCT 2024, All rights reserved.</div>
+                        </Link>
                         <div className="flex mt-4 space-x-4 sm:justify-center lg:mt-0 ">
                             <Link href="https://www.linkedin.com/in/maanassehgal/" target="_blank" className="w-9 h-9 rounded-full bg-gray-700 flex justify-center items-center hover:bg-indigo-600">
                                 <svg className="w-[1rem] h-[1rem] text-[darkText1]" viewBox="0 0 13 12" fill="none" xmlns="">

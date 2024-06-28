@@ -14,9 +14,8 @@ const Page = () => {
             <FeatureCard />
             <br /><br />
             <AccordionComponent />
-            <br />
-            <br />
-            <FeedBackSection/>
+            <br /><br />
+            <FeedBackSection />
         </div>
     );
 };

@@ -26,7 +26,7 @@ export default function RootLayout({
                         <NavbarComponent />
                         {children}
                         <Toaster />
-                        {/* <FooterComponent /> */}
+                        <FooterComponent />
                 </NextUIProvider>
             </body>
         </html>
