@@ -1,8 +1,7 @@
 import React, {useEffect, useState} from "react";
 import {Excalidraw, MainMenu, WelcomeScreen} from "@excalidraw/excalidraw";
 import {FILE} from "./FILE";
-// import {useMutation} from "convex/react";
-// import {api} from "@/convex/_generated/api";
+
 
 // const updateWhiteboard = useMutation(api.files.updateWhiteboard);
 // useEffect(() => {

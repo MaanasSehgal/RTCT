@@ -14,9 +14,7 @@ import {
     AlertDialogTrigger,
 } from "@/components/ui/alert-dialog";
 import { Button, Slider } from "@nextui-org/react";
-import { useConvex, useMutation } from "convex/react";
 import { useKindeBrowserClient } from "@kinde-oss/kinde-auth-nextjs";
-import { api } from "@/convex/_generated/api";
 import TeamCard from "./_components/TeamCard";
 import { CirclePlus, Github, Plus, Rocket, Terminal } from "lucide-react";
 import { CarouselSpacing } from "./_components/CarouselSpacing";
@@ -33,14 +31,11 @@ const Page: React.FC = () => {
     const teamName = useRef("");
     const teamImage = useRef("");
     const [open, setOpen] = useState(false)
-    const convex = useConvex();
     const { user, getToken } = useKindeBrowserClient();
     const [projects, setProjects] = useState<any[] | undefined>(undefined);
     const [yourProjects, setYourProjects] = useState<any[] | undefined>(undefined);
     //const getUser=useQuery(api.user.getUser,{email:user?.email});
 
-    const createUser = useMutation(api.user.createUser);
-    const createTeam = useMutation(api.teams.createTeam);
     useEffect(() => {
         if (user) {
             (async () => {

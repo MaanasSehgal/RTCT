@@ -6,10 +6,8 @@ import Link from "next/link";
 import {Label} from "./Label";
 import {Input} from "./Input";
 import {LoginLink} from "@kinde-oss/kinde-auth-nextjs/components";
-import {api} from "@/convex/_generated/api";
-import {useConvex} from "convex/react";
+
 import {useKindeBrowserClient} from "@kinde-oss/kinde-auth-nextjs";
-import {createUser} from "@/convex/user";
 import axios from "axios";
 
 
@@ -19,7 +17,6 @@ export function LoginForm() {
     //     password: "",
     //     showPassword: false, // Track whether password is visible or not
     // });
-    const convex = useConvex();
     const emailRef = useRef("");
     const [email, setEmail] = useState("");
     const [signinEnabled, setSigninEnabled] = useState(false);
