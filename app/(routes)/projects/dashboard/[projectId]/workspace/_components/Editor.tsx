@@ -16,6 +16,9 @@ import Paragraph from "@editorjs/paragraph";
 
 import {toast} from "sonner";
 import {FILE} from "./FILE";
+import axios from "axios";
+import { useKindeBrowserClient } from "@kinde-oss/kinde-auth-nextjs";
+import {usePathname} from "next/navigation";
 
 const rawDocument = {
     time: 1550476186479,
@@ -41,7 +44,8 @@ const rawDocument = {
 const Editor = ({onSaveTrigger, fileId, fileData}: {onSaveTrigger: any; fileId: any; fileData: FILE}) => {
     const ref = useRef<EditorJS>();
     // const updateDocument = useMutation(api.files.updateDocument);
-
+    const{user, getToken} = useKindeBrowserClient();
+    const pathName = usePathname();
     const [document, setDocument] = useState(rawDocument);
 
     useEffect(() => {
@@ -113,12 +117,35 @@ const Editor = ({onSaveTrigger, fileId, fileData}: {onSaveTrigger: any; fileId: 
         ref.current = editor;
     };
 
-    const onSaveDocument = () => {
+    const onSaveDocument =() => {
         if (ref.current) {
             ref.current
                 .save()
                 .then((outputData) => {
                     console.log("Article data: ", outputData);
+                    axios.patch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/projects/update`,
+                        {
+                            projectId: pathName.split('/').slice(-2, -1)[0],
+                            document: JSON.stringify(outputData),
+                        },
+                        {
+                            params: {
+                                audience: "rtct_backend_api"
+                            },
+                            headers: {
+                                'Authorization': 'Bearer ' + getToken()
+                            },
+
+                        }
+                    )
+                        .then(function (response) {
+                            console.log(response);
+                            toast("Document Updated!");
+                        })
+                        .catch(function (error) {
+                            console.log(error);
+                            toast("ERROR: Document not updated!");
+                        });
                     // updateDocument({
                     //     _id: fileId,
                     //     document: JSON.stringify(outputData),
