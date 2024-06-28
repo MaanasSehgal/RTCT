@@ -1,32 +1,33 @@
 "use client";
-import React, {useEffect, useState} from "react";
+import React, { useEffect, useState } from "react";
 import Sidebar from "@/app/(routes)/projects/dashboard/[projectId]/components/Sidebar";
 import Configuration from "@/app/(routes)/projects/dashboard/[projectId]/components/Configuration";
 import TeamMembers from "@/app/(routes)/projects/dashboard/[projectId]/components/TeamMembers";
 import Commits from "@/app/(routes)/projects/dashboard/[projectId]/components/Commits";
 import KanbanBoard from "@/app/(routes)/projects/dashboard/[projectId]/components/KanbanBoard";
-import {Activity, GitCommitHorizontal, Kanban as KanbanIcon, Settings2, Users} from "lucide-react";
-import {useKindeBrowserClient} from "@kinde-oss/kinde-auth-nextjs";
+import { Activity, GitCommitHorizontal, Kanban as KanbanIcon, Settings2, Users } from "lucide-react";
+import { useKindeBrowserClient } from "@kinde-oss/kinde-auth-nextjs";
 import Board from "@/app/(routes)/projects/dashboard/[projectId]/components/Board";
 import axios from "axios";
+import { Spinner } from "@nextui-org/spinner";
 
-const Dashboard = ({params}: { params: { projectId: string } }) => {
+const Dashboard = ({ params }: { params: { projectId: string } }) => {
     const [project, setProject] = useState(undefined);
     const [unAuthorized, setUnauthorized] = useState(false);
     const data = [
-        {icon: <Settings2 size={30}/>, title: "Configuration"},
-        {icon: <Users size={30}/>, title: "Team Members"},
-        {icon: <GitCommitHorizontal size={30}/>, title: "Commits"},
-        {icon: <KanbanIcon size={30}/>, title: "Kanban"},
+        { icon: <Settings2 size={30} />, title: "Configuration" },
+        { icon: <Users size={30} />, title: "Team Members" },
+        { icon: <GitCommitHorizontal size={30} />, title: "Commits" },
+        { icon: <KanbanIcon size={30} />, title: "Kanban" },
     ];
 
-    const {user, getToken} = useKindeBrowserClient();
+    const { user, getToken } = useKindeBrowserClient();
 
     const componentMap: { [key: string]: JSX.Element } = {
-        "Configuration": <Configuration data={project} setData={setProject}/>,
-        "Team Members": <TeamMembers data={project} setData={setProject}/>,
-        "Commits": <Commits/>,
-        "Kanban": <KanbanBoard/>,
+        "Configuration": <Configuration data={project} setData={setProject} />,
+        "Team Members": <TeamMembers data={project} setData={setProject} />,
+        "Commits": <Commits />,
+        "Kanban": <KanbanBoard />,
     };
 
     const [selectedTab, setSelectedTab] = useState<string>("Configuration");
@@ -75,9 +76,11 @@ const Dashboard = ({params}: { params: { projectId: string } }) => {
                 :
                 <>
                     {project === undefined ? <div
-                        className="w-full h-full flex justify-center items-center text-white absolute z-10 bg-background">Loading...</div> : null}
-                    <Sidebar tabData={data} handleTabClick={handleTabClick} selectedTab={selectedTab}/>
-                    <Board boardData={componentMap[selectedTab]}/>
+                        className="w-full h-full flex justify-center items-center text-white absolute z-10 bg-background">
+                        <Spinner size="lg" color="primary" />
+                    </div> : null}
+                    <Sidebar tabData={data} handleTabClick={handleTabClick} selectedTab={selectedTab} />
+                    <Board boardData={componentMap[selectedTab]} />
                 </>
             }
         </div>

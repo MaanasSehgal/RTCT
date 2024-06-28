@@ -1,22 +1,18 @@
-import { NextApiRequest, NextApiResponse } from 'next';
+import { NextRequest, NextResponse } from 'next/server';
 import nodemailer from 'nodemailer';
 
-export async function handler(req: NextApiRequest, res: NextApiResponse) {
-  if (req.method !== 'POST') {
-    return res.status(405).json({ message: 'Method not allowed.' });
-  }
-
-  const { name, email, feedback, experience } = req.body;
+export async function POST(req: NextRequest) {
+  const { name, email, feedback, experience } = await req.json();
 
   if (!name || !email || !feedback || !experience) {
-    return res.status(400).json({ message: 'Missing required fields.' });
+    return NextResponse.json({ message: 'Missing required fields.' }, { status: 400 });
   }
 
   const transporter = nodemailer.createTransport({
     service: 'gmail',
     auth: {
       user: process.env.GMAIL_USER,
-      pass: process.env.GMAIL_PASS, // Use the App Password here
+      pass: process.env.GMAIL_PASS,
     },
   });
 
@@ -29,9 +25,9 @@ export async function handler(req: NextApiRequest, res: NextApiResponse) {
 
   try {
     await transporter.sendMail(mailOptions);
-    return res.status(200).json({ message: 'Feedback sent successfully!' });
+    return NextResponse.json({ message: 'Feedback sent successfully!' }, { status: 200 });
   } catch (error) {
     console.error('Error sending feedback:', error);
-    return res.status(500).json({ message: 'Error sending feedback.' });
+    return NextResponse.json({ message: 'Error sending feedback.' }, { status: 500 });
   }
 }
