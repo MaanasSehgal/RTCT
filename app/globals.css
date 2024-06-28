@@ -3,7 +3,6 @@
 @tailwind utilities;
 
 @import url("https://fonts.googleapis.com/css2?family=IBM+Plex+Mono&display=swap");
-@import url("https://fonts.googleapis.com/css2?family=JetBrains+Mono&display=swap");
 
 * {
     scroll-behavior: smooth;
@@ -25,7 +24,6 @@
         --chatSectionBg: #131217;
         --mainBackgroundColor: #0d1117;
         --columnBackgroundColor: #161c22;
-        --timerFont: "JetBrains Mono", monospace;
     }
 }
 
@@ -106,10 +104,6 @@
     header {
         max-width: 100% !important;
     }
-}
-
-#timer {
-    font-family: var(--timerFont, "JetBrains Mono", monospace) !important;
 }
 
 

@@ -60,7 +60,7 @@ return (
       <CarouselContent className="-ml-1">
         {projects.map((project, index) => (
           <CarouselItem key={index} className="w-1/2 px-3 py-2 h-full md:basis-1/2 lg:basis-1/3">
-            <Card className="mx:h-30 w-full" shadow="sm" key={'item'} isPressable
+            <Card className="mx:h-30 w-full min-w-32 bg-red-300" shadow="sm" key={'item'} isPressable
                   onClick={() => router.push("/" +
                       "projects/dashboard/" + project.projectId
                   )}>
@@ -108,9 +108,9 @@ return (
                 </Dropdown>
                 <CardBody className="flex justify-center h-32 items-center">
                     {isShared ? (
-                    <Image className="rounded-full" width={70} height={70} src={project.image} alt={project.name}></Image>
+                    <Image className="rounded-full w-20 h-20 object-cover" width={70} height={70} src={project.image} alt={project.name}></Image>
                     ) : (
-                        <Image width={70} height={70} src={project.image} alt={project.name}></Image>
+                        <Image className="rounded-full w-20 h-20 object-cover" width={70} height={70} src={project.image} alt={project.name}></Image>
                     )}
                 </CardBody>
                 <CardFooter className="text-small justify-center bg-zinc-700">
