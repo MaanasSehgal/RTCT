@@ -5,7 +5,7 @@ import Chat from "./Chat";
 
 const SideBar = ({chatData, onChatClick, selectedChat}: any) => {
     const [searchQuery, setSearchQuery] = useState("");
-    const [filteredChats, setFilteredChats] = useState<any[]>(chatData.values());
+    const [filteredChats, setFilteredChats] = useState<any[]>();
     const [update, setUpdate] = useState("");
     useEffect(() => {
         setFilteredChats(Array.from(chatData.values()));
@@ -41,7 +41,7 @@ const SideBar = ({chatData, onChatClick, selectedChat}: any) => {
                 />
             </div>
             <div className="flex flex-col w-full h-[85%] py-4 hiddenScrollbar">
-                {filteredChats.map((chat: any) => (
+                {filteredChats && filteredChats.map((chat: any) => (
                     <Chat
                         // key={chat[0].id}
                         image={chat[0].image}
