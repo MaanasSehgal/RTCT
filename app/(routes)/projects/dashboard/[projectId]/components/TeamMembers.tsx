@@ -1,8 +1,8 @@
 "use client";
 import Image from "next/image";
-import { Dropdown, DropdownTrigger, DropdownMenu, DropdownItem, Button, Input } from "@nextui-org/react";
+import { Dropdown, DropdownTrigger, DropdownMenu, DropdownItem, Button, Input, Accordion, AccordionItem } from "@nextui-org/react";
 import { Mail, Trash2, UserPlus, Search, Copy, Ellipsis, UserRoundPlus, SearchIcon } from "lucide-react";
-import {useEffect, useState} from "react";
+import { useEffect, useState } from "react";
 import {
     AlertDialog,
     AlertDialogAction,
@@ -14,15 +14,11 @@ import {
     AlertDialogTitle,
     AlertDialogTrigger,
 } from "@/components/ui/alert-dialog"
-import {User} from "@/app/utils/types";
-import {useKindeBrowserClient} from "@kinde-oss/kinde-auth-nextjs";
+import { User } from "@/app/utils/types";
+import { useKindeBrowserClient } from "@kinde-oss/kinde-auth-nextjs";
 
-
-
-const TeamMembers = ({data, setData}: any) => {
-
-
-    const{user, getToken} = useKindeBrowserClient();
+const TeamMembers = ({ data, setData }: any) => {
+    const { user, getToken } = useKindeBrowserClient();
 
     const items = [
         {
@@ -36,8 +32,6 @@ const TeamMembers = ({data, setData}: any) => {
             logo: <Trash2 />
         }
     ];
-
-
 
     const usersDummy = [
         {
@@ -147,6 +141,26 @@ const TeamMembers = ({data, setData}: any) => {
         }
     ];
 
+    const pendingRequests = [
+        {
+            id: "1",
+            name: "Maanas",
+            email: "maanas.sehgal@gmail.com",
+            image: "/userlogo.png",
+        },
+        {
+            id: "1",
+            name: "Dibyajyoti",
+            email: "dibyajyoti@gmail.com",
+            image: "/userlogo.png",
+        }, {
+            id: "1",
+            name: "devendra",
+            email: "devendra@gmail.com",
+            image: "/userlogo.png",
+        },
+    ]
+
     const [copied, setCopied] = useState(false);
     const [searchTerm, setSearchTerm] = useState("");
 
@@ -161,6 +175,28 @@ const TeamMembers = ({data, setData}: any) => {
 
     return (
         <div className="w-full mt-16 h-[80%] flex flex-col items-center gap-4 ">
+            {pendingRequests && pendingRequests.length !== 0 && (
+                <>
+                    <Accordion className="space-y-4">
+                        <AccordionItem className="p-4 rounded-lg shadow-sm text-xl" title={<span className="text-3xl font-bold self-start ml-10 mb-4">Pending Requests</span>}>
+                            {pendingRequests.map((member: any) => (
+                                <div key={member.id} className="w-11/12 my-6 rounded-full flex items-center justify-between bg-black overflow-y">
+                                    <div className="flex items-center gap-8 p-3">
+                                        <Image className="w-12" src={member.image ? member.image : "/userlogo.png"} alt="logo" width={24} height={24} />
+                                        <h2 className="text-md">{member.name}</h2>
+                                    </div>
+                                    <div className="flex justify-center items-center gap-3">
+                                    <Button>Accept</Button>
+                                    <Button>Deny</Button>
+                                    </div>
+                                </div>
+                            ))}
+                        </AccordionItem>
+                    </Accordion>
+
+                </>
+            )}
+
             <h1 className="text-3xl font-bold self-start ml-10 mb-4">Manage Team Members</h1>
 
             <div className="flex items-center self-center sm:w-4/5 md:w-3/5 rounded-full">
@@ -227,9 +263,9 @@ const TeamMembers = ({data, setData}: any) => {
                     : filteredUsers.map((member: User) => (
                         <div key={member.id} className="w-11/12 rounded-full flex items-center justify-between bg-black overflow-y">
                             <div className="flex items-center gap-8 p-3">
-                                <Image className="w-12" src={member.image} alt="logo" width={24} height={24} />
+                                <Image className="w-12 rounded-full" src={member.image} alt="logo" width={24} height={24} />
                                 <h2 className="text-md">{member.name}</h2>
-                                {(member.id === data.adminId ) && (
+                                {(member.id === data.adminId) && (
                                     <span className="ml-auto">Admin</span>
                                 )}
                             </div>
@@ -237,8 +273,8 @@ const TeamMembers = ({data, setData}: any) => {
                                 <DropdownTrigger>
                                     <div className="text-white cursor-pointer p-3 px-5"><Ellipsis /></div>
                                 </DropdownTrigger>
-                                <DropdownMenu aria-label="Dynamic Actions" items={items.filter((item)=>{
-                                    if(item.key === "delete"){
+                                <DropdownMenu aria-label="Dynamic Actions" items={items.filter((item) => {
+                                    if (item.key === "delete") {
                                         return user?.id === data.adminId && member.id !== data.adminId;
                                     }
                                     return true;

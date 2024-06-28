@@ -8,7 +8,7 @@ import TabsComponent from "./Tabs";
 import data from "@emoji-mart/data";
 import Picker from "@emoji-mart/react";
 
-const ChatSection = ({ onBack, chatData, draft, onDraftChange }: any) => {
+const ChatSection = ({ onBack, chatData, draft, onDraftChange, onSend}: any) => {
     const [showEmoji, setShowEmoji] = useState(false);
     const [text, setText] = useState(draft);
     const [isSearchVisible, setIsSearchVisible] = useState(false);
@@ -24,13 +24,19 @@ const ChatSection = ({ onBack, chatData, draft, onDraftChange }: any) => {
     }, []);
 
     useEffect(() => {
+        const elem = document.getElementById('msg');
+        if(!elem)return;
+        elem.scrollTo({ top: elem.scrollHeight , behavior: 'instant'})
+    }, []);
+
+    useEffect(() => {
         if (chatData) {
-            fuse.current = new Fuse(chatData.chats, {
+            fuse.current = new Fuse(chatData[1], {
                 keys: ["senderName", "content.text"],
                 includeScore: true,
                 threshold: 0.6,
             });
-            setFilteredChats(chatData.chats);
+            setFilteredChats(chatData[1]);
         }
     }, [chatData]);
 
@@ -57,7 +63,7 @@ const ChatSection = ({ onBack, chatData, draft, onDraftChange }: any) => {
 
     const handleSearchInputChange = () => {
         if (searchRef.current?.value === "") {
-            setFilteredChats(chatData.chats);
+            setFilteredChats(chatData[1]);
             return;
         }
         if (searchRef.current && fuse.current) {
@@ -66,7 +72,7 @@ const ChatSection = ({ onBack, chatData, draft, onDraftChange }: any) => {
             setFilteredChats(result.map((item: any) => item.item));
         }
         if (searchRef.current && fuse.current && !searchRef.current.value.trim()) {
-            setFilteredChats(chatData ? chatData.chats : []);
+            setFilteredChats(chatData ? chatData[1] : []);
         }
     };
 
@@ -80,8 +86,8 @@ const ChatSection = ({ onBack, chatData, draft, onDraftChange }: any) => {
                             <CircleArrowLeft />
                         </button>
                         <div className="flex items-center gap-3 ps-4">
-                            <Image src="/userLogo.png" alt="image" width={40} height={40} />
-                            <h2>{chatData ? chatData.chatName : "Nobita"}</h2>
+                            <Image src={chatData? chatData[0].image:"/userLogo.png"} alt="image" width={40} height={40} />
+                            <h2>{chatData ? chatData[0].first_name+" "+chatData[0].last_name : "Nobita"}</h2>
                         </div>
                     </div>
                     <div className="flex items-center gap-4">
@@ -113,7 +119,7 @@ const ChatSection = ({ onBack, chatData, draft, onDraftChange }: any) => {
             <div id="msg" className="w-full h-full bg-[--chatSectionBg] overflow-y-auto pb-14 .hiddenScrollbar">
                 {isSearchVisible && filteredChats.length === 0 ? (
                     <div className="flex justify-center items-center">No results found</div>
-                ) : chatData ? (
+                ) : chatData? (
                     isSearchVisible ? (
                         filteredChats.map((chat: any) => (
                             <div key={chat.senderID} className="p-4">
@@ -131,8 +137,8 @@ const ChatSection = ({ onBack, chatData, draft, onDraftChange }: any) => {
                                 </div>
                             </div>
                         ))
-                    ) : (
-                        chatData.chats.map((chat: any) => (
+                    ) : (chatData[1].length>0&&
+                        chatData[1].map((chat: any) => (
                             <div key={chat.senderID} className="p-4">
                                 <div className="text-gray-200">{chat.senderName}</div>
                                 <div className="text-gray-400 text-sm">
@@ -174,7 +180,12 @@ const ChatSection = ({ onBack, chatData, draft, onDraftChange }: any) => {
                             type="text"
                             placeholder="Type a Message"
                         />
-                        <SendHorizontal className="bg-[--darkBtn] w-8 h-8 rounded-full p-1 lg:hidden" />
+                        <button onClick={()=>{
+                            onSend(chatData[0] ,text)
+                        }}>
+                            <SendHorizontal className="bg-[--darkBtn] w-8 h-8 rounded-full p-1 " />
+                        </button>
+
                     </div>
                 )}
             </div>

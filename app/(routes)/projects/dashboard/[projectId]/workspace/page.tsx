@@ -1,7 +1,5 @@
 "use client";
 import {ResizableHandle, ResizablePanel, ResizablePanelGroup} from "@/components/ui/resizable";
-import {api} from "@/convex/_generated/api";
-import {useConvex} from "convex/react";
 import {useEffect, useState} from "react";
 import Canvas from "./_components/Canvas";
 import Editor from "./_components/Editor";
@@ -9,7 +7,6 @@ import WorkspaceHeader from "./_components/WorkspaceHeader";
 import {FILE} from "./_components/FILE";
 
 const Workspace = ({params}: any) => {
-    const convex = useConvex();
     const [triggerSave, setTriggerSave] = useState(false);
     const [fileData, setFileData] = useState<FILE | any>();
     const [isVertical, setIsVertical] = useState("");
