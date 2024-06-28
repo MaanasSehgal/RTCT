@@ -6,8 +6,6 @@ import TeamMembers from "@/app/(routes)/projects/dashboard/[projectId]/component
 import Commits from "@/app/(routes)/projects/dashboard/[projectId]/components/Commits";
 import KanbanBoard from "@/app/(routes)/projects/dashboard/[projectId]/components/KanbanBoard";
 import {Activity, GitCommitHorizontal, Kanban as KanbanIcon, Settings2, Users} from "lucide-react";
-import {useConvex, useMutation} from "convex/react";
-import {api} from "@/convex/_generated/api";
 import {useKindeBrowserClient} from "@kinde-oss/kinde-auth-nextjs";
 import Board from "@/app/(routes)/projects/dashboard/[projectId]/components/Board";
 import axios from "axios";
