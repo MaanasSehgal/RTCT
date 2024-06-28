@@ -95,7 +95,6 @@ export default function NavbarComponent() {
                                 >Log Out</LogoutLink>
                             </DropdownItem>
                         }
-
                     </DropdownMenu>
                 </Dropdown>
             </NavbarContent>
