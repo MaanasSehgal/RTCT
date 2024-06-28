@@ -16,7 +16,7 @@ const Hero = () => {
                         Transform collaboration with real-time editing of code, documents, and spreadsheets. Enjoy intuitive task management, chat, video calls, and secure cloud deployment. Accomplish
                         more, together.
                     </p>
-                    <Link href="/login" className="w-full">
+                    <Link href="/login" className="self-start">
                         <HoverBorderGradient className="flex justify-center items-center">Get Started</HoverBorderGradient>
                     </Link>
                 </div>
