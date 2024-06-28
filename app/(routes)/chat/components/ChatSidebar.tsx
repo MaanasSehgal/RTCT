@@ -8,12 +8,7 @@ const SideBar = ({chatData, onChatClick, selectedChat}: any) => {
     const [filteredChats, setFilteredChats] = useState<any[]>(chatData.values());
     const [update, setUpdate] = useState("");
     useEffect(() => {
-        const chats = chatData.values().filter((data: [any, [{}]]) => {
-            const a = (data[0].first_name + " " + data[0].last_name).toLowerCase().includes(searchQuery.toLowerCase());
-            console.log(a);
-            return a;
-        });
-        setFilteredChats(Array.from(chats));
+        setFilteredChats(Array.from(chatData.values()));
     }, [chatData]);
 
     useEffect(() => {
