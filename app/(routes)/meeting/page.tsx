@@ -33,7 +33,7 @@ const Page = () => {
         if (!user) return;
 
         socket.auth = { token: getToken() };
-
+        socket.connect();
         socket.on('messageMeet', (msg) => {
             console.log('msg is received');
             setMessages((prevMessages) => [...prevMessages, msg]);
@@ -46,12 +46,15 @@ const Page = () => {
         socket.on('disconnect', () => {
             console.log("disconnected");
         })
-        socket.connect();
+
 
         return () => {
+            socket.off('messageMeet');
+            socket.off('connect');
+            socket.off('disconnect');
             socket.disconnect();
         };
-    }, [user, getToken]);
+    }, [user]);
 
     useEffect(() => {
         if (leaveRoom) {
