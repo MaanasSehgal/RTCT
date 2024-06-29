@@ -290,7 +290,7 @@ const Commits: React.FC = () => {
               {groupedCommits[date].map((commit, index) => (
                 <li key={index} className="mb-10 ms-6">
                   <span className="absolute flex items-center justify-center rounded-full -start-5 ring-8 ring-gray-900 ">
-                    <Image className="rounded-full shadow-lg w-12 h-12" src={commit.author.avatar_url} alt={commit.author.login} width={50} height={50} />
+                    <Image className="rounded-full shadow-lg w-12 h-12" src={commit.author.avatar_url} alt={commit.author.login} width={200} height={200} />
                   </span>
 
                   <div className="items-center justify-between p-4 border-b-2 shadow-sm sm:flex  overflow-hidden ms-4" style={{ backgroundColor: '#0D1117' }}>

@@ -109,12 +109,12 @@ const Configuration = ({data, setData}:any)  => {
     return (
         <>
             <h1 className="text-3xl font-bold text-white ml-6 mt-6">Configuration</h1>
-            <h5 className="text-xl font-semibold text-white ml-6 text-zinc-600">Project Information</h5>
+            <h5 className="text-xl font-semibold ml-6 text-zinc-600">Project Information</h5>
             <form id="configForm" className="w-full h-5/6 lg:p-8 flex lg:flex-row flex-col items-center gap-14 lg:gap-3 min-w-[300px]"
             action="" onSubmit={handleSubmit}>
                 <br /><br />
                 <div className="flex flex-col lg:w-2/5 items-center gap-10">
-                    <Image className="rounded-full w-44 h-44 object-cover" src={currLogoUrl} width={100} height={100} alt={currLogoUrl} />
+                    <Image className="rounded-full w-44 h-44 object-cover" src={currLogoUrl} width={200} height={200} alt={currLogoUrl} />
                     <div className="flex flex-col justify-center items-center gap-3">
                         <label htmlFor="logo" className="bg-[#29903B] p-2 px-2 rounded-xl text-medium hover:bg-[#287936] font-bold w-32 flex justify-center items-center text-center">Change Logo</label>
                         <input onChange={handleInputLogo} type="file" id="logo" name="logo" className="hidden"/>

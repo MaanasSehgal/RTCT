@@ -182,7 +182,7 @@ const TeamMembers = ({ data, setData }: any) => {
                             {pendingRequests.map((member: any) => (
                                 <div key={member.id} className="w-11/12 my-6 rounded-full flex items-center justify-between bg-black overflow-y">
                                     <div className="flex items-center gap-8 p-3">
-                                        <Image className="w-12" src={member.image ? member.image : "/userlogo.png"} alt="logo" width={24} height={24} />
+                                        <Image className="w-12" src={member.image ? member.image : "/userlogo.png"} alt="logo" width={200} height={200} />
                                         <h2 className="text-md">{member.name}</h2>
                                     </div>
                                     <div className="flex justify-center items-center gap-3">
@@ -263,7 +263,7 @@ const TeamMembers = ({ data, setData }: any) => {
                     : filteredUsers.map((member: User) => (
                         <div key={member.id} className="w-11/12 rounded-full flex items-center justify-between bg-black overflow-y">
                             <div className="flex items-center gap-8 p-3">
-                                <Image className="w-12 rounded-full" src={member.image} alt="logo" width={24} height={24} />
+                                <Image className="w-12 rounded-full" src={member.image} alt="logo" width={500} height={500} />
                                 <h2 className="text-md">{member.name}</h2>
                                 {(member.id === data.adminId) && (
                                     <span className="ml-auto">Admin</span>
