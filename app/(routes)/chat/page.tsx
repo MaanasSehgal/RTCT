@@ -66,6 +66,7 @@ const ChatApp = () => {
 
                 }
                 setChatData(map);
+                setForceUpdate(Date.now());
                 socket.emit('message:history', {});
 
                 socket.on('project:message:receive', (projectId, sender, msg: any) => {
@@ -149,7 +150,7 @@ const ChatApp = () => {
 
     const inputRef = useRef<HTMLInputElement>(null);
     const onSend = (target: any, msg: string) => {
-        // console.log("send", target, msg);
+        console.log("send", target, msg);
         if (target.type === 'group') {
             socket.emit("project:message:send", target.id, msg);
         } else {
