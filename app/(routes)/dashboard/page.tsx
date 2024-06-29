@@ -50,12 +50,14 @@ const Page: React.FC = () => {
     // }, [teamList]);
 
     const getSharedProjects = (projects:any, yourProjects:any) => {
+
         return projects.filter((project: any) => {
             return !yourProjects.some((yourProject: any) => yourProject.name === project.name);
         })
     }
 
     const checkUser = async () => {
+        console.log(getToken());
         axios.post(`${process.env.NEXT_PUBLIC_BACKEND_URL}/users/create`, {}, {
             params: {
                 audience: "rtct_backend_api"
@@ -67,7 +69,7 @@ const Page: React.FC = () => {
             .then(function (response) {
                 console.log(response);
                 const yourProjects = response.data.adminProjects;
-                const sharedProjects = getSharedProjects(response.data.projects, yourProjects);
+                const sharedProjects = (response.data.projects)? getSharedProjects(response.data.projects, yourProjects):null;
                 setYourProjects(yourProjects);//your projects
                 setProjects(sharedProjects);//shared projects
             })
@@ -123,7 +125,7 @@ const Page: React.FC = () => {
             .then(function (response) {
                 console.log("this is shared project = " + response.data.projects);
                 const yourProjects = response.data.adminProjects;
-                const sharedProjects = getSharedProjects(response.data.projects, yourProjects);
+                const sharedProjects = (response.data.projects)? getSharedProjects(response.data.projects, yourProjects):null;
                 setYourProjects(yourProjects);//your projects
                 setProjects(sharedProjects);//shared projects
                 setOpen(false)

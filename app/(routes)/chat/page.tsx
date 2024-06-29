@@ -153,7 +153,8 @@ const ChatApp = () => {
         if (target.type === 'group') {
             socket.emit("project:message:send", target.id, msg);
         } else {
-            socket.emit("message:send", target.id, msg);
+            socket.emit("message:send", target, msg);
+            console.log("message:send", target, msg);
         }
         if (drafts[target.id]) {
             handleDraftChange(target.id, "");
