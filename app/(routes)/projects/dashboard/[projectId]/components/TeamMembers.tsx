@@ -16,20 +16,34 @@ import {
 } from "@/components/ui/alert-dialog"
 import { User } from "@/app/utils/types";
 import { useKindeBrowserClient } from "@kinde-oss/kinde-auth-nextjs";
+import axios from "axios";
+import {toast} from "sonner";
 
 const TeamMembers = ({ data, setData }: any) => {
     const { user, getToken } = useKindeBrowserClient();
+    const [teamData, setTeamData] = useState(data);
+    const [searchTerm, setSearchTerm] = useState("");
+    const [filteredUsers, setFilteredUsers] = useState<User[]>(data.members.length != 0 ? data.members.filter((user: User) =>
+        user.name.toLowerCase().includes(searchTerm.toLowerCase())
+    ) : []);
+    const [copied, setCopied] = useState(false);
 
     const items = [
         {
             key: "message",
             label: "Message",
-            logo: <Mail />
+            logo: <Mail />,
+            click: (id: string) => {
+                console.log("Message");
+            }
         },
         {
             key: "delete",
             label: "Remove User",
-            logo: <Trash2 />
+            logo: <Trash2 />,
+            click: (id: string) => {
+                onMemberRemove(id);
+            }
         }
     ];
 
@@ -161,33 +175,122 @@ const TeamMembers = ({ data, setData }: any) => {
         },
     ]
 
-    const [copied, setCopied] = useState(false);
-    const [searchTerm, setSearchTerm] = useState("");
+
 
     const handleSearchChange = (e: any) => {
         setSearchTerm(e.target.value);
     };
 
-    const filteredUsers = data.members.length != 0 ? data.members.filter((user: User) =>
-        user.name.toLowerCase().includes(searchTerm.toLowerCase())
-    ) : [];
+
+
+
+    useEffect(() => {
+        if(!user)return;
+        axios.get(`${process.env.NEXT_PUBLIC_BACKEND_URL}/projects/${data.projectId}`,
+            {
+                params: {
+                    audience: "rtct_backend_api"
+                },
+                headers: {
+                    'Authorization': 'Bearer ' + getToken()
+                },
+            }
+        ).then(function (response) {
+            console.log(response);
+            setTeamData(response.data);
+            setData(response.data);
+            setTeamData((prevState: any) => {
+                setFilteredUsers(prevState.members.length != 0 ? prevState.members.filter((user: User) =>
+                    user.name.toLowerCase().includes(searchTerm.toLowerCase())
+                ) : []);
+                return prevState;
+            });
+            toast("Updated!");
+        }).catch(function(err){
+            toast(err.response.data);
+            console.log(err);
+        });
+    }, [user]);
+
+
+    async function onMemberAcceptDeny(id:string, accepted:boolean){
+        await axios.patch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/projects/update`,
+            {
+                projectId: data?.projectId,
+                addMemberId: accepted?id:null,
+                removePendingMemberId: accepted?null:id
+            },
+            {
+                params: {
+                    audience: "rtct_backend_api"
+                },
+                headers: {
+                    'Authorization': 'Bearer ' + getToken()
+                },
+
+            }
+        )
+            .then(function (response) {
+                console.log(response);
+                // setDataState(response.data)
+                setTeamData(response.data);
+                setData(response.data);
+                toast(accepted?"Member Added!" : "Member Denied!");
+            })
+            .catch(function (error) {
+                console.log(error);
+                toast("ERROR: Member not added!");
+            });
+    }
+
+    async function onMemberRemove(id: string) {
+        await axios.patch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/projects/update`,
+            {
+                projectId: data?.projectId,
+                remMemberId: id
+            },
+            {
+                params: {
+                    audience: "rtct_backend_api"
+                },
+                headers: {
+                    'Authorization': 'Bearer ' + getToken()
+                },
+
+            }
+        )
+            .then(function (response) {
+                console.log(response);
+                // setDataState(response.data)
+                setTeamData(response.data);
+                setData(response.data);
+                toast("Member Removed!");
+            })
+            .catch(function (error) {
+                console.log(error);
+                toast("ERROR: Member not Removed!");
+            });
+    }
+
 
 
     return (
         <div className="w-full mt-16 h-[80%] flex flex-col items-center gap-4 ">
-            {pendingRequests && pendingRequests.length !== 0 && (
+            {teamData && teamData.pendingMembers.length !== 0 && (
                 <>
                     <Accordion className="bg-zinc-900">
                         <AccordionItem className="px-4 rounded-lg shadow-sm text-xl" title={<span className="text-3xl font-bold self-start ml-4 mb-4">Pending Requests</span>}>
-                            {pendingRequests.map((member: any) => (
+                            {teamData.pendingMembers.map((member: any) => (
                                 <div key={member.id} className="md:w-4/5 w-72 my-6 md:rounded-full rounded-lg flex md:flex-row flex-col  items-center justify-between bg-black overflow-y">
                                     <div className="flex items-center gap-8 p-3">
                                         <Image className="w-12" src={member.image ? member.image : "/userlogo.png"} alt="logo" width={200} height={200} />
                                         <h2 className="text-md">{member.name}</h2>
                                     </div>
                                     <div className="flex justify-center items-center mr-4 gap-3">
-                                        <Button className="text-lg font-bold" size="md" radius="full" variant="ghost" color="danger">Deny</Button>
-                                        <Button className="text-lg font-bold" size="md" radius="full" color="success">Accept</Button>
+                                        <Button className="text-lg font-bold" size="md" radius="full" variant="ghost" color="danger"
+                                        onClick={()=>{onMemberAcceptDeny(member.id, false)}}>Deny</Button>
+                                        <Button className="text-lg font-bold" size="md" radius="full" color="success"
+                                        onClick={()=>{onMemberAcceptDeny(member.id, true)}}>Accept</Button>
                                     </div>
                                 </div>
                             ))}
@@ -232,13 +335,13 @@ const TeamMembers = ({ data, setData }: any) => {
                         <div className="flex items-center mt-4">
                             <input
                                 type="text"
-                                value={`${window.location.host}/projects/dashboard/${data.projectId}?invite=true`}
+                                value={`${window.location.host}/invite/${data.projectId}`}
                                 readOnly
                                 className="border border-gray-300 rounded-l-full h-10 px-4 w-full"
                             />
                             <Button
                                 onClick={() => {
-                                    navigator.clipboard.writeText(`${window.location.host}/projects/dashboard/${data.projectId}?invite=true`);
+                                    navigator.clipboard.writeText(`${window.location.host}/invite/${data.projectId}`);
                                     setCopied(true);
                                     setTimeout(() => setCopied(false), 2000);
                                 }}
@@ -252,7 +355,7 @@ const TeamMembers = ({ data, setData }: any) => {
                 </AlertDialog>
             </div>
 
-            {data.members.length == 0 ?
+            {teamData.members.length == 0 ?
                 <div className="w-full h-full flex justify-center items-center">
                     <h1 className="text-white text-3xl font-bold">No results found! Invite members to your team.</h1>
                 </div>
@@ -284,7 +387,7 @@ const TeamMembers = ({ data, setData }: any) => {
                                             key={item.key}
                                             color={item.key === "delete" ? "danger" : "default"}
                                             className={`${item.key === "delete" ? "text-danger" : ""}`}
-
+                                            onClick={()=>{item.click(member.id)}}
                                         >
                                             <div className="flex items-center gap-3">
                                                 {item.logo}

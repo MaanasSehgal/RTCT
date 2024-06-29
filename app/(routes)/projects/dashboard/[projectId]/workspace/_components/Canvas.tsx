@@ -26,7 +26,7 @@ const Canvas = ({onSaveTrigger, fileId, fileData}: { onSaveTrigger: any; fileId:
             axios.patch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/projects/update`,
                 {
                     projectId: pathName.split('/').slice(-2, -1)[0],
-                    workspace: JSON.stringify(prevState),
+                    workspace: JSON.stringify(prevState)
                 },
                 {
                     params: {
