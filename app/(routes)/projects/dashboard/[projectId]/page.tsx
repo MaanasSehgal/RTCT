@@ -69,7 +69,7 @@ const Dashboard = ({ params }: { params: { projectId: string } }) => {
 
 
     return (
-        <div className="h-[93vh] lg:h-[90vh] w-full bg-[#0D1117] flex">
+        <div className="h-[--mainheight] w-full bg-[#0D1117] flex">
             {unAuthorized ?
                 <div className="w-full h-full flex justify-center items-center text-white">You are not authorized to
                     view this page.</div>

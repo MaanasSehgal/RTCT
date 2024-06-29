@@ -1,15 +1,15 @@
 "use client";
-import React, {useState, useEffect} from "react";
+import React, { useState, useEffect, useRef } from "react";
 import SideBar from "./components/ChatSidebar";
 import ChatSection from "./components/ChatSection";
 // import { chatData } from "@/app/data/chats";
-import {useKindeBrowserClient} from "@kinde-oss/kinde-auth-nextjs";
-import {socket} from "@/app/utils/socket";
+import { useKindeBrowserClient } from "@kinde-oss/kinde-auth-nextjs";
+import { socket } from "@/app/utils/socket";
 import axios from "axios";
 
 const ChatApp = () => {
 
-    const {user, getToken} = useKindeBrowserClient();
+    const { user, getToken } = useKindeBrowserClient();
     const [showChat, setShowChat] = useState(false);
     const [selectedChat, setSelectedChat] = useState<any>(null);
     const [chatData, setChatData] = useState(new Map<string, [{}, [{}?]]>());
@@ -113,11 +113,11 @@ const ChatApp = () => {
                 console.log(error);
             });
 
-        socket.auth = {token: getToken()};
+        socket.auth = { token: getToken() };
 
         console.log("socket");
         socket.on('connect', () => {
-          console.log("connected");
+            console.log("connected");
         })
         socket.on('disconnect', () => {
             console.log("connected");
@@ -136,7 +136,7 @@ const ChatApp = () => {
     }, [user]);
 
 
-    const defaultChat = {id: 1, image: "/userlogo.png", name: "Maanas Sehgal", time: "2:12", notifications: "30"};
+    const defaultChat = { id: 1, image: "/userlogo.png", name: "Maanas Sehgal", time: "2:12", notifications: "30" };
 
     const handleChatClick = (chat: any) => {
         setShowChat(true);
@@ -144,16 +144,22 @@ const ChatApp = () => {
     };
 
     const handleDraftChange = (chatId: string, draft: string) => {
-        setDrafts((prevDrafts) => ({...prevDrafts, [chatId]: draft}));
+        setDrafts((prevDrafts) => ({ ...prevDrafts, [chatId]: draft }));
     };
 
+    const inputRef = useRef<HTMLInputElement>(null);
     const onSend = (target: any, msg: string) => {
-        console.log("send", target, msg);
+        // console.log("send", target, msg);
         if (target.type === 'group') {
             socket.emit("project:message:send", target.id, msg);
-            return;
+        } else {
+            socket.emit("message:send", target.id, msg);
         }
-        socket.emit("message:send", target.id, msg);
+        if (drafts[target.id]) {
+            handleDraftChange(target.id, "");
+        }
+
+        inputRef.current?.focus();
     }
 
     return (
@@ -177,7 +183,7 @@ const ChatApp = () => {
                     />
                 ) : (
                     <ChatSection chatData={selectedChat} onBack={() => {
-                    }} selectedChat={defaultChat}/>
+                    }} selectedChat={defaultChat} />
                 )}
             </div>
         </div>
