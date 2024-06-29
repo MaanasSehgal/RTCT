@@ -10,11 +10,13 @@ interface SidebarProps {
     messages: { userName: string; message: string; }[];
     sendMessage: () => void;
     msgOpen: boolean;
+    setMsgOpen: React.Dispatch<React.SetStateAction<boolean>>;
     participantsOpen: boolean;
+    setParticipantsOpen: React.Dispatch<React.SetStateAction<boolean>>;
     participants: { id: number, name: string, avatar: string }[];
 }
 
-const Sidebar: React.FC<SidebarProps> = ({ isSidebarOpen, setIsSidebarOpen, message, setMessage, messages, sendMessage, msgOpen, participantsOpen, participants }) => {
+const Sidebar: React.FC<SidebarProps> = ({ isSidebarOpen, setIsSidebarOpen, message, setMessage, messages, sendMessage, msgOpen, setMsgOpen, participantsOpen, setParticipantsOpen, participants }) => {
 
     const handleKeyPress = (event: React.KeyboardEvent<HTMLInputElement>) => {
         if (event.key === 'Enter') {
@@ -24,6 +26,10 @@ const Sidebar: React.FC<SidebarProps> = ({ isSidebarOpen, setIsSidebarOpen, mess
 
     const toggleSidebar = (): void => {
         setIsSidebarOpen(!isSidebarOpen);
+        if(isSidebarOpen) {
+            setMsgOpen(false);
+            setParticipantsOpen(false);
+        }
     };
 
     const getCurrentTime = () => {

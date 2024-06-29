@@ -140,7 +140,9 @@ const Page = () => {
         playEndSound();
         setLeaveRoom(true);
         setIsInRoom(false);
-        // toast("You have left the room", { className: "bg-red-500" });
+        setMsgOpen(false);
+        setParticipantsOpen(false);
+        toast("You have left the room", { className: "bg-red-500" });
     }
 
     const handleMessageOpen = () => {
@@ -165,7 +167,7 @@ const Page = () => {
     const handleJoinRoom = () => {
         playJoinSound();
         setIsInRoom(true);
-        // toast.success("You have joined the room");
+        toast.success("You have joined the room");
     }
 
     const renderParticipants = () => {
@@ -316,7 +318,7 @@ const Page = () => {
                     }
                 </div>
             </div>
-            <Sidebar isSidebarOpen={isSidebarOpen} setIsSidebarOpen={setIsSidebarOpen} message={message} setMessage={setMessage} messages={messages} sendMessage={sendMessage} msgOpen={msgOpen} participantsOpen={participantsOpen} participants={Participants}/>
+            <Sidebar isSidebarOpen={isSidebarOpen} setIsSidebarOpen={setIsSidebarOpen} message={message} setMessage={setMessage} messages={messages} sendMessage={sendMessage} msgOpen={msgOpen} setMsgOpen={setMsgOpen} participantsOpen={participantsOpen} setParticipantsOpen={setParticipantsOpen} participants={Participants}/>
         </div>
     );
 }

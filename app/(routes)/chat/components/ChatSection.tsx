@@ -1,13 +1,16 @@
 "use client";
-import React, { useEffect, useRef, useState } from "react";
-import { CircleArrowLeft, Search, SendHorizontal, Smile, CirclePlus, ImagePlus, File, Paperclip, Download, Delete, } from "lucide-react";
-import { Input, Tooltip, divider } from "@nextui-org/react";
+import React, { use, useEffect, useRef, useState } from "react";
+import { CircleArrowLeft, Search, SendHorizontal, Smile, CirclePlus, ImagePlus, File, Paperclip, Download, Delete, Trash2, Copy, } from "lucide-react";
+import { Button, Input, Tooltip, divider } from "@nextui-org/react";
 import Image from "next/image";
 import Fuse from "fuse.js";
 import TabsComponent from "./Tabs";
 import data from "@emoji-mart/data";
 import Picker from "@emoji-mart/react";
 import { Label } from "@radix-ui/react-label";
+import Link from "next/link";
+import { toast } from "sonner";
+import { useKindeBrowserClient } from "@kinde-oss/kinde-auth-nextjs";
 
 const ChatSection = ({ onBack, chatData, draft, onDraftChange, onSend }: any) => {
     const [showEmoji, setShowEmoji] = useState(false);
@@ -16,6 +19,8 @@ const ChatSection = ({ onBack, chatData, draft, onDraftChange, onSend }: any) =>
     const [filteredChats, setFilteredChats] = useState<any[]>([]);
     const fuse = useRef<Fuse<unknown> | null>(null);
     const searchRef = useRef<HTMLInputElement>(null);
+    const [copied, setCopied] = useState(false);
+    const { user, getToken } = useKindeBrowserClient();
 
     const handleKeyPress = (event: React.KeyboardEvent<HTMLInputElement>) => {
         if (event.key === 'Enter') {
@@ -44,7 +49,7 @@ const ChatSection = ({ onBack, chatData, draft, onDraftChange, onSend }: any) =>
             fuse.current = new Fuse(chatData[1], {
                 keys: ["senderName", "content.text"],
                 includeScore: true,
-                threshold: 0.6,
+                threshold: 0.1,
             });
             setFilteredChats(chatData[1]);
         }
@@ -102,6 +107,18 @@ const ChatSection = ({ onBack, chatData, draft, onDraftChange, onSend }: any) =>
         // Combine components into the desired format
         return `${hours}:${minutes}, ${day}-${month}-${year}`;
     }
+
+    const scrollToBottom = () => {
+        const msgContainer = document.getElementById('msg');
+
+        if (msgContainer) {
+            msgContainer.scrollTop = msgContainer.scrollHeight;
+        }
+    };
+
+    useEffect(() => {
+        scrollToBottom();
+    }, [chatData]);
     return (
         <div className="w-full h-full justify-between flex flex-col bg-[#131217]">
             {/* Chat Nav */}
@@ -142,54 +159,75 @@ const ChatSection = ({ onBack, chatData, draft, onDraftChange, onSend }: any) =>
                     </div>
                 </div>
             )}
-            <div id="msg" style={{ height: 'calc(100% - 72px)' }} className="w-full bg-[--chatSectionBg] gap-7 bg-zinc-800 overflow-y-auto p-4 pb-14 .hiddenScrollbar flex flex-col">
+            <div id="msg" style={{ height: 'calc(100% - 72px)' }} className="w-full bg-[--chatSectionBg] gap-7  overflow-y-auto p-4 .hiddenScrollbar flex flex-col">
                 {isSearchVisible && filteredChats.length === 0 ? (
                     <div className="flex justify-center items-center">No results found</div>
                 ) : chatData ? (
                     isSearchVisible ? (
                         filteredChats.map((chat: any) => (
-                            <div key={chat.senderID} className="p-4">
-                                <div className="text-gray-200">{chat.senderName}</div>
-                                <div className="text-gray-200">{chat.timestamp}</div>
-                                <div className="text-gray-400 text-sm">
-                                    {chat.content.msgType == "text" ? (
-                                        chat.content.text
-                                    ) : chat.content.msgType == "image" ? (
-                                        <Image src="/nature.png" alt="image" width={60} height={60} />
-                                    ) : chat.content.msgType == "file" ? (
-                                        <div>File</div>
-                                    ) : (
-                                        ""
-                                    )}
+                            <div className={`flex ${user?.id === chat.senderID ? 'justify-end' : 'justify-start'} items-center w-full`} key={chat.senderID}>
+                                <div className={`p-2 ${user?.id == chat.senderID ? 'bg-[#272A35]' : 'bg-[#373E4E]'} flex-col gap-10 rounded-[20px] max-w-[80%] min-w-[21rem] w-auto mb-6`}>
+                                    <div className={`mb-4 flex ${user?.id == chat.senderID ? 'justify-end' : 'justify-start'} items-center`}>
+                                        {chat.content.msgType == "image" ? (
+                                            <Image className="rounded-xl w-96 sm:w-[25rem] object-cover" src="/nobita.jpg" alt="image" width={1000} height={1000} />
+                                        ) : chat.content.msgType == "file" ? (
+                                            <div className="bg-[#272A35] p-4 rounded-xl flex gap-4 w-64 truncate line-clamp-1">
+                                                <File />
+                                                <p className="w-full truncate line-clamp-1">{`server.js`}</p>
+                                            </div>
+                                        ) : (
+                                            <p className={`break-words max-w-full inline-block h-auto text-lg`}>{chat.content.text}</p>
+                                        )}
+                                    </div>
+
+                                    <div className={`flex items-center gap-2 min-w-80 ${user?.id === chat.senderID ? 'flex-row-reverse' : 'justify-start'}`}>
+                                        <Tooltip content={chat.senderName}>
+                                            <Image className="rounded-full w-8 h-8 object-cover cursor-pointer" src="/nobita.jpg" alt="image" width={1000} height={1000} />
+                                        </Tooltip>
+                                        <p className="text-gray-400 text-sm h-full m-0 rounded-full self-end">{formatDate(new Date(chat.timestamp))}</p>
+                                        {chat.content.msgType == "image" || chat.content.msgType == "file" && (
+                                            <div className="flex items-center gap-2 rounded-full bg-black p-2">
+                                                <a href={'./RTCTLOGOIMG.png'} download={'RTCTLOGOIMG.png'}>
+                                                    <Download size={20} />
+                                                </a>
+                                                <Trash2 size={20} />
+                                            </div>
+                                        )}
+                                    </div>
                                 </div>
                             </div>
                         ))
                     ) : (chatData[1].length > 0 &&
                         chatData[1].map((chat: any) => (
-                            <div key={chat.senderID} className="p-4 bg-[#373E4E] flex-col gap-4 rounded-[20px] max-w-[80%] min-w-[21rem] w-auto mb-4 inline-block md:mr-[40%]">
-                                <div className="">
-                                    {chat.content.msgType != "image" ? (
-                                        <Image className="rounded-xl w-96 sm:w-[25rem] object-cover" src="/nature.png" alt="image" width={1000} height={1000} />
-                                    ) : chat.content.msgType == "file" ? (
-                                        <div>File</div>
-                                    ) : (
-                                        chat.content.text
-                                    )}
-                                </div>
+                            <div className={`flex ${user?.id === chat.senderID ? 'justify-end' : 'justify-start'} items-center w-full`} key={chat.senderID}>
+                                <div className={`p-2 ${user?.id == chat.senderID ? 'bg-[#272A35]' : 'bg-[#373E4E]'} flex-col gap-10 rounded-[20px] max-w-[80%] min-w-[21rem] w-auto mb-6`}>
+                                    <div className={`mb-4 flex ${user?.id == chat.senderID ? 'justify-end' : 'justify-start'} items-center`}>
+                                        {chat.content.msgType == "image" ? (
+                                            <Image className="rounded-xl w-96 sm:w-[25rem] object-cover" src="/nobita.jpg" alt="image" width={1000} height={1000} />
+                                        ) : chat.content.msgType == "file" ? (
+                                            <div className="bg-[#272A35] p-4 rounded-xl flex gap-4 w-64 truncate line-clamp-1">
+                                                <File />
+                                                <p className="w-full truncate line-clamp-1">{`server.js`}</p>
+                                            </div>
+                                        ) : (
+                                            <p className={`break-words max-w-full inline-block h-auto text-lg`}>{chat.content.text}</p>
+                                        )}
+                                    </div>
 
-                                <div className=" flex items-center gap-2 min-w-80 bg-black rounded-full">
-                                    <Tooltip content={chat.senderName}>
-                                        <Image className="rounded-full w-10 h-10 object-cover cursor-pointer" src="/RTCTLOGOIMG.png" alt="image" width={1000} height={1000} />
-                                    </Tooltip>
-                                    <p className="text-gray-400 text-lg h-full m-0 py-0.5 px-2 font-bold rounded-full border-4 border-b-gray-800">{formatDate(new Date(chat.timestamp))}</p>
-                                    {chat.content.msgType != "image" || chat.content.msgType == "file"? (
-                                        <div className="flex items-center gap-2">
-                                            <Download />
-                                            <Delete />
-                                        </div>
-                                    ) : (
-                                        ""
-                                    )}
+                                    <div className={`flex items-center gap-2 min-w-80 ${user?.id === chat.senderID ? 'flex-row-reverse' : 'justify-start'}`}>
+                                        <Tooltip content={chat.senderName}>
+                                            <Image className="rounded-full w-8 h-8 object-cover cursor-pointer" src="/nobita.jpg" alt="image" width={1000} height={1000} />
+                                        </Tooltip>
+                                        <p className="text-gray-400 text-sm h-full m-0 rounded-full self-end">{formatDate(new Date(chat.timestamp))}</p>
+                                        {chat.content.msgType == "image" || chat.content.msgType == "file" && (
+                                            <div className="flex items-center gap-2 rounded-full bg-black p-2">
+                                                <a href={'./RTCTLOGOIMG.png'} download={'RTCTLOGOIMG.png'}>
+                                                    <Download size={20} />
+                                                </a>
+                                                <Trash2 size={20} />
+                                            </div>
+                                        )}
+                                    </div>
                                 </div>
                             </div>
                         ))
