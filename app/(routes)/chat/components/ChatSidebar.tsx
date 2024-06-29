@@ -33,7 +33,7 @@ const SideBar = ({chatData, onChatClick, selectedChat}: any) => {
                     }}
                     placeholder="Type to search..."
                     size="sm"
-                    startContent={<SearchIcon size={18} width={18} height={18}/>}
+                    startContent={<SearchIcon size={18} width={18} />}
                     type="search"
                     onChange={(e) => {
                         setSearchQuery(e.target.value);
