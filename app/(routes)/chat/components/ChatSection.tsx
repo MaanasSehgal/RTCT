@@ -97,7 +97,7 @@ const ChatSection = ({ onBack, chatData, draft, onDraftChange, onSend }: any) =>
                             <CircleArrowLeft />
                         </button>
                         <div className="flex items-center gap-3 ps-4">
-                            <Image src={chatData ? chatData[0].image : "/userLogo.png"} alt="image" width={40} height={40} />
+                            <img className="rounded-full w-12 h-12 object-center object-cover" src={chatData ? chatData[0].image : "/userLogo.png"} alt="image" width={200} height={200} />
                             <h2>{chatData ? chatData[0].first_name + " " + chatData[0].last_name : "Nobita"}</h2>
                         </div>
                     </div>
@@ -172,7 +172,7 @@ const ChatSection = ({ onBack, chatData, draft, onDraftChange, onSend }: any) =>
             </div>
             {chatData && (
                 <div className="w-full h-16 bottom-0 flex items-center gap-2 p-2 bg-[#131217]">
-                    <Smile size={30} onClick={() => setShowEmoji(!showEmoji)} />
+                    <Smile className="cursor-pointer" size={30} onClick={() => setShowEmoji(!showEmoji)} />
                     <div className="absolute bottom-16">
                         {showEmoji && <Picker data={data} emojiSize={20} emojiButtonSize={28} onEmojiSelect={addEmoji} maxFrequentRows={1} />}
                     </div>
