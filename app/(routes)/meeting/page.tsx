@@ -15,7 +15,7 @@ const ROOM_ID = 'temp-room';
 const Page = () => {
     const { user, getToken } = useKindeBrowserClient();
     const [message, setMessage] = useState<string>('');
-    const [messages, setMessages] = useState<string[]>([]);
+    const [messages, setMessages] = useState<{ userName: string, message: string }[]>([]);
     const [participantCount, setParticipantCount] = useState(6);
     const [micOn, setMicOn] = useState(false);
     const [videoOn, setVideoOn] = useState(false);
@@ -33,10 +33,10 @@ const Page = () => {
         if (!user) return;
 
         socket.auth = { token: getToken() };
-        socket.connect();
-        socket.on('messageMeet', (msg) => {
+
+        socket.on('messageMeet', ({ userName, message }) => {
             console.log('msg is received');
-            setMessages((prevMessages) => [...prevMessages, msg]);
+            setMessages(prevMessages => [...prevMessages, { userName, message }]);
         });
 
         socket.on('connect', () => {
@@ -46,15 +46,12 @@ const Page = () => {
         socket.on('disconnect', () => {
             console.log("disconnected");
         })
-
+        socket.connect();
 
         return () => {
-            socket.off('messageMeet');
-            socket.off('connect');
-            socket.off('disconnect');
             socket.disconnect();
         };
-    }, [user]);
+    }, [user, getToken]);
 
     useEffect(() => {
         if (leaveRoom) {
@@ -68,11 +65,11 @@ const Page = () => {
 
     const sendMessage = () => {
         if (message.trim() !== '') {
-            socket.emit('sendMessageMeet', { room: ROOM_ID, message });
+            socket.emit('sendMessageMeet', { room: ROOM_ID, userName: user?.given_name, message }); // Assuming user has a 'name' field
             console.log('msg is sending = ', ROOM_ID);
             setMessage('');
         }
-    };
+    }
 
     useEffect(() => {
         const timer = setInterval(() => {

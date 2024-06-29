@@ -1,16 +1,15 @@
+import React, { useEffect } from 'react';
 import { Input } from '@/components/ui/input';
-import { Menu, SendHorizontal, X } from 'lucide-react';
-import React, { useEffect, useState } from 'react';
+import { SendHorizontal, X } from 'lucide-react';
 
 interface SidebarProps {
     isSidebarOpen: boolean;
     setIsSidebarOpen: React.Dispatch<React.SetStateAction<boolean>>;
     message: string;
     setMessage: React.Dispatch<React.SetStateAction<string>>;
-    messages: string[];
+    messages: { userName: string; message: string; }[];
     sendMessage: () => void;
 }
-
 
 const Sidebar: React.FC<SidebarProps> = ({ isSidebarOpen, setIsSidebarOpen, message, setMessage, messages, sendMessage }) => {
 
@@ -33,9 +32,12 @@ const Sidebar: React.FC<SidebarProps> = ({ isSidebarOpen, setIsSidebarOpen, mess
                     </button>
                     <div style={{ height: 'calc(100% - 40px)' }} className='flex flex-col justify-between gap-2  p-2 bg-slate-500 h-full'>
                         <div className='bg-slate-800 h-full w-full'>
-                            {/* Display messages */}
+                            {/* Display messages with usernames */}
                             {messages.map((msg, index) => (
-                                <div key={index} className='text-white'>{msg}</div>
+                                <div key={index} className='text-white flex items-center'>
+                                    <span className="font-bold">{msg.userName}: </span>
+                                    <span>{msg.message}</span>
+                                </div>
                             ))}
                         </div>
                         <div className='flex gap-2'>
