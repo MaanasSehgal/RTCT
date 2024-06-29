@@ -1,6 +1,6 @@
 "use client";
 import React, { useEffect, useRef, useState } from "react";
-import { CircleArrowLeft, Search, SendHorizontal, Smile, CirclePlus, ImagePlus, File, Paperclip, } from "lucide-react";
+import { CircleArrowLeft, Search, SendHorizontal, Smile, CirclePlus, ImagePlus, File, Paperclip, Download, Delete, } from "lucide-react";
 import { Input, Tooltip, divider } from "@nextui-org/react";
 import Image from "next/image";
 import Fuse from "fuse.js";
@@ -87,6 +87,21 @@ const ChatSection = ({ onBack, chatData, draft, onDraftChange, onSend }: any) =>
     };
 
     const inputRef = useRef<HTMLInputElement>(null);
+
+    function formatDate(date: Date): string {
+        // Helper function to pad single digits with a leading zero
+        const pad = (num: number): string => num.toString().padStart(2, '0');
+
+        // Get components of the date
+        const hours: string = pad(date.getHours());
+        const minutes: string = pad(date.getMinutes());
+        const day: string = pad(date.getDate());
+        const month: string = date.toLocaleString('default', { month: 'short' }); // Jan, Feb, Mar, etc.
+        const year: string = date.getFullYear().toString().slice(-2); // Last two digits of the year
+
+        // Combine components into the desired format
+        return `${hours}:${minutes}, ${day}-${month}-${year}`;
+    }
     return (
         <div className="w-full h-full justify-between flex flex-col bg-[#131217]">
             {/* Chat Nav */}
@@ -97,7 +112,7 @@ const ChatSection = ({ onBack, chatData, draft, onDraftChange, onSend }: any) =>
                             <CircleArrowLeft />
                         </button>
                         <div className="flex items-center gap-3 ps-4">
-                            <img className="rounded-full w-12 h-12 object-center object-cover" src={chatData ? chatData[0].image : "/userLogo.png"} alt="image" width={200} height={200} />
+                            <img className="rounded-full w-10 h-10 object-center object-cover" src={chatData ? chatData[0].image : "/userLogo.png"} alt="image" width={200} height={200} />
                             <h2>{chatData ? chatData[0].first_name + " " + chatData[0].last_name : "Nobita"}</h2>
                         </div>
                     </div>
@@ -127,7 +142,7 @@ const ChatSection = ({ onBack, chatData, draft, onDraftChange, onSend }: any) =>
                     </div>
                 </div>
             )}
-            <div id="msg" style={{ height: 'calc(100% - 72px)' }} className="w-full bg-[--chatSectionBg] overflow-y-auto pb-14 .hiddenScrollbar">
+            <div id="msg" style={{ height: 'calc(100% - 72px)' }} className="w-full bg-[--chatSectionBg] gap-7 bg-zinc-800 overflow-y-auto p-4 pb-14 .hiddenScrollbar flex flex-col">
                 {isSearchVisible && filteredChats.length === 0 ? (
                     <div className="flex justify-center items-center">No results found</div>
                 ) : chatData ? (
@@ -135,6 +150,7 @@ const ChatSection = ({ onBack, chatData, draft, onDraftChange, onSend }: any) =>
                         filteredChats.map((chat: any) => (
                             <div key={chat.senderID} className="p-4">
                                 <div className="text-gray-200">{chat.senderName}</div>
+                                <div className="text-gray-200">{chat.timestamp}</div>
                                 <div className="text-gray-400 text-sm">
                                     {chat.content.msgType == "text" ? (
                                         chat.content.text
@@ -150,15 +166,27 @@ const ChatSection = ({ onBack, chatData, draft, onDraftChange, onSend }: any) =>
                         ))
                     ) : (chatData[1].length > 0 &&
                         chatData[1].map((chat: any) => (
-                            <div key={chat.senderID} className="p-4">
-                                <div className="text-gray-200">{chat.senderName}</div>
-                                <div className="text-gray-400 text-sm">
-                                    {chat.content.msgType == "text" ? (
-                                        chat.content.text
-                                    ) : chat.content.msgType == "image" ? (
-                                        <Image src="/nature.png" alt="image" width={60} height={60} />
+                            <div key={chat.senderID} className="p-4 bg-[#373E4E] flex-col gap-4 rounded-[20px] max-w-[80%] min-w-[21rem] w-auto mb-4 inline-block md:mr-[40%]">
+                                <div className="">
+                                    {chat.content.msgType != "image" ? (
+                                        <Image className="rounded-xl w-96 sm:w-[25rem] object-cover" src="/nature.png" alt="image" width={1000} height={1000} />
                                     ) : chat.content.msgType == "file" ? (
                                         <div>File</div>
+                                    ) : (
+                                        chat.content.text
+                                    )}
+                                </div>
+
+                                <div className=" flex items-center gap-2 min-w-80 bg-black rounded-full">
+                                    <Tooltip content={chat.senderName}>
+                                        <Image className="rounded-full w-10 h-10 object-cover cursor-pointer" src="/RTCTLOGOIMG.png" alt="image" width={1000} height={1000} />
+                                    </Tooltip>
+                                    <p className="text-gray-400 text-lg h-full m-0 py-0.5 px-2 font-bold rounded-full border-4 border-b-gray-800">{formatDate(new Date(chat.timestamp))}</p>
+                                    {chat.content.msgType != "image" || chat.content.msgType == "file"? (
+                                        <div className="flex items-center gap-2">
+                                            <Download />
+                                            <Delete />
+                                        </div>
                                     ) : (
                                         ""
                                     )}
