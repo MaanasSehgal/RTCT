@@ -57,9 +57,14 @@ const Dashboard = ({ params }: { params: { projectId: string } }) => {
             }
         )
             .then(function (response) {
-                console.log(response);
+                console.log(response.data);
+                console.log(user.id);
                 setProject(response.data);
-                setUnauthorized(false);
+                if(response.data.members.find((member : any) => member.id === user.id) === undefined) {
+                    setUnauthorized(true);
+                } else {
+                    setUnauthorized(false);
+                }
             })
             .catch(function (error) {
                 console.log(error);

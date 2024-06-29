@@ -281,9 +281,9 @@ const TeamMembers = ({ data, setData }: any) => {
                     <Accordion className="bg-zinc-900">
                         <AccordionItem className="px-4 rounded-lg shadow-sm text-xl" title={<span className="text-3xl font-bold self-start ml-4 mb-4">Pending Requests</span>}>
                             {teamData.pendingMembers.map((member: any) => (
-                                <div key={member.id} className="md:w-4/5 w-72 my-6 md:rounded-full rounded-lg flex md:flex-row flex-col  items-center justify-between bg-black overflow-y">
+                                <div key={member.id} className="md:w-4/5 w-72 my-6 md:p-0 p-4 md:rounded-full rounded-[20px] flex md:flex-row flex-col  items-center justify-between bg-black overflow-y">
                                     <div className="flex items-center gap-8 p-3">
-                                        <Image className="w-12" src={member.image ? member.image : "/userlogo.png"} alt="logo" width={200} height={200} />
+                                        <Image className="w-12 rounded-full" src={member.image ? member.image : "/userlogo.png"} alt="logo" width={200} height={200} />
                                         <h2 className="text-md">{member.name}</h2>
                                     </div>
                                     <div className="flex justify-center items-center mr-4 gap-3">
