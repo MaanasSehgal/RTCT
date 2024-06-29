@@ -55,6 +55,7 @@ const ChatApp = () => {
                 }
                 for (let project of response.data) {
                     for (let member of project.members) {
+                        if(member.id === user?.id)continue;
                         map.set(member.id, [{
                             id: member.id,
                             first_name: member.name,
@@ -142,6 +143,7 @@ const ChatApp = () => {
     const handleChatClick = (chat: any) => {
         setShowChat(true);
         setSelectedChat(chat);
+        setForceUpdate(Date.now());
     };
 
     const handleDraftChange = (chatId: string, draft: string) => {
@@ -184,8 +186,14 @@ const ChatApp = () => {
                         onSend={onSend}
                     />
                 ) : (
-                    <ChatSection chatData={selectedChat} onBack={() => {
-                    }} selectedChat={defaultChat} />
+                    <ChatSection
+                        key={forceUpdate}
+                        chatData={selectedChat}
+                        onBack={() => {}}
+                        draft={drafts[selectedChat?.chatID] || ""}
+                        onDraftChange={handleDraftChange}
+                        onSend={onSend}
+                    />
                 )}
             </div>
         </div>
