@@ -7,8 +7,15 @@ import Sidebar from "./Sidebar";
 import { Button, ButtonGroup } from "@nextui-org/react";
 import Image from "next/image";
 import useSound from 'use-sound';
+import { useKindeBrowserClient } from '@kinde-oss/kinde-auth-nextjs';
+import { socket } from '@/app/utils/socket';
+
+const ROOM_ID = 'temp-room';
 
 const Page = () => {
+    const { user, getToken } = useKindeBrowserClient();
+    const [message, setMessage] = useState<string>('');
+    const [messages, setMessages] = useState<string[]>([]);
     const [participantCount, setParticipantCount] = useState(6);
     const [micOn, setMicOn] = useState(false);
     const [videoOn, setVideoOn] = useState(false);
@@ -21,6 +28,39 @@ const Page = () => {
 
     const [playJoinSound] = useSound('/Sounds/join-sound.mp3', { volume: 0.2 });
     const [playEndSound] = useSound('./Sounds/end-sound.mp3', { volume: 0.2 });
+
+    useEffect(() => {
+        if (!user) return;
+
+        socket.auth = { token: getToken() };
+
+        socket.on('messageMeet', (msg) => {
+            console.log('msg is received');
+            setMessages((prevMessages) => [...prevMessages, msg]);
+        });
+
+        socket.on('connect', () => {
+            socket.emit('joinRoom', ROOM_ID);
+            console.log("connected room =", ROOM_ID);
+        })
+        socket.on('disconnect', () => {
+            console.log("disconnected");
+        })
+        socket.connect();
+
+        return () => {
+            socket.disconnect();
+        };
+    }, [user, getToken]);
+
+
+    const sendMessage = () => {
+        if (message.trim() !== '') {
+            socket.emit('sendMessageMeet', { room: ROOM_ID, message });
+            console.log('msg is sending = ', ROOM_ID);
+            setMessage('');
+        }
+    };
 
     useEffect(() => {
         const timer = setInterval(() => {
@@ -68,7 +108,7 @@ const Page = () => {
         playEndSound();
         setLeaveRoom(true);
         setIsInRoom(false);
-        toast("You have left the room", { className: "bg-red-500" });
+        // toast("You have left the room", { className: "bg-red-500" });
     }
 
     const handleMessageOpen = () => {
@@ -82,7 +122,7 @@ const Page = () => {
     const handleJoinRoom = () => {
         playJoinSound();
         setIsInRoom(true);
-        toast.success("You have joined the room");
+        // toast.success("You have joined the room");
     }
 
     const renderParticipants = () => {
@@ -181,7 +221,7 @@ const Page = () => {
                     <div className="flex md:flex-row flex-col gap-10 justify-center md:justify-evenly items-center w-full h-full p-10">
                         <div className="flex flex-col gap-10 justify-center items-center md:w-3/5 w-full h-full md:mt-0 mt-10">
                             <h1 className="text-white md:text-3xl text-2xl font-bold">Elevate Your Team's Collaboration with Live Room Features</h1>
-                            <Button onClick={() => handleJoinRoom()} className="bg-[--darkBtn] rounded-full h-12 flex justify-center items-center text-white text-2xl font-extrabold self-center self-start">Join Room</Button>
+                            <Button onClick={() => handleJoinRoom()} className="bg-[--darkBtn] rounded-full h-12 flex justify-center items-center text-white text-2xl font-extrabold self-center ">Join Room</Button>
                         </div>
                         <div className="flex justify-center items-center w-4/5 md:w-2/5 h-full">
                             <video className="rounded-full object-cover p-0 m-0" autoPlay={true} muted loop src={'/team-meeting.mp4'} width={300} height={300} />
@@ -218,7 +258,7 @@ const Page = () => {
                     }
                 </div>
             </div>
-            <Sidebar isSidebarOpen={isSidebarOpen} setIsSidebarOpen={setIsSidebarOpen} />
+            <Sidebar isSidebarOpen={isSidebarOpen} setIsSidebarOpen={setIsSidebarOpen} message={message} setMessage={setMessage} messages={messages} sendMessage={sendMessage} />
         </div>
     );
 }
