@@ -55,6 +55,7 @@ const ChatApp = () => {
                 }
                 for (let project of response.data) {
                     for (let member of project.members) {
+                        if(member.id === user?.id)continue;
                         map.set(member.id, [{
                             id: member.id,
                             first_name: member.name,
@@ -66,6 +67,7 @@ const ChatApp = () => {
 
                 }
                 setChatData(map);
+                setForceUpdate(Date.now());
                 socket.emit('message:history', {});
 
                 socket.on('project:message:receive', (projectId, sender, msg: any) => {
@@ -141,6 +143,7 @@ const ChatApp = () => {
     const handleChatClick = (chat: any) => {
         setShowChat(true);
         setSelectedChat(chat);
+        setForceUpdate(Date.now());
     };
 
     const handleDraftChange = (chatId: string, draft: string) => {
@@ -149,7 +152,7 @@ const ChatApp = () => {
 
     const inputRef = useRef<HTMLInputElement>(null);
     const onSend = (target: any, msg: string) => {
-        // console.log("send", target, msg);
+        console.log("send", target, msg);
         if (target.type === 'group') {
             socket.emit("project:message:send", target.id, msg);
         } else {
@@ -183,8 +186,14 @@ const ChatApp = () => {
                         onSend={onSend}
                     />
                 ) : (
-                    <ChatSection chatData={selectedChat} onBack={() => {
-                    }} selectedChat={defaultChat} />
+                    <ChatSection
+                        key={forceUpdate}
+                        chatData={selectedChat}
+                        onBack={() => {}}
+                        draft={drafts[selectedChat?.chatID] || ""}
+                        onDraftChange={handleDraftChange}
+                        onSend={onSend}
+                    />
                 )}
             </div>
         </div>
