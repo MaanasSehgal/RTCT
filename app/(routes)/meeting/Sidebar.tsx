@@ -25,7 +25,7 @@ const Sidebar: React.FC<SidebarProps> = ({ isSidebarOpen, setIsSidebarOpen, mess
     };
 
     return (
-        <div style={{ height: 'calc(100% - 10rem)' }} className={`w-80 absolute top-18 right-0 bg-[#0e0e11] transform transition-transform ${isSidebarOpen ? 'translate-x-0' : 'translate-x-full'} transition-all rounded-lg`}>
+        <div style={{ height: 'calc(100% - 10rem)' }} className={`w-80 absolute top-18 right-0 bg-[#0e0e11] z-50 transform transition-transform ${isSidebarOpen ? 'translate-x-0' : 'translate-x-full'} transition-all rounded-lg`}>
             {isSidebarOpen && (
                 <div className='w-full h-full'>
                     <button onClick={toggleSidebar} className="p-1 m-2 hover:bg-zinc-800 rounded-full text-white">

@@ -53,6 +53,15 @@ const Page = () => {
         };
     }, [user, getToken]);
 
+    useEffect(() => {
+        if (leaveRoom) {
+            socket.emit('leaveRoom', ROOM_ID);
+            console.log("leave room =", ROOM_ID);
+            setIsSidebarOpen(false);
+            setLeaveRoom(false);
+        }
+    }, [isInRoom])
+
 
     const sendMessage = () => {
         if (message.trim() !== '') {
@@ -75,21 +84,6 @@ const Page = () => {
         const mins = Math.floor((seconds % 3600) / 60);
         const secs = seconds % 60;
         return `${hours < 10 ? '0' : ''}${hours}:${mins < 10 ? '0' : ''}${mins}:${secs < 10 ? '0' : ''}${secs}`;
-    };
-
-
-    const increaseParticipant = () => {
-        setParticipantCount(participantCount + 1);
-        if (participantCount <= 4) {
-            setChangeFlex(false);
-        }
-    };
-
-    const decreaseParticipant = () => {
-        setParticipantCount(participantCount - 1);
-        if (participantCount <= 4) {
-            setChangeFlex(false);
-        }
     };
 
     const handleMicOn = () => {
@@ -131,7 +125,8 @@ const Page = () => {
                 {participantCount < 3 && [...Array(participantCount)].map((_, index) => (
                     <div key={index} className={`relative flex flex-col justify-center items-center gap-2 bg-[#272A35] ${participantCount === 1 ? 'md:w-[115vh] md:h-[90%] w-11/12 h-[48vw]' : participantCount === 2 ? 'md:w-[45%] md:h-[70%] gap-2 w-4/5 h-2/5' : 'md:min-w-96 md:w-[27%] md:h-[60%] gap-2 w-11/12'} bg-[#272A35] rounded-3xl m-4 flex justify-center items-center`}>
                         <Image src={'/userlogo.png'} alt={''} className="w-16 h-16" width={100} height={100} />
-                        <p className="absolute bottom-0 left-0 m-4">Doraemon</p>
+                        <p className="absolute bottom-0 left-0 m-4">John Doe</p>
+                        <MicOff className="absolute top-0 right-0 m-4 cursor-pointer hover:bg-zinc-700 p-1 w-8 h-8 rounded-full z-20 bg-zinc-800" />
                     </div>
                 ))}
 
@@ -139,13 +134,15 @@ const Page = () => {
                     <>
                         <div className="relative md:w-[70%] md:h-[98%] h-[48%] w-full border rounded-3xl flex justify-center items-center bg-[#272A35]">
                             <Image src={'/userlogo.png'} alt={''} className="w-16 h-16" width={100} height={100} />
-                            <p className="absolute bottom-0 left-0 m-4">Doraemon</p>
+                            <p className="absolute bottom-0 left-0 m-4">John Doe</p>
+                            <MicOff className="absolute top-0 right-0 m-4 cursor-pointer hover:bg-zinc-700 p-1 w-8 h-8 rounded-full z-20 bg-zinc-800" />
                         </div>
                         <div className="md:w-1/4 md:h-full w-full h-[100%] gap-4 rounded-3xl md:mt-0 mt-4 md:pl-4 flex flex-col justify-between items-center">
                             {[...Array(2)].map((_, index) => (
                                 <div key={index} className="relative w-full h-full border rounded-3xl flex justify-center items-center bg-[#272A35]">
                                     <Image src={'/userlogo.png'} alt={''} className="w-16 h-16" width={100} height={100} />
-                                    <p className="absolute bottom-0 left-0 m-4">Doraemon</p>
+                                    <p className="absolute bottom-0 left-0 m-4">John Doe</p>
+                                    <MicOff className="absolute top-0 right-0 m-4 cursor-pointer hover:bg-zinc-700 p-1 w-8 h-8 rounded-full z-20 bg-zinc-800" />
                                 </div>
                             ))}
                         </div>
@@ -156,13 +153,15 @@ const Page = () => {
                     <>
                         <div className="relative md:w-[70%] md:h-[98%] h-[48%] w-full border rounded-3xl flex justify-center items-center bg-[#272A35]">
                             <Image src={'/userlogo.png'} alt={''} className="w-16 h-16" width={100} height={100} />
-                            <p className="absolute bottom-0 left-0 m-4">Doraemon</p>
+                            <p className="absolute bottom-0 left-0 m-4">John Doe</p>
+                            <MicOff className="absolute top-0 right-0 m-4 cursor-pointer hover:bg-zinc-700 p-1 w-8 h-8 rounded-full z-20 bg-zinc-800" />
                         </div>
                         <div className="md:w-1/4 md:h-full w-full h-[133%] gap-4 rounded-3xl md:mt-0 mt-4 md:pl-4 flex flex-col justify-between items-center">
                             {[...Array(3)].map((_, index) => (
                                 <div key={index} className="relative w-full h-full border rounded-3xl flex justify-center items-center bg-[#272A35]">
                                     <Image src={'/userlogo.png'} alt={''} className="w-16 h-16" width={100} height={100} />
-                                    <p className="absolute bottom-0 left-0 m-4">Doraemon</p>
+                                    <p className="absolute bottom-0 left-0 m-4">John Doe</p>
+                                    <MicOff className="absolute top-0 right-0 m-4 cursor-pointer hover:bg-zinc-700 p-1 w-8 h-8 rounded-full z-20 bg-zinc-800" />
                                 </div>
                             ))}
                         </div>
@@ -173,13 +172,15 @@ const Page = () => {
                     <>
                         <div className="relative md:w-[70%] md:h-[98%] h-[48%] w-full border rounded-3xl flex justify-center items-center bg-[#272A35]">
                             <Image src={'/userlogo.png'} alt={''} className="w-16 h-16" width={100} height={100} />
-                            <p className="absolute bottom-0 left-0 m-4">Doraemon</p>
+                            <p className="absolute bottom-0 left-0 m-4">John Doe</p>
+                            <MicOff className="absolute top-0 right-0 m-4 cursor-pointer hover:bg-zinc-700 p-1 w-8 h-8 rounded-full z-20 bg-zinc-800" />
                         </div>
                         <div className="md:w-1/4 md:h-full w-full h-[133%] gap-4 rounded-3xl md:mt-0 mt-4 md:pl-4 flex flex-col justify-between items-center">
                             {[...Array(2)].map((_, index) => (
                                 <div key={index} className="relative w-full h-full border rounded-3xl flex justify-center items-center bg-[#272A35]">
                                     <Image src={'/userlogo.png'} alt={''} className="w-16 h-16" width={100} height={100} />
-                                    <p className="absolute bottom-0 left-0 m-4">Doraemon</p>
+                                    <p className="absolute bottom-0 left-0 m-4">John Doe</p>
+                                    <MicOff className="absolute top-0 right-0 m-4 cursor-pointer hover:bg-zinc-700 p-1 w-8 h-8 rounded-full z-20 bg-zinc-800" />
                                 </div>
                             ))}
                             <div onClick={() => setChangeFlex(false)} className="relative w-full h-full border rounded-3xl flex justify-center items-center bg-[#272A35] cursor-pointer">
@@ -192,9 +193,10 @@ const Page = () => {
                     <>
                         <ArrowLeft className="absolute top-20 left-0 m-4 cursor-pointer hover:bg-zinc-700 p-1 w-8 h-8 rounded-full z-20 bg-zinc-800" onClick={() => setChangeFlex(true)} />
                         {[...Array(participantCount)].map((_, index) => (
-                            <div key={index} className="relative w-80 h-[43%] bg-[#272A35] rounded-3xl mx-4 flex justify-center items-center">
+                            <div key={index} className="relative w-80 h-[43%] bg-[#272A35] rounded-3xl mx-4 flex justify-center items-center mb-6 lg:mb-0">
                                 <Image src={'/userlogo.png'} alt={''} className="w-16 h-16" width={100} height={100} />
-                                <p className="absolute bottom-0 left-0 m-4">Doraemon</p>
+                                <p className="absolute bottom-0 left-0 m-4">John Doe</p>
+                                <MicOff className="absolute top-0 right-0 m-4 cursor-pointer hover:bg-zinc-700 p-1 w-8 h-8 rounded-full z-20 bg-zinc-800" />
                             </div>
                         ))}
                     </>
