@@ -25,18 +25,40 @@ const Page = () => {
     const [isInRoom, setIsInRoom] = useState(false);
     const [elapsedTime, setElapsedTime] = useState(0);
     const [isSidebarOpen, setIsSidebarOpen] = useState(false);
+    const [msgOpen, setMsgOpen] = useState(false);
+    const [participantsOpen, setParticipantsOpen] = useState(false);
 
     const [playJoinSound] = useSound('/Sounds/join-sound.mp3', { volume: 0.2 });
     const [playEndSound] = useSound('./Sounds/end-sound.mp3', { volume: 0.2 });
+
+    const Participants = [
+        {
+            id: 1,
+            name: 'Doraemon',
+            avatar: 'https://images.unsplash.com/photo-1531427186611-ecfd6d936c79?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=800&q=60'
+        },
+        {
+            id: 2,
+            name: 'Nobita',
+            avatar: 'https://images.unsplash.com/photo-1550525811-e5869dd03032?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=334&q=80'
+        },
+        {
+            id: 3,
+            name: 'Maanas',
+            avatar: 'https://images.unsplash.com/photo-1550525811-e5869dd03032?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=334&q=80'
+        }
+    ]
 
     useEffect(() => {
         if (!user) return;
 
         socket.auth = { token: getToken() };
 
-        socket.on('messageMeet', ({ userName, message }) => {
-            console.log('msg is received');
-            setMessages(prevMessages => [...prevMessages, { userName, message }]);
+        socket.connect();
+
+        socket.on('messageMeet', (username, message) => {
+            // console.log('msg is received = ' + username);
+            setMessages(prevMessages => [...prevMessages, { userName: username, message }]);
         });
 
         socket.on('connect', () => {
@@ -46,12 +68,15 @@ const Page = () => {
         socket.on('disconnect', () => {
             console.log("disconnected");
         })
-        socket.connect();
+
 
         return () => {
+            socket.off('messageMeet');
+            socket.off('connect');
+            socket.off('disconnect');
             socket.disconnect();
         };
-    }, [user, getToken]);
+    }, [user]);
 
     useEffect(() => {
         if (leaveRoom) {
@@ -63,10 +88,23 @@ const Page = () => {
     }, [isInRoom])
 
 
+    const scrollToBottom = () => {
+        const msgContainer = document.getElementById('msg-container');
+
+        if (msgContainer) {
+            msgContainer.scrollTop = msgContainer.scrollHeight;
+        }
+    };
+
+    useEffect(() => {
+        scrollToBottom();
+    }, [messages, isSidebarOpen, msgOpen]);
+
     const sendMessage = () => {
         if (message.trim() !== '') {
-            socket.emit('sendMessageMeet', { room: ROOM_ID, userName: user?.given_name, message }); // Assuming user has a 'name' field
+            socket.emit('sendMessageMeet', { room: ROOM_ID, username: user?.given_name, message }); // Assuming user has a 'name' field
             console.log('msg is sending = ', ROOM_ID);
+            console.log('msg is sending = ', user?.given_name);
             setMessage('');
         }
     }
@@ -106,11 +144,22 @@ const Page = () => {
     }
 
     const handleMessageOpen = () => {
-        setIsSidebarOpen(!isSidebarOpen);
+        setMsgOpen(!msgOpen);
+        if(!msgOpen && participantsOpen) {
+            setParticipantsOpen(false);
+        } else {
+            setIsSidebarOpen(!isSidebarOpen);
+        }
+        scrollToBottom();
     }
 
     const handleParticipantsOpen = () => {
-        setIsSidebarOpen(!isSidebarOpen);
+        setParticipantsOpen(!participantsOpen);
+        if(!participantsOpen && msgOpen) {
+            setMsgOpen(false);
+        } else {
+            setIsSidebarOpen(!isSidebarOpen);
+        }
     }
 
     const handleJoinRoom = () => {
@@ -206,6 +255,13 @@ const Page = () => {
         );
     }
 
+    useEffect(() => {
+        const footer = document.querySelector('Footer') as HTMLElement;
+        if (footer) {
+            footer.style.display = 'none';
+        }
+    }, []);
+
     return (
         <div className="main-Container flex flex-row bg-[#131217]">
             <div className={`flex flex-col transition-width duration-300`}>
@@ -223,7 +279,7 @@ const Page = () => {
                     <div className="flex md:flex-row flex-col gap-10 justify-center md:justify-evenly items-center w-full h-full p-10">
                         <div className="flex flex-col gap-10 justify-center items-center md:w-3/5 w-full h-full md:mt-0 mt-10">
                             <h1 className="text-white md:text-3xl text-2xl font-bold">Elevate Your Team's Collaboration with Live Room Features</h1>
-                            <Button onClick={() => handleJoinRoom()} className="bg-[--darkBtn] rounded-full h-12 flex justify-center items-center text-white text-2xl font-extrabold self-center ">Join Room</Button>
+                            <Button onClick={() => handleJoinRoom()} className="bg-[--darkBtn] rounded-full h-12 flex justify-center items-center text-white text-2xl font-extrabold self-start ">Join Room</Button>
                         </div>
                         <div className="flex justify-center items-center w-4/5 md:w-2/5 h-full">
                             <video className="rounded-full object-cover p-0 m-0" autoPlay={true} muted loop src={'/team-meeting.mp4'} width={300} height={300} />
@@ -249,7 +305,7 @@ const Page = () => {
                             </div>
                             <div className="justify-center items-center h-full cursor-pointer hidden md:flex">
                                 <div onClick={() => handleMessageOpen()} className="rounded-full w-12 h-12 flex justify-center items-center text-white">
-                                    <MessageSquareMore />
+                                    <MessageSquareMore/>
                                 </div>
                                 <div onClick={() => handleParticipantsOpen()} className="rounded-full w-12 h-12 flex justify-center items-center text-white">
                                     <UserRound />
@@ -260,7 +316,7 @@ const Page = () => {
                     }
                 </div>
             </div>
-            <Sidebar isSidebarOpen={isSidebarOpen} setIsSidebarOpen={setIsSidebarOpen} message={message} setMessage={setMessage} messages={messages} sendMessage={sendMessage} />
+            <Sidebar isSidebarOpen={isSidebarOpen} setIsSidebarOpen={setIsSidebarOpen} message={message} setMessage={setMessage} messages={messages} sendMessage={sendMessage} msgOpen={msgOpen} participantsOpen={participantsOpen} participants={Participants}/>
         </div>
     );
 }

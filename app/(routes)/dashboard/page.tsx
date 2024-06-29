@@ -49,7 +49,7 @@ const Page: React.FC = () => {
     //     console.log(teamList);
     // }, [teamList]);
 
-    const getSharedProjects = (projects:any, yourProjects:any) => {
+    const getSharedProjects = (projects: any, yourProjects: any) => {
 
         return projects.filter((project: any) => {
             return !yourProjects.some((yourProject: any) => yourProject.name === project.name);
@@ -69,7 +69,7 @@ const Page: React.FC = () => {
             .then(function (response) {
                 console.log(response);
                 const yourProjects = response.data.adminProjects;
-                const sharedProjects = (response.data.projects)? getSharedProjects(response.data.projects, yourProjects):null;
+                const sharedProjects = (response.data.projects) ? getSharedProjects(response.data.projects, yourProjects) : null;
                 setYourProjects(yourProjects);//your projects
                 setProjects(sharedProjects);//shared projects
             })
@@ -125,7 +125,7 @@ const Page: React.FC = () => {
             .then(function (response) {
                 console.log("this is shared project = " + response.data.projects);
                 const yourProjects = response.data.adminProjects;
-                const sharedProjects = (response.data.projects)? getSharedProjects(response.data.projects, yourProjects):null;
+                const sharedProjects = (response.data.projects) ? getSharedProjects(response.data.projects, yourProjects) : null;
                 setYourProjects(yourProjects);//your projects
                 setProjects(sharedProjects);//shared projects
                 setOpen(false)
@@ -253,7 +253,7 @@ const Page: React.FC = () => {
             {
                 (!projects || !yourProjects) ? (
                     <div
-                        className="md:w-3/5 w-full h-1/2 md:h-full flex flex-col justify-center items-center bg-[#111114] rounded-lg z-10 cursor-default">
+                        className="md:w-3/5 w-full h-96 md:h-full flex flex-col justify-center items-center bg-[#111114] rounded-lg z-10 cursor-default">
                         <Spinner size="lg" color="primary" />
                     </div>
                 ) : (
@@ -270,19 +270,23 @@ const Page: React.FC = () => {
                         </div>
                     ) : (
                         <div
-                            className={`md:w-3/5 w-full h-1/2 md:h-full flex flex-col justify-center items-center gap-6 md:gap-4 py-10  bg-[#111114] px-[5%] rounded-lg z-10`}>
-                            <div className=" w-full flex flex-col">
-                                <h1 className="text-2xl font-semibold mb-4">Your Projects</h1>
-                                <div className="flex justify-center">
-                                    <CarouselSpacing isShared={false} projects={yourProjects} states={[setProjects, setYourProjects]} />
+                            className={`md:w-3/5 w-full h-1/2 md:h-full ${(projects.length === 0 || yourProjects.length === 0) ? 'md:h-3/5 self-center' : 'md:h-full'} flex flex-col justify-center items-center gap-6 md:gap-4 py-10  bg-[#111114] px-[5%] rounded-lg z-10`}>
+                            {yourProjects.length > 0 && (
+                                <div className=" w-full flex flex-col">
+                                    <h1 className="text-2xl font-semibold mb-4">Your Projects</h1>
+                                    <div className="flex justify-center">
+                                        <CarouselSpacing isShared={false} projects={yourProjects} states={[setProjects, setYourProjects]} />
+                                    </div>
                                 </div>
-                            </div>
-                            <div className=" w-full flex flex-col">
-                                <h1 className="text-2xl font-semibold mb-4">Shared Projects</h1>
-                                <div className="flex justify-center">
-                                    <CarouselSpacing isShared={true} projects={projects} states={[setProjects, setYourProjects]} />
+                            )}
+                            {projects.length > 0 && (
+                                <div className=" w-full flex flex-col">
+                                    <h1 className="text-2xl font-semibold mb-4">Shared Projects</h1>
+                                    <div className="flex justify-center">
+                                        <CarouselSpacing isShared={true} projects={projects} states={[setProjects, setYourProjects]} />
+                                    </div>
                                 </div>
-                            </div>
+                            )}
                         </div>
                     )
                 )

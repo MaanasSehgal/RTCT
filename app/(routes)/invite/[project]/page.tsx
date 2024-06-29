@@ -65,9 +65,9 @@ const Invite: React.FC<Props> = ({params}) => {
 
     return (
         <div className='h-[--mainheight] flex justify-center items-center bg-[#131217]'>
-            <div className='sm:w-3/5 lg:w-2/5 h-3/5 bg-gray-800 rounded-3xl flex shadow-lg'>
+            <div className='w-11/12 lg:w-2/5 h-3/5 bg-gray-800 rounded-3xl flex shadow-lg'>
                 {projectData === null ? <div
-                        className="sm:w-3/5 lg:w-2/5  h-3/5 rounded-3xl shadow-lg flex justify-center items-center text-white absolute z-10 bg-gray-800">
+                        className="w-11/12 lg:w-2/5  h-3/5 rounded-3xl shadow-lg flex justify-center items-center text-white absolute z-10 bg-gray-800">
                         <Spinner size="lg" color="primary"/>
                     </div> :
                     <>
