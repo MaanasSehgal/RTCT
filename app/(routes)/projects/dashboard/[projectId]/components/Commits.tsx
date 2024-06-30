@@ -39,7 +39,7 @@ interface User {
   avatar_url: string;
 }
 
-const Commits: React.FC = () => {
+const Commits = ({data}:any) => {
   const [commits, setCommits] = useState<Commit[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
@@ -52,6 +52,9 @@ const Commits: React.FC = () => {
   const [hasNextPage, setHasNextPage] = useState<boolean>(true);
   const commitsPerPage = 10;
 
+  const owner = data.githubRepo.split('/')[3];
+  const repo = data.githubRepo.split('/')[4];
+
   const octokit = new Octokit({
     auth: process.env.NEXT_PUBLIC_GITHUB_TOKEN
   });
@@ -60,8 +63,8 @@ const Commits: React.FC = () => {
     const fetchBranches = async () => {
       try {
         const response = await octokit.request('GET /repos/{owner}/{repo}/branches', {
-          owner: 'MaanasSehgal',
-          repo: 'RTCT',
+          owner: owner,
+          repo: repo,
           headers: {
             'X-GitHub-Api-Version': '2022-11-28'
           }
@@ -75,8 +78,8 @@ const Commits: React.FC = () => {
     const fetchUsers = async () => {
       try {
         const response = await octokit.request('GET /repos/{owner}/{repo}/contributors', {
-          owner: 'MaanasSehgal',
-          repo: 'RTCT',
+          owner: owner,
+          repo: repo,
           headers: {
             'X-GitHub-Api-Version': '2022-11-28'
           }
@@ -111,8 +114,8 @@ const Commits: React.FC = () => {
           'X-GitHub-Api-Version': string;
         };
       } = {
-        owner: 'MaanasSehgal',
-        repo: 'RTCT',
+        owner: owner,
+        repo: repo,
         sha: branch,
         page: currentPage,
         per_page: commitsPerPage,

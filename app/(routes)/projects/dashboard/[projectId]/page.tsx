@@ -28,7 +28,7 @@ const Dashboard = ({ params }: { params: { projectId: string } }) => {
     const componentMap: { [key: string]: JSX.Element } = {
         "Configuration": <Configuration data={project} setData={setProject} />,
         "Team Members": <TeamMembers data={project} setData={setProject} />,
-        "Commits": <Commits />,
+        "Commits": <Commits data={project}/>,
         "Kanban": <KanbanBoard />,
     };
 
