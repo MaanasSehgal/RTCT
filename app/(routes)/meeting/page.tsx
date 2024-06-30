@@ -140,6 +140,7 @@ const Page = () => {
         playEndSound();
         setLeaveRoom(true);
         setIsInRoom(false);
+        setIsSidebarOpen(false);
         setMsgOpen(false);
         setParticipantsOpen(false);
         toast("You have left the room", { className: "bg-red-500" });

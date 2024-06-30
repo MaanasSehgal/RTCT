@@ -16,12 +16,6 @@ const ChatApp = () => {
     const [drafts, setDrafts] = useState<{ [key: string]: string }>({});
     const [forceUpdate, setForceUpdate] = useState(Date.now());
 
-    useEffect(() => {
-        const footer = document.querySelector('Footer') as HTMLElement;
-        if (footer) {
-            footer.style.display = 'none';
-        }
-    }, []);
 
     //TODO GET INITIAL CHATS
 
@@ -152,6 +146,7 @@ const ChatApp = () => {
 
     const inputRef = useRef<HTMLInputElement>(null);
     const onSend = (target: any, msg: string) => {
+        if(msg == '') return;
         console.log("send", target, msg);
         if (target.type === 'group') {
             socket.emit("project:message:send", target.id, msg);

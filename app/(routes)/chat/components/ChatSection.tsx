@@ -2,6 +2,7 @@
 import React, { use, useEffect, useRef, useState } from "react";
 import { CircleArrowLeft, Search, SendHorizontal, Smile, CirclePlus, ImagePlus, File, Paperclip, Download, Delete, Trash2, Copy, } from "lucide-react";
 import { Button, Input, Tooltip, divider } from "@nextui-org/react";
+import { Input as InputComponent } from "@/components/ui/input";
 import Image from "next/image";
 import Fuse from "fuse.js";
 import TabsComponent from "./Tabs";
@@ -21,6 +22,9 @@ const ChatSection = ({ onBack, chatData, draft, onDraftChange, onSend }: any) =>
     const searchRef = useRef<HTMLInputElement>(null);
     const [copied, setCopied] = useState(false);
     const { user, getToken } = useKindeBrowserClient();
+    const [showToolTip, setShowToolTip] = useState(false);
+    const [showInputFile, setShowInputFile] = useState("");
+    const [showInputImage, setShowInputImage] = useState("");
 
     const handleKeyPress = (event: React.KeyboardEvent<HTMLInputElement>) => {
         if (event.key === 'Enter') {
@@ -94,17 +98,15 @@ const ChatSection = ({ onBack, chatData, draft, onDraftChange, onSend }: any) =>
     const inputRef = useRef<HTMLInputElement>(null);
 
     function formatDate(date: Date): string {
-        // Helper function to pad single digits with a leading zero
         const pad = (num: number): string => num.toString().padStart(2, '0');
 
-        // Get components of the date
         const hours: string = pad(date.getHours());
         const minutes: string = pad(date.getMinutes());
         const day: string = pad(date.getDate());
-        const month: string = date.toLocaleString('default', { month: 'short' }); // Jan, Feb, Mar, etc.
-        const year: string = date.getFullYear().toString().slice(-2); // Last two digits of the year
+        const month: string = date.toLocaleString('default', { month: 'short' });
+        const year: string = date.getFullYear().toString().slice(-2);
 
-        // Combine components into the desired format
+
         return `${hours}:${minutes}, ${day}-${month}-${year}`;
     }
 
@@ -119,6 +121,61 @@ const ChatSection = ({ onBack, chatData, draft, onDraftChange, onSend }: any) =>
     useEffect(() => {
         scrollToBottom();
     }, [chatData]);
+
+    const handleImageChange = (e: any) => {
+        const file = e.target.files[0];
+        if (file) {
+            setShowInputImage(URL.createObjectURL(file));
+            setShowInputFile('');
+        } else {
+            setShowInputImage("");
+        }
+    };
+
+    const handleFileChange = (e: any) => {
+        const file = e.target.files[0];
+        if (file) {
+            setShowInputFile(file.name);
+            setShowInputImage('');
+        } else {
+            setShowInputFile("");
+        }
+    };
+
+    const inputImgRef = useRef<HTMLInputElement>(null);
+    const inputFileRef = useRef<HTMLInputElement>(null);
+
+    let inputImg = document.getElementById("img-input");
+    let inputFile = document.getElementById("file-input");
+
+    const handleCancelImage = () => {
+        if (inputImgRef.current) {
+            inputImgRef.current.value = '';
+        }
+        setShowInputImage('');
+    };
+
+    const handleCancelFile = () => {
+        if (inputFileRef.current) {
+            inputFileRef.current.value = '';
+        }
+        setShowInputFile('');
+    };
+
+    const handleSendImage = () => {
+        if (inputImgRef.current) {
+            inputImgRef.current.value = '';
+        }
+        setShowInputImage('');
+    };
+
+    const handleSendFile = () => {
+        if (inputFileRef.current) {
+            inputFileRef.current.value = '';
+        }
+        setShowInputFile('');
+    };
+
     return (
         <div className="w-full h-full justify-between flex flex-col bg-[#131217]">
             {/* Chat Nav */}
@@ -242,15 +299,40 @@ const ChatSection = ({ onBack, chatData, draft, onDraftChange, onSend }: any) =>
                     <div className="absolute bottom-16">
                         {showEmoji && <Picker data={data} emojiSize={20} emojiButtonSize={28} onEmojiSelect={addEmoji} maxFrequentRows={1} />}
                     </div>
-                    <Tooltip radius="lg" className="p-2" content={<div className="flex flex-col items-start justify-center gap-4">
+                    <Tooltip isOpen={showToolTip} radius="lg" className="p-2" content={<div className="flex flex-col items-start justify-center gap-4">
                         <Label className="flex justify-center items-center hover:text-purple-400 cursor-pointer" htmlFor="img-input"><ImagePlus size={30} />&nbsp;Image</Label>
                         <Label className="flex justify-center items-center hover:text-purple-400 cursor-pointer" htmlFor="file-input"><File size={30} />&nbsp;File</Label>
                     </div>}>
                         <button>
-                            <Paperclip className="hover:text-purple-400" size={25} />
+                            <Paperclip onClick={() => {
+                                setShowToolTip(!showToolTip);
+                            }} className="hover:text-purple-400" size={25} />
                         </button>
                     </Tooltip>
-                    <Input id="img-input" type="file" accept={'image/*'} className="hidden" />
+                    <InputComponent ref={inputImgRef} id="img-input" type="file" accept={'image/*'} className="hidden" onChange={handleImageChange} />
+                    <InputComponent ref={inputFileRef} id="file-input" type="file" className="hidden" onChange={handleFileChange} />
+                    {showInputImage && (
+                        <div
+                            className="absolute bottom-0 z-20 bg-black bg-opacity-50 right-0 w-full h-full flex flex-col gap-10 justify-center items-center p-4"
+                        >
+                            <Image className="rounded-xl w-96 sm:w-[25rem] h-96 sm:h-[25rem] object-cover" src={showInputImage} alt="image" width={1000} height={1000} />
+                            <div className="flex gap-4">
+                                <Button color="danger" size="sm" className="text-xl font-bold" onClick={handleCancelImage} >Cancel</Button>
+                                <Button color="success" size="sm" className="text-xl font-bold" onClick={handleSendImage} >Send</Button>
+                            </div>
+                        </div>
+                    )}
+                    {showInputFile && (
+                        <div
+                            className="absolute bottom-0 z-20 bg-black bg-opacity-50 right-0 w-full h-full flex flex-col gap-10 justify-center items-center p-4 px-[20%]"
+                        >
+                            <div className="p-2 flex justify-center items-center rounded-lg bg-[#272A35] gap-2"><File size={50}/> {showInputFile}</div>
+                            <div className="flex gap-4">
+                                <Button color="danger" size="sm" className="text-xl font-bold" onClick={handleCancelFile} >Cancel</Button>
+                                <Button color="success" size="sm" className="text-xl font-bold" onClick={handleSendFile} >Send</Button>
+                            </div>
+                        </div>
+                    )}
                     <Input
                         ref={inputRef}
                         autoFocus={true}
