@@ -36,7 +36,7 @@ const Workspace = ({ params }: any) => {
         <>
         <NavbarComponent projectId={params.projectId}/>
             <div id="docs" className={`w-screen h-[${isVertical ? "200" : "100"}vh] flex flex-col`}>
-                <WorkspaceHeader fileName={fileData && fileData?.fileName} onSave={() => setTriggerSave(!triggerSave)} />
+                {/*<WorkspaceHeader fileName={fileData && fileData?.fileName} onSave={() => setTriggerSave(!triggerSave)} />*/}
                 <ResizablePanelGroup direction={isVertical ? "vertical" : "horizontal"} className=" ">
                     <ResizablePanel defaultSize={50}>
                         <div className={` ${isVertical ? "h-screen" : "h-full"} w-full bg-white`}><Editor onSaveTrigger={triggerSave} fileId={params.fileId} fileData={fileData} /></div>
