@@ -178,6 +178,7 @@ const ChatApp = () => {
                 <div className={`${showChat ? "block" : "hidden"} md:block w-full md:w-3/4`}>
                     {showChat ? (
                         <ChatSection
+                            user={user}
                             key={forceUpdate}
                             chatData={selectedChat}
                             onBack={() => setShowChat(false)}
@@ -187,6 +188,7 @@ const ChatApp = () => {
                         />
                     ) : (
                         <ChatSection
+                            user={user}
                             key={forceUpdate}
                             chatData={selectedChat}
                             onBack={() => { }}

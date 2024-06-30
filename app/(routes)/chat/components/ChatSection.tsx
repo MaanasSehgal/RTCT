@@ -13,7 +13,7 @@ import Link from "next/link";
 import { toast } from "sonner";
 import { useKindeBrowserClient } from "@kinde-oss/kinde-auth-nextjs";
 
-const ChatSection = ({ onBack, chatData, draft, onDraftChange, onSend }: any) => {
+const ChatSection = ({user, onBack, chatData, draft, onDraftChange, onSend }: any) => {
     const [showEmoji, setShowEmoji] = useState(false);
     const [text, setText] = useState(draft);
     const [isSearchVisible, setIsSearchVisible] = useState(false);
@@ -21,7 +21,7 @@ const ChatSection = ({ onBack, chatData, draft, onDraftChange, onSend }: any) =>
     const fuse = useRef<Fuse<unknown> | null>(null);
     const searchRef = useRef<HTMLInputElement>(null);
     const [copied, setCopied] = useState(false);
-    const { user, getToken } = useKindeBrowserClient();
+    // const { user, getToken } = useKindeBrowserClient();
     const [showToolTip, setShowToolTip] = useState(false);
     const [showInputFile, setShowInputFile] = useState("");
     const [showInputImage, setShowInputImage] = useState("");
