@@ -145,8 +145,8 @@ const ChatSection = ({ onBack, chatData, draft, onDraftChange, onSend }: any) =>
     const inputImgRef = useRef<HTMLInputElement>(null);
     const inputFileRef = useRef<HTMLInputElement>(null);
 
-    let inputImg = document.getElementById("img-input");
-    let inputFile = document.getElementById("file-input");
+    // let inputImg = document.getElementById("img-input");
+    // let inputFile = document.getElementById("file-input");
 
     const handleCancelImage = () => {
         if (inputImgRef.current) {
