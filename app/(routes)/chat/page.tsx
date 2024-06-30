@@ -140,7 +140,7 @@ const ChatApp = () => {
     const handleChatClick = (chat: any) => {
         setShowChat(true);
         setSelectedChat(chat);
-        setForceUpdate(Date.now());
+        // setForceUpdate(Date.now());
     };
 
     const handleDraftChange = (chatId: string, draft: string) => {

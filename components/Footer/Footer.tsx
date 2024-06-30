@@ -1,8 +1,21 @@
 "use client";
 import { RTCTLogo } from "@/components/Logos/Logos";
 import Link from "next/link";
+import {usePathname} from "next/navigation";
+import {useEffect, useState} from "react";
 
 export default function FooterComponent() {
+    const [hidden, setHidden] = useState(false);
+    const pathName = usePathname();
+    let allowedPaths = ["/", ""];
+    useEffect(() => {
+            if(allowedPaths.includes(pathName)) {
+                setHidden(false);
+                return;
+            }
+            setHidden(true);
+    }, [pathName]);
+
     const scrollToFunc = (scrollToId: any) => {
         let element = document.getElementById(scrollToId) as HTMLElement;
         if (!element) {
@@ -17,7 +30,7 @@ export default function FooterComponent() {
         });
     };
     return (
-        <footer className="w-full">
+        <footer className={`w-full ${hidden?'hidden':''}`}>
             <div className="px-[6%]">
                 <div className="grid grid-cols-2 sm:grid-cols-4 lg:grid-cols-6 gap-3 md:gap-8 py-10 max-sm:max-w-sm max-sm:mx-auto gap-y-8">
                     <div className="col-span-full mb-10 lg:col-span-2 lg:mb-0">

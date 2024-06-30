@@ -5,7 +5,6 @@ import Canvas from "./_components/Canvas";
 import Editor from "./_components/Editor";
 import WorkspaceHeader from "./_components/WorkspaceHeader";
 import {FILE} from "./_components/FILE";
-import WorkRoom from "./_components/WorkRoom";
 
 const Workspace = ({params}: any) => {
     const [triggerSave, setTriggerSave] = useState(false);
@@ -32,19 +31,18 @@ const Workspace = ({params}: any) => {
     //     setFileData(result);
     // };
     return (
-        // <div className={`w-screen h-[${isVertical ? "200" : "100"}vh] flex flex-col`}>
-        //     <WorkspaceHeader fileName={fileData && fileData?.fileName} onSave={() => setTriggerSave(!triggerSave)} />
-        //     <ResizablePanelGroup direction={isVertical ? "vertical" : "horizontal"} className=" ">
-        //         <ResizablePanel defaultSize={50}>
-        //             <div className={` ${isVertical ? "h-screen" : "h-full"} w-full bg-white`}><Editor onSaveTrigger={triggerSave} fileId={params.fileId} fileData={fileData} /></div>
-        //         </ResizablePanel>
-        //         <ResizableHandle withHandle className={`${isVertical ? "h-2" : "w-2"}`} />
-        //         <ResizablePanel defaultSize={50}>
-        //             <div className={` ${isVertical ? "h-screen" : "h-full"} overflow-auto bg-blue-500 w-full`}><Canvas onSaveTrigger={triggerSave} fileId={params.fileId} fileData={fileData} /></div>
-        //         </ResizablePanel>
-        //     </ResizablePanelGroup>
-        // </div>
-        <WorkRoom/>
+        <div className={`w-screen h-[${isVertical ? "200" : "100"}vh] flex flex-col`}>
+            <WorkspaceHeader fileName={fileData && fileData?.fileName} onSave={() => setTriggerSave(!triggerSave)} />
+            <ResizablePanelGroup direction={isVertical ? "vertical" : "horizontal"} className=" ">
+                <ResizablePanel defaultSize={50}>
+                    <div className={` ${isVertical ? "h-screen" : "h-full"} w-full bg-white`}><Editor onSaveTrigger={triggerSave} fileId={params.fileId} fileData={fileData} /></div>
+                </ResizablePanel>
+                <ResizableHandle withHandle className={`${isVertical ? "h-2" : "w-2"}`} />
+                <ResizablePanel defaultSize={50}>
+                    <div className={` ${isVertical ? "h-screen" : "h-full"} overflow-auto bg-blue-500 w-full`}><Canvas onSaveTrigger={triggerSave} fileId={params.fileId} fileData={fileData} /></div>
+                </ResizablePanel>
+            </ResizablePanelGroup>
+        </div>
     );
     // return <div>Workspace</div>;
 };
