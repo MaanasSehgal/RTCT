@@ -1,35 +1,76 @@
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+# RTCT (Real Time Collaboration Tool)
 
-## Getting Started
-First, run the development server:
+RTCT is designed to streamline remote teamwork. In today's era, many people prefer working from home or remotely, relying heavily on platforms like GitHub for collaboration. However, users often need to switch between multiple platforms like WhatsApp for chatting and Google Meet for meetings. RTCT overcomes these obstacles by enabling seamless collaboration on code, documents, spreadsheets, and projects, all within one web-based platform.
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+## Features
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+-   **Authentication**
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+    -   Login and signup through Email Auth, Google, and GitHub using "Kinde"
+    -   Storing user information in PostgreSQL via SupaBase
+    -   Supports 2 Factor Authentication (2FA)
 
-This project uses [`next/font`](https://nextjs.org/docs/basic-features/font-optimization) to automatically optimize and load Inter, a custom Google Font.
+-   **User Dashboard**
 
-## Learn More
+    -   View created projects and those shared with you
+    -   Manage project updates and deletions
 
-To learn more about Next.js, take a look at the following resources:
+-   **Navigation Bar**
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+    -   Customized navbars for each page for seamless navigation and improved UX
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/) - your feedback and contributions are welcome!
+-   **Project Dashboard**
 
-## Deploy on Vercel
+    -   Access a project dashboard with multiple tabs after selecting a project:
+        -   **Configuration**: Admins can edit project details like name, logo, GitHub repo, and delete the project
+        -   **Team Members Management**: Add or remove members
+        -   **Commits Tracking**: Track daily commits via the provided GitHub repo using the GitHub API, with access checks for private repos
+        -   **Kanban Board**: Manage tasks efficiently
+        -   **Invite Links**: Generate invite links for meetings or projects, allowing users to request access, which the admin must approve for added security
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+-   **Community Chat**
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
+    -   Automatic project group chats for team members
+    -   Individual direct messaging
+    -   Implemented using Socket.IO with ExpressJS backend on Oracle Cloud Infrastructure (OCI)
+    -   Chat history saved in MongoDB
+    -   Supports file and image uploads
+
+-   **Video Conferencing**
+
+    -   Organize in-app meetings with features like toggling mic, video, screen sharing, and viewing participants
+    -   Integrated with LiveKit SDK and Socket.IO
+    -   In-meet chat implemented by Socket.IO
+
+-   **Codespace**
+
+    -   Online cloud environment for code collaboration using open VS Code server
+    -   Docker, Docker Python SDK, Nginx reverse proxy
+    -   Controlled by ExpressJS backend with Redis PubSub messaging
+
+-   **Workspace**
+
+    -   Integrates Excalidraw and Editor.js for live documentation and workflow creation
+    -   Documents stored in PostgreSQL
+    -   Custom library extensions for enhanced user customization
+
+-   **Security and UX**
+
+    -   Validates user access during backend requests to ensure data security
+
+-   **Feedback Section**
+    -   Feedback form allowing users to send feedback to website administrators via email using Nodemailer
+
+Overall, this web app is a one-stop solution for all your remote collaborations.
+
+## Repository Links
+
+-   [Frontend Repository](https://github.com/MaanasSehgal/RTCT/)
+-   [Backend Repository](https://github.com/MrF1yn/RTCT_BACKEND)
+-   [Documentation](https://github.com/MrF1yn/docker-container-manager)
+
+## Team
+
+-   **Maanas Sehgal** - Project Lead
+-   **Dibyajyoti Dey** - Member
+-   **Devendra Suryavanshi** - Member
