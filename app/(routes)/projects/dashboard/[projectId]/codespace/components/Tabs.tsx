@@ -4,19 +4,19 @@ import { Bolt, ClipboardPen, Code, MessageSquareText, Video } from "lucide-react
 import Link from "next/link";
 
 const TabsComponent = ({ projectId }: any) => {
-    const [activeTab, setActiveTab] = useState<string>('config');
-    const configpage = document.getElementById("config");
-    const confiSpinner = document.getElementById("config-spinner");
+    const [activeTab, setActiveTab] = useState<string>('code');
+    const codepage = document.getElementById("code");
+    const codeSpinner = document.getElementById("code-spinner");
 
     useEffect(() => {
-        if(confiSpinner && configpage) {
-            confiSpinner.style.display = 'inline-block';
-            configpage.style.display = 'none';
+        if(codeSpinner && codepage) {
+            codeSpinner.style.display = 'inline-block';
+            codepage.style.display = 'none';
         }
-        if(activeTab === 'code') {
-            window.location.href = `/projects/dashboard/${projectId}/codespace`;
+        if(activeTab === 'config') {
+            window.location.href = `${projectId}`;
         } else if(activeTab == 'docs') {
-            window.location.href = `/projects/dashboard/${projectId}/workspace`;
+            window.location.href = `${projectId}/workspace`;
         }
     }, [activeTab]);
 

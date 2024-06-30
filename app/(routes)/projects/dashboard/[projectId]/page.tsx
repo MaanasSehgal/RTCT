@@ -11,6 +11,7 @@ import Board from "@/app/(routes)/projects/dashboard/[projectId]/components/Boar
 import axios from "axios";
 import { Spinner } from "@nextui-org/spinner";
 import NavbarComponent from "./components/Navbar";
+import { Progress } from "@nextui-org/react";
 
 const Dashboard = ({ params }: { params: { projectId: string } }) => {
     const [project, setProject] = useState(undefined);
@@ -77,7 +78,7 @@ const Dashboard = ({ params }: { params: { projectId: string } }) => {
     return (
         <>
         <NavbarComponent projectId={params.projectId} />
-            <div className="h-[--mainheight] w-full bg-[#0D1117] flex">
+            <div id="config" className="h-[--mainheight] w-full bg-[#0D1117] flex">
                 {unAuthorized ?
                     <div className="w-full h-full flex justify-center items-center text-white">You are not authorized to
                         view this page.</div>
@@ -91,6 +92,15 @@ const Dashboard = ({ params }: { params: { projectId: string } }) => {
                         <Board boardData={componentMap[selectedTab]} />
                     </>
                 }
+            </div>
+            <div id="config-spinner" className="w-full h-[--mainheight] bg-[--chatSectionBg] rounded-t-[30px] rounded-r-[30px] hidden text-center text-2xl">
+                <Progress
+                    color='danger'
+                    size="sm"
+                    isIndeterminate
+                    aria-label="Loading..."
+                    className="w-full color-blue-500"
+                />
             </div>
         </>
     );
