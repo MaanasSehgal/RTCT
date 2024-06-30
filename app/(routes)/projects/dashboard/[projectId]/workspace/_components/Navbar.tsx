@@ -18,6 +18,7 @@ import {
 import { RTCTLogo, SearchIcon } from "@/components/Logos/Logos";
 import { LogoutLink, useKindeBrowserClient } from "@kinde-oss/kinde-auth-nextjs";
 import TabsComponent from "./Tabs";
+import { BarChartBig, BarChartBigIcon } from "lucide-react";
 
 export default function NavbarComponent({projectId} : any) {
     console.log("ptoject id at nav = " + projectId);
@@ -34,9 +35,10 @@ export default function NavbarComponent({projectId} : any) {
                 </NavbarBrand>
             </NavbarContent>
             <div className="w-full flex items-center justify-between">
-                <div className="flex items-center gap-6 border-l-2 border-gray-200 pl-4">
+                <div className="md:flex hidden items-center gap-6 border-l-2 border-gray-200 pl-4">
                     <Link className="text-xl font-medium hover:text-[--darkBtn]" href="/dashboard">Dashboard</Link>
                 </div>
+                <Link className="md:hidden inline-block text-xl font-medium hover:text-[--darkBtn] border-l-2 border-gray-200 pl-2" href="/dashboard"><BarChartBig/></Link>
                 <TabsComponent projectId={projectId} />
             </div>
 

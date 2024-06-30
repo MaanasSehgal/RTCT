@@ -17,6 +17,7 @@ import {
 } from "@nextui-org/react";
 import { RTCTLogo, SearchIcon } from "@/components/Logos/Logos";
 import { LogoutLink, useKindeBrowserClient } from "@kinde-oss/kinde-auth-nextjs";
+import { BarChartBig } from "lucide-react";
 
 export default function NavbarComponent() {
     const [isEmailToolTipOpen, setIsEmailToolTipOpen] = React.useState(false);
@@ -31,10 +32,33 @@ export default function NavbarComponent() {
                     </Link>
                 </NavbarBrand>
             </NavbarContent>
-            <div className="flex items-center gap-6">
+            <div className="hidden items-center gap-6 md:flex">
                 <Link className="text-xl font-medium hover:text-[--darkBtn]" href="/dashboard">Dashboard</Link>
                 <Link className="text-xl font-medium hover:text-[--darkBtn]" href="/chat">Community</Link>
             </div>
+            <Dropdown>
+                <Tooltip content="I am a tooltip">
+                    <DropdownTrigger>
+
+                        <Button
+                            size="sm"
+                            className=" md:hidden w-10 h-10 flex justify-center items-center rounded-full hover:bg-[--darkBtn] hover:text-white"
+                            variant="bordered"
+                        >
+                            <BarChartBig />
+                        </Button>
+
+                    </DropdownTrigger>
+                </Tooltip>
+                <DropdownMenu aria-label="Static Actions">
+                    <DropdownItem key="new">
+                        <Link className="text-xl font-medium hover:text-[--darkBtn]" href="/dashboard">Dashboard</Link>
+                    </DropdownItem>
+                    <DropdownItem key="copy">
+                        <Link className="text-xl font-medium hover:text-[--darkBtn]" href="/chat">Community</Link>
+                    </DropdownItem>
+                </DropdownMenu>
+            </Dropdown>
 
             {isLoading == false ? (user ? (
                 <NavbarContent as="div" className="items-center" justify="end">

@@ -272,7 +272,7 @@ const Page = () => {
     return (
         <>
         <NavbarComponent/>
-        <div id="meeting" className="main-Container flex flex-row bg-[#131217]">
+        <div id="meeting" className="h-[--mainheight] main-Container flex flex-row bg-[#131217]">
             <div className={`flex flex-col transition-width duration-300`}>
                 {/* bar */}
                 {/* <div className='w-screen h-[10vh] bg-blue-400 flex justify-center items-center'>
