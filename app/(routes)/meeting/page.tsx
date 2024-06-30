@@ -10,6 +10,8 @@ import useSound from 'use-sound';
 import { useKindeBrowserClient } from '@kinde-oss/kinde-auth-nextjs';
 import { socket } from '@/app/utils/socket';
 import NavbarComponent from "./components/Navbar";
+import {useRouter} from "next/navigation";
+import {randomUUID} from "uncrypto";
 
 const ROOM_ID = 'temp-room';
 
@@ -31,7 +33,7 @@ const Page = () => {
 
     const [playJoinSound] = useSound('/Sounds/join-sound.mp3', { volume: 0.2 });
     const [playEndSound] = useSound('./Sounds/end-sound.mp3', { volume: 0.2 });
-
+    const router = useRouter();
     const Participants = [
         {
             id: 1,
@@ -89,17 +91,17 @@ const Page = () => {
     }, [isInRoom])
 
 
-    const scrollToBottom = () => {
-        const msgContainer = document.getElementById('msg-container');
-
-        if (msgContainer) {
-            msgContainer.scrollTop = msgContainer.scrollHeight;
-        }
-    };
-
-    useEffect(() => {
-        scrollToBottom();
-    }, [messages, isSidebarOpen, msgOpen]);
+    // const scrollToBottom = () => {
+    //     const msgContainer = document.getElementById('msg-container');
+    //
+    //     if (msgContainer) {
+    //         msgContainer.scrollTop = msgContainer.scrollHeight;
+    //     }
+    // };
+    //
+    // useEffect(() => {
+    //     scrollToBottom();
+    // }, [messages, isSidebarOpen, msgOpen]);
 
     const sendMessage = () => {
         if (message.trim() !== '') {
@@ -154,7 +156,7 @@ const Page = () => {
         } else {
             setIsSidebarOpen(!isSidebarOpen);
         }
-        scrollToBottom();
+        // scrollToBottom();
     }
 
     const handleParticipantsOpen = () => {
@@ -168,7 +170,8 @@ const Page = () => {
 
     const handleJoinRoom = () => {
         playJoinSound();
-        setIsInRoom(true);
+        // setIsInRoom(true);
+        router.push('/meeting/'+randomUUID());
         toast.success("You have joined the room");
     }
 
@@ -259,12 +262,12 @@ const Page = () => {
         );
     }
 
-    useEffect(() => {
-        const footer = document.querySelector('Footer') as HTMLElement;
-        if (footer) {
-            footer.style.display = 'none';
-        }
-    }, []);
+    // useEffect(() => {
+    //     const footer = document.querySelector('Footer') as HTMLElement;
+    //     if (footer) {
+    //         footer.style.display = 'none';
+    //     }
+    // }, []);
 
     return (
         <>

@@ -5,10 +5,11 @@ import Link from "next/link";
 
 const TabsComponent: React.FC = () => {
     const [activeTab, setActiveTab] = useState<string>('video');
-    const meetingElement = document.getElementById('meeting');
-    const spinnerElement = document.getElementById('spinner');
+
 
     useEffect(() => {
+        const meetingElement = document.getElementById('meeting');
+        const spinnerElement = document.getElementById('spinner');
         if(activeTab === 'msg') {
             if(meetingElement && spinnerElement) {
                 meetingElement.style.display = 'none';
