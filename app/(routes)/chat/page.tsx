@@ -6,6 +6,9 @@ import ChatSection from "./components/ChatSection";
 import { useKindeBrowserClient } from "@kinde-oss/kinde-auth-nextjs";
 import { socket } from "@/app/utils/socket";
 import axios from "axios";
+import NavbarComponent from "./components/Navbar";
+import { Spinner } from "@nextui-org/spinner";
+import { Progress } from "@nextui-org/react";
 
 const ChatApp = () => {
 
@@ -49,7 +52,7 @@ const ChatApp = () => {
                 }
                 for (let project of response.data) {
                     for (let member of project.members) {
-                        if(member.id === user?.id)continue;
+                        if (member.id === user?.id) continue;
                         map.set(member.id, [{
                             id: member.id,
                             first_name: member.name,
@@ -146,7 +149,7 @@ const ChatApp = () => {
 
     const inputRef = useRef<HTMLInputElement>(null);
     const onSend = (target: any, msg: string) => {
-        if(msg == '') return;
+        if (msg == '') return;
         console.log("send", target, msg);
         if (target.type === 'group') {
             socket.emit("project:message:send", target.id, msg);
@@ -162,36 +165,48 @@ const ChatApp = () => {
     }
 
     return (
-        <div className="h-[--mainheight] flex bg-black">
-            <div className={`${showChat ? "hidden" : "block"} md:block w-full md:w-1/4`}>
-                <SideBar
-                    chatData={chatData}
-                    onChatClick={handleChatClick}
-                    selectedChat={selectedChat}
+        <>
+            <NavbarComponent />
+            <div id="chat" className="h-[--mainheight] flex bg-black">
+                <div className={`${showChat ? "hidden" : "block"} md:block w-full md:w-1/4`}>
+                    <SideBar
+                        chatData={chatData}
+                        onChatClick={handleChatClick}
+                        selectedChat={selectedChat}
+                    />
+                </div>
+                <div className={`${showChat ? "block" : "hidden"} md:block w-full md:w-3/4`}>
+                    {showChat ? (
+                        <ChatSection
+                            key={forceUpdate}
+                            chatData={selectedChat}
+                            onBack={() => setShowChat(false)}
+                            draft={drafts[selectedChat?.chatID] || ""}
+                            onDraftChange={handleDraftChange}
+                            onSend={onSend}
+                        />
+                    ) : (
+                        <ChatSection
+                            key={forceUpdate}
+                            chatData={selectedChat}
+                            onBack={() => { }}
+                            draft={drafts[selectedChat?.chatID] || ""}
+                            onDraftChange={handleDraftChange}
+                            onSend={onSend}
+                        />
+                    )}
+                </div>
+            </div>
+            <div id="vc" className="w-full h-[--mainheight] bg-[--chatSectionBg] rounded-t-[30px] rounded-r-[30px] hidden text-center text-2xl">
+                <Progress
+                    color='danger'
+                    size="sm"
+                    isIndeterminate
+                    aria-label="Loading..."
+                    className="w-full color-blue-500"
                 />
             </div>
-            <div className={`${showChat ? "block" : "hidden"} md:block w-full md:w-3/4`}>
-                {showChat ? (
-                    <ChatSection
-                        key={forceUpdate}
-                        chatData={selectedChat}
-                        onBack={() => setShowChat(false)}
-                        draft={drafts[selectedChat?.chatID] || ""}
-                        onDraftChange={handleDraftChange}
-                        onSend={onSend}
-                    />
-                ) : (
-                    <ChatSection
-                        key={forceUpdate}
-                        chatData={selectedChat}
-                        onBack={() => {}}
-                        draft={drafts[selectedChat?.chatID] || ""}
-                        onDraftChange={handleDraftChange}
-                        onSend={onSend}
-                    />
-                )}
-            </div>
-        </div>
+        </>
     );
 };
 

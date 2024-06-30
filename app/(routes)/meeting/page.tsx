@@ -4,11 +4,12 @@ import { ArrowLeft, CircleArrowOutUpRight, Hand, LogOut, MessageSquareMore, Mic,
 import React, { useEffect, useState } from "react";
 import { toast } from "sonner";
 import Sidebar from "./Sidebar";
-import { Button, ButtonGroup } from "@nextui-org/react";
+import { Button, ButtonGroup, Progress } from "@nextui-org/react";
 import Image from "next/image";
 import useSound from 'use-sound';
 import { useKindeBrowserClient } from '@kinde-oss/kinde-auth-nextjs';
 import { socket } from '@/app/utils/socket';
+import NavbarComponent from "./components/Navbar";
 
 const ROOM_ID = 'temp-room';
 
@@ -266,7 +267,9 @@ const Page = () => {
     }, []);
 
     return (
-        <div className="main-Container flex flex-row bg-[#131217]">
+        <>
+        <NavbarComponent/>
+        <div id="meeting" className="main-Container flex flex-row bg-[#131217]">
             <div className={`flex flex-col transition-width duration-300`}>
                 {/* bar */}
                 {/* <div className='w-screen h-[10vh] bg-blue-400 flex justify-center items-center'>
@@ -321,6 +324,16 @@ const Page = () => {
             </div>
             <Sidebar isSidebarOpen={isSidebarOpen} setIsSidebarOpen={setIsSidebarOpen} message={message} setMessage={setMessage} messages={messages} sendMessage={sendMessage} msgOpen={msgOpen} setMsgOpen={setMsgOpen} participantsOpen={participantsOpen} setParticipantsOpen={setParticipantsOpen} participants={Participants}/>
         </div>
+        <div id="spinner" className="w-full h-[--mainheight] bg-[--chatSectionBg] rounded-t-[30px] rounded-r-[30px] hidden text-center text-2xl">
+                <Progress
+                    color='danger'
+                    size="sm"
+                    isIndeterminate
+                    aria-label="Loading..."
+                    className="w-full color-blue-500"
+                />
+            </div>
+        </>
     );
 }
 

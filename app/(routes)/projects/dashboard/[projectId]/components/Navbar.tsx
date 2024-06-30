@@ -17,8 +17,10 @@ import {
 } from "@nextui-org/react";
 import { RTCTLogo, SearchIcon } from "@/components/Logos/Logos";
 import { LogoutLink, useKindeBrowserClient } from "@kinde-oss/kinde-auth-nextjs";
+import TabsComponent from "./Tabs";
 
-export default function NavbarComponent() {
+export default function NavbarComponent({projectId} : any) {
+    console.log("ptoject id at nav = " + projectId);
     const [isEmailToolTipOpen, setIsEmailToolTipOpen] = React.useState(false);
     const { user, isLoading } = useKindeBrowserClient();
     return (
@@ -31,9 +33,11 @@ export default function NavbarComponent() {
                     </Link>
                 </NavbarBrand>
             </NavbarContent>
-            <div className="flex items-center gap-6">
-                <Link className="text-xl font-medium hover:text-[--darkBtn]" href="/dashboard">Dashboard</Link>
-                <Link className="text-xl font-medium hover:text-[--darkBtn]" href="/chat">Community</Link>
+            <div className="w-full flex items-center justify-between">
+                <div className="flex items-center gap-6 border-l-2 border-gray-200 pl-4">
+                    <Link className="text-xl font-medium hover:text-[--darkBtn]" href="/dashboard">Dashboard</Link>
+                </div>
+                <TabsComponent projectId={projectId} />
             </div>
 
             {isLoading == false ? (user ? (

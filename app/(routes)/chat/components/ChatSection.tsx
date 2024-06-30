@@ -1,7 +1,7 @@
 "use client";
 import React, { use, useEffect, useRef, useState } from "react";
 import { CircleArrowLeft, Search, SendHorizontal, Smile, CirclePlus, ImagePlus, File, Paperclip, Download, Delete, Trash2, Copy, } from "lucide-react";
-import { Button, Input, Tooltip, divider } from "@nextui-org/react";
+import { Button, Input, Spinner, Tooltip, divider } from "@nextui-org/react";
 import { Input as InputComponent } from "@/components/ui/input";
 import Image from "next/image";
 import Fuse from "fuse.js";
@@ -212,7 +212,6 @@ const ChatSection = ({ onBack, chatData, draft, onDraftChange, onSend }: any) =>
                                 <Search />
                             </button>
                         )}
-                        <TabsComponent />
                     </div>
                 </div>
             )}
@@ -359,9 +358,6 @@ const ChatSection = ({ onBack, chatData, draft, onDraftChange, onSend }: any) =>
 
                 </div>
             )}
-            <div id="vc" className="w-full h-full bg-[--chatSectionBg] rounded-t-[30px] rounded-r-[30px] hidden text-center text-2xl">
-                Maanasi ji can you join the RTCT ROOM ?
-            </div>
         </div>
     );
 };
