@@ -8,7 +8,7 @@ const AccordionComponent = () => {
             <h2 className="text-5xl font-bold mb-4 p-4">FAQ</h2>
             <Accordion className="space-y-4">
                 {accordionData.map(({key, title, content}) => (
-                    <AccordionItem className="p-4 rounded-lg shadow-sm text-xl" key={key} aria-label={`FAQ ${key}`} title={<span className="text-2xl font-semibold">{title}</span>}>
+                    <AccordionItem className="p-4 rounded-lg shadow-sm text-xl" key={key} aria-label={`FAQ ${key}`} title={<span className="text-xl font-semibold">{title}</span>}>
                         <p className="text-[--darkText2]">{content}</p>
                     </AccordionItem>
                 ))}
