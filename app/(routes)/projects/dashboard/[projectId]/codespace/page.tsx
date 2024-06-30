@@ -3,12 +3,17 @@
 import { RTCTLogo } from "@/components/Logos/Logos";
 import { Button } from "@nextui-org/react";
 import { useState } from "react";
+import {useRouter} from "next/navigation";
 
-const WorkRoom = () => {
+const Page = () => {
+    const router = useRouter()
     const [loading, setLoading] = useState(false);
 
     const handleLounchWorkspace = () => {
         setLoading(true);
+        setTimeout(() => {
+            router.push("https://ide-xz1231.rtct.tech/", )
+        }, 1500);
     }
 
     return (
@@ -34,4 +39,4 @@ const WorkRoom = () => {
     );
 };
 
-export default WorkRoom;
+export default Page;
