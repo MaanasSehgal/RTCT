@@ -34,7 +34,7 @@ const Page = () => {
                             <Button isLoading onClick={() => handleLounchWorkspace()} className="bg-[--darkBtn] rounded-full h-12 flex justify-center items-center text-white text-xl md:text-2xl font-extrabold ">Loading Workspace</Button>
                         )
                             : (
-                                <Button onClick={() => handleLounchWorkspace()} className="bg-[--darkBtn] rounded-full h-12 flex justify-center items-center text-white text-xl md:text-2xl font-extrabold ">Lounch Workspace</Button>
+                                <Button onClick={() => handleLounchWorkspace()} className="bg-[--darkBtn] rounded-full h-12 flex justify-center items-center text-white text-xl md:text-2xl font-extrabold ">Launch Workspace</Button>
                             )
                         }
                     </div>
