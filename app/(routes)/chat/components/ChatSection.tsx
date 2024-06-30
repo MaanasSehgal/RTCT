@@ -112,10 +112,8 @@ const ChatSection = ({ onBack, chatData, draft, onDraftChange, onSend }: any) =>
 
     const scrollToBottom = () => {
         const msgContainer = document.getElementById('msg');
-
-        if (msgContainer) {
-            msgContainer.scrollTop = msgContainer.scrollHeight;
-        }
+        if (!msgContainer)return;
+        window.scrollTo({ left: 0, top: msgContainer.scrollHeight, behavior: "auto" });
     };
 
     useEffect(() => {
@@ -187,7 +185,7 @@ const ChatSection = ({ onBack, chatData, draft, onDraftChange, onSend }: any) =>
                         </button>
                         <div className="flex items-center gap-3 ps-4">
                             <img className="rounded-full w-10 h-10 object-center object-cover" src={chatData ? chatData[0].image : "/userLogo.png"} alt="image" width={200} height={200} />
-                            <h2>{chatData ? chatData[0].first_name + " " + chatData[0].last_name : "Nobita"}</h2>
+                            <h2>{chatData && chatData[0].first_name + " " + chatData[0].last_name} </h2>
                         </div>
                     </div>
                     <div className="flex items-center gap-4">
@@ -224,16 +222,14 @@ const ChatSection = ({ onBack, chatData, draft, onDraftChange, onSend }: any) =>
                             <div className={`flex ${user?.id === chat.senderID ? 'justify-end' : 'justify-start'} items-center w-full`} key={chat.senderID}>
                                 <div className={`p-2 ${user?.id == chat.senderID ? 'bg-[#272A35]' : 'bg-[#373E4E]'} flex-col gap-10 rounded-[20px] max-w-[80%] min-w-[21rem] w-auto mb-6`}>
                                     <div className={`mb-4 flex ${user?.id == chat.senderID ? 'justify-end' : 'justify-start'} items-center`}>
-                                        {chat.content.msgType == "image" ? (
-                                            <Image className="rounded-xl w-96 sm:w-[25rem] object-cover" src="/nobita.jpg" alt="image" width={1000} height={1000} />
-                                        ) : chat.content.msgType == "file" ? (
+                                        chat.content.msgType == "file" ? (
                                             <div className="bg-[#272A35] p-4 rounded-xl flex gap-4 w-64 truncate line-clamp-1">
                                                 <File />
                                                 <p className="w-full truncate line-clamp-1">{`server.js`}</p>
                                             </div>
                                         ) : (
                                             <p className={`break-words max-w-full inline-block h-auto text-lg`}>{chat.content.text}</p>
-                                        )}
+                                        )
                                     </div>
 
                                     <div className={`flex items-center gap-2 min-w-80 ${user?.id === chat.senderID ? 'flex-row-reverse' : 'justify-start'}`}>
@@ -271,9 +267,6 @@ const ChatSection = ({ onBack, chatData, draft, onDraftChange, onSend }: any) =>
                                     </div>
 
                                     <div className={`flex items-center gap-2 min-w-80 ${user?.id === chat.senderID ? 'flex-row-reverse' : 'justify-start'}`}>
-                                        <Tooltip content={chat.senderName}>
-                                            <Image className="rounded-full w-8 h-8 object-cover cursor-pointer" src="/nobita.jpg" alt="image" width={1000} height={1000} />
-                                        </Tooltip>
                                         <p className="text-gray-400 text-sm h-full m-0 rounded-full self-end">{formatDate(new Date(chat.timestamp))}</p>
                                         {chat.content.msgType == "image" || chat.content.msgType == "file" && (
                                             <div className="flex items-center gap-2 rounded-full bg-black p-2">
