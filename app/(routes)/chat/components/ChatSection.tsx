@@ -13,7 +13,7 @@ import Link from "next/link";
 import { toast } from "sonner";
 import { useKindeBrowserClient } from "@kinde-oss/kinde-auth-nextjs";
 
-const ChatSection = ({user, onBack, chatData, draft, onDraftChange, onSend }: any) => {
+const ChatSection = ({ user, onBack, chatData, draft, onDraftChange, onSend }: any) => {
     const [showEmoji, setShowEmoji] = useState(false);
     const [text, setText] = useState(draft);
     const [isSearchVisible, setIsSearchVisible] = useState(false);
@@ -112,7 +112,7 @@ const ChatSection = ({user, onBack, chatData, draft, onDraftChange, onSend }: an
 
     const scrollToBottom = () => {
         const msgContainer = document.getElementById('msg');
-        if (!msgContainer)return;
+        if (!msgContainer) return;
         window.scrollTo({ left: 0, top: msgContainer.scrollHeight, behavior: "auto" });
     };
 
@@ -223,12 +223,12 @@ const ChatSection = ({user, onBack, chatData, draft, onDraftChange, onSend }: an
                                 <div className={`p-2 ${user?.id == chat.senderID ? 'bg-[#272A35]' : 'bg-[#373E4E]'} flex-col gap-10 rounded-[20px] max-w-[80%] min-w-[21rem] w-auto mb-6`}>
                                     <div className={`mb-4 flex ${user?.id == chat.senderID ? 'justify-end' : 'justify-start'} items-center`}>
                                         chat.content.msgType == "file" ? (
-                                            <div className="bg-[#272A35] p-4 rounded-xl flex gap-4 w-64 truncate line-clamp-1">
-                                                <File />
-                                                <p className="w-full truncate line-clamp-1">{`server.js`}</p>
-                                            </div>
+                                        <div className="bg-[#272A35] p-4 rounded-xl flex gap-4 w-64 truncate line-clamp-1">
+                                            <File />
+                                            <p className="w-full truncate line-clamp-1">{`server.js`}</p>
+                                        </div>
                                         ) : (
-                                            <p className={`break-words max-w-full inline-block h-auto text-lg`}>{chat.content.text}</p>
+                                        <p className={`break-words max-w-full inline-block h-auto text-lg`}>{chat.content.text}</p>
                                         )
                                     </div>
 
@@ -253,6 +253,7 @@ const ChatSection = ({user, onBack, chatData, draft, onDraftChange, onSend }: an
                         chatData[1].map((chat: any) => (
                             <div className={`flex ${user?.id === chat.senderID ? 'justify-end' : 'justify-start'} items-center w-full`} key={chat.senderID}>
                                 <div className={`p-2 ${user?.id == chat.senderID ? 'bg-[#272A35]' : 'bg-[#373E4E]'} flex-col gap-10 rounded-[20px] max-w-[80%] min-w-[21rem] w-auto mb-6`}>
+                                <p className={`text-gray-400 ${user?.id == chat.senderID ? 'text-end' : 'text-start'} mb-2`}>{chat.senderName}</p>
                                     <div className={`mb-4 flex ${user?.id == chat.senderID ? 'justify-end' : 'justify-start'} items-center`}>
                                         {chat.content.msgType == "image" ? (
                                             <Image className="rounded-xl w-96 sm:w-[25rem] object-cover" src="/nobita.jpg" alt="image" width={1000} height={1000} />
@@ -266,7 +267,7 @@ const ChatSection = ({user, onBack, chatData, draft, onDraftChange, onSend }: an
                                         )}
                                     </div>
 
-                                    <div className={`flex items-center gap-2 min-w-80 ${user?.id === chat.senderID ? 'flex-row-reverse' : 'justify-start'}`}>
+                                    <div className={`flex items-center gap-2 min-w-80 ${user?.id === chat.senderID ? 'justify-start ' : 'flex-row-reverse'}`}>
                                         <p className="text-gray-400 text-sm h-full m-0 rounded-full self-end">{formatDate(new Date(chat.timestamp))}</p>
                                         {chat.content.msgType == "image" || chat.content.msgType == "file" && (
                                             <div className="flex items-center gap-2 rounded-full bg-black p-2">
@@ -318,7 +319,7 @@ const ChatSection = ({user, onBack, chatData, draft, onDraftChange, onSend }: an
                         <div
                             className="absolute bottom-0 z-20 bg-black bg-opacity-50 right-0 w-full h-full flex flex-col gap-10 justify-center items-center p-4 px-[20%]"
                         >
-                            <div className="p-2 flex justify-center items-center rounded-lg bg-[#272A35] gap-2"><File size={50}/> {showInputFile}</div>
+                            <div className="p-2 flex justify-center items-center rounded-lg bg-[#272A35] gap-2"><File size={50} /> {showInputFile}</div>
                             <div className="flex gap-4">
                                 <Button color="danger" size="sm" className="text-xl font-bold" onClick={handleCancelFile} >Cancel</Button>
                                 <Button color="success" size="sm" className="text-xl font-bold" onClick={handleSendFile} >Send</Button>
